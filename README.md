@@ -15,10 +15,7 @@ npm install @url-sanitize/core @url-sanitize/clearurls
 ## Quick start
 
 ```ts
-import { compileSanitizer } from '@url-sanitize/core';
-import { clearurlsCatalog } from '@url-sanitize/clearurls';
-
-const sanitize = compileSanitizer(clearurlsCatalog);
+import { sanitize } from '@url-sanitize/clearurls';
 
 const result = sanitize('https://example.com/article?utm_source=newsletter&id=123');
 
@@ -30,6 +27,15 @@ console.log(result);
 //   strippedParams: ['utm_source'],
 //   matchedRules: [{ provider: 'globalRules', kind: 'strip-param', pattern: 'utm_.*' }]
 // }
+```
+
+**Custom catalog or options:**
+
+```ts
+import { compileSanitizer } from '@url-sanitize/core';
+import { clearurlsCatalog } from '@url-sanitize/clearurls';
+
+const sanitize = compileSanitizer(clearurlsCatalog, { stripReferralMarketing: true });
 ```
 
 ## Packages
