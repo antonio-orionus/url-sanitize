@@ -38,9 +38,7 @@ async function main(): Promise<void> {
 
   if (actualHash !== expectedHash) {
     throw new Error(
-      `ClearURLs rules hash mismatch.\n  expected: ${expectedHash}\n  actual:   ${actualHash}\n` +
-        `The upstream CDN may have served stale hash vs rules (10min cache-control max-age). ` +
-        `Retry in a few minutes.`
+      `ClearURLs rules hash mismatch.\n  expected: ${expectedHash}\n  actual:   ${actualHash}\nThe upstream CDN may have served stale hash vs rules (10min cache-control max-age). Retry in a few minutes.`
     );
   }
 
