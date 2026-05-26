@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Command-line URL sanitizer for cleaning, explaining, and validating tracking-heavy URLs.",
   "license": "MIT",
   "type": "module",
