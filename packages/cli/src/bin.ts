@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { compileSanitizer } from '@url-sanitize/core';
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
+import { compileSanitizer } from '@url-sanitize/core';
 
 const args = process.argv.slice(2);
 
