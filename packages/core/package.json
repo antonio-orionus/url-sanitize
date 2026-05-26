@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Pure TypeScript URL sanitization engine with explainable results and pluggable catalogs.",
   "license": "MIT",
   "type": "module",
