@@ -1,0 +1,34 @@
+name: Broken URL / bad cleanup
+description: A URL produces wrong output (over-strips, under-strips, garbles)
+title: '[broken-url] '
+labels: [bug, broken-url]
+body:
+  - type: input
+    id: input-url
+    attributes:
+      label: Input URL
+      description: Paste the URL fed to url-sanitize.
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Expected output URL
+    validations:
+      required: true
+  - type: input
+    id: actual
+    attributes:
+      label: Actual output URL
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: '@url-sanitize/clearurls version (from metadata.json)'
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes

@@ -1,0 +1,36 @@
+{
+  "name": "@url-sanitize/cli",
+  "version": "0.0.0",
+  "description": "Command-line URL sanitizer for cleaning, explaining, and validating tracking-heavy URLs.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "url-sanitize": "./dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/bin.ts --format esm --clean",
+    "dev": "tsup src/bin.ts --format esm --watch"
+  },
+  "dependencies": {
+    "@url-sanitize/clearurls": "workspace:*",
+    "@url-sanitize/core": "workspace:*"
+  },
+  "keywords": [
+    "cli",
+    "url",
+    "sanitize",
+    "tracking",
+    "clearurls"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antonio-orionus/url-sanitize.git",
+    "directory": "packages/cli"
+  }
+}

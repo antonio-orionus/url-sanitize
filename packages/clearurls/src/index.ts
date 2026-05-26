@@ -1,0 +1,15 @@
+import type { SanitizerCatalog } from '@url-sanitize/core';
+import { clearurlsToCatalog } from './adapter.js';
+import rawData from '../data/data.json' with { type: 'json' };
+import metadata from '../data/metadata.json' with { type: 'json' };
+import type { ClearUrlsData, ClearUrlsMetadata } from './types.js';
+
+export const clearurlsCatalog: SanitizerCatalog = clearurlsToCatalog(
+  rawData as ClearUrlsData,
+  metadata as ClearUrlsMetadata
+);
+
+export const clearurlsMetadata: ClearUrlsMetadata = metadata as ClearUrlsMetadata;
+
+export { clearurlsToCatalog };
+export type { ClearUrlsData, ClearUrlsMetadata, ClearUrlsProvider } from './types.js';

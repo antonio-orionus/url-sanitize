@@ -1,0 +1,14 @@
+@url-sanitize/clearurls bundles rule data from the ClearURLs project.
+
+Upstream:    https://github.com/ClearURLs/Rules
+CDN feed:    https://rules2.clearurls.xyz/data.minify.json
+Hash file:   https://rules2.clearurls.xyz/rules.minify.hash
+License:     LGPL-3.0-only
+
+The ClearURLs project is maintained independently. This package is not
+affiliated with or endorsed by the ClearURLs maintainers. The bundled data
+is reproduced under the terms of LGPL-3.0-only.
+
+Algorithm code (src/adapter.ts, src/types.ts) in this package was written
+independently against the public ClearURLs rule spec and is licensed MIT.
+The rules data file (data/data.json) is the LGPL-3.0-only portion.

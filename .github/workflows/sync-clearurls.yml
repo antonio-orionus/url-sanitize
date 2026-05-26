@@ -1,0 +1,59 @@
+name: sync-clearurls
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+
+      - name: Fetch and verify upstream rules
+        run: pnpm sync:clearurls
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet packages/clearurls/data; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create changeset
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          NOW: ${{ github.run_id }}
+        run: |
+          mkdir -p .changeset
+          STAMP="$(date -u +%Y%m%d-%H%M%S)"
+          printf -- "---\n'@url-sanitize/clearurls': patch\n---\n\nSync ClearURLs upstream rules.\n" \
+            > ".changeset/clearurls-sync-${STAMP}.md"
+
+      - name: Open PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'chore(clearurls): sync upstream rules'
+          title: 'chore(clearurls): sync upstream rules'
+          body: |
+            Automated daily sync of ClearURLs rule catalog from
+            https://rules2.clearurls.xyz/data.minify.json.
+            SHA256 verified against rules.minify.hash.
+          branch: clearurls-sync
+          delete-branch: true

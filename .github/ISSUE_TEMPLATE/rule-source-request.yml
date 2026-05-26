@@ -1,0 +1,25 @@
+name: Rule source request
+description: Request support for a non-ClearURLs rule source (AdGuard, Brave, Firefox, custom)
+title: '[source] '
+labels: [enhancement, rule-source]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source name
+      description: e.g. AdGuard URL Tracking Protection, Brave Debouncer
+    validations:
+      required: true
+  - type: input
+    id: source-url
+    attributes:
+      label: Upstream URL
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What does this source cover that ClearURLs doesn't?
+    validations:
+      required: true
