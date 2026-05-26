@@ -38,15 +38,15 @@ Pre-push hook runs: `pnpm build && pnpm lint && pnpm test`
 
 ## Publishing
 
+Publish is fully automated via trusted publishing (OIDC) — no token needed.
+
 ```bash
 # bump versions in packages/*/package.json
 git commit -m "release: vX.Y.Z"
 git tag -a vX.Y.Z -m "release X.Y.Z"
 git push --follow-tags
-NPM_TOKEN=<granular token with bypass-2fa> pnpm -r --filter './packages/*' publish --access public --no-git-checks
+# .github/workflows/release.yml fires automatically and publishes all three packages
 ```
-
-npm org: `@url-sanitize` — requires `antonio-orionus` account with granular access token (bypass-2FA enabled).
 
 ## Architecture
 
