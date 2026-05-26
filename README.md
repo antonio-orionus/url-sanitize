@@ -6,10 +6,6 @@
 
 Works in Node.js, Bun, Deno, browsers, workers, CLIs, GitHub Actions, and edge runtimes.
 
-## Status
-
-Pre-alpha. APIs unstable until v0.1.0.
-
 ## Install
 
 ```sh
@@ -32,7 +28,7 @@ console.log(result);
 //   original: 'https://example.com/article?utm_source=newsletter&id=123',
 //   url: 'https://example.com/article?id=123',
 //   strippedParams: ['utm_source'],
-//   matchedProviders: ['globalRules']
+//   matchedRules: [{ provider: 'globalRules', kind: 'strip-param', pattern: 'utm_.*' }]
 // }
 ```
 
