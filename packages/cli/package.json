@@ -7,9 +7,7 @@
   "bin": {
     "url-sanitize": "./dist/bin.js"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup src/bin.ts --format esm --clean",
     "dev": "tsup src/bin.ts --format esm --watch"
@@ -18,13 +16,7 @@
     "@url-sanitize/clearurls": "workspace:*",
     "@url-sanitize/core": "workspace:*"
   },
-  "keywords": [
-    "cli",
-    "url",
-    "sanitize",
-    "tracking",
-    "clearurls"
-  ],
+  "keywords": ["cli", "url", "sanitize", "tracking", "clearurls"],
   "publishConfig": {
     "access": "public"
   },

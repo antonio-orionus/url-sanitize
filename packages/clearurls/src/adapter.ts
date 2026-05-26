@@ -1,10 +1,7 @@
 import type { SanitizerCatalog, SanitizerRule } from '@url-sanitize/core';
 import type { ClearUrlsData, ClearUrlsMetadata } from './types.js';
 
-export function clearurlsToCatalog(
-  data: ClearUrlsData,
-  meta: ClearUrlsMetadata
-): SanitizerCatalog {
+export function clearurlsToCatalog(data: ClearUrlsData, meta: ClearUrlsMetadata): SanitizerCatalog {
   const rules: SanitizerRule[] = [];
 
   for (const [name, provider] of Object.entries(data.providers)) {
