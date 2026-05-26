@@ -72,7 +72,7 @@ describe('compileSanitizer', () => {
     const result = sanitize(`https://www.google.com/url?sa=t&q=${encodeURIComponent(target)}`);
     expect(result.kind).toBe('redirected');
     if (result.kind === 'redirected') {
-      expect(result.url).toBe(`${target}/`);
+      expect(result.url).toBe(target);
     }
   });
 

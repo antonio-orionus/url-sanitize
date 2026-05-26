@@ -4,7 +4,7 @@
   "private": true,
   "description": "TypeScript URL sanitization toolkit with ClearURLs-compatible rules, explainable results, and pluggable rule sources.",
   "type": "module",
-  "packageManager": "pnpm@10.0.0",
+  "packageManager": "pnpm@11.3.0",
   "engines": {
     "node": ">=20"
   },
