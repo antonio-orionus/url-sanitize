@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/clearurls",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ClearURLs-compatible rule catalog and adapter for @url-sanitize/core. Daily-synced from upstream.",
   "license": "LGPL-3.0-only",
   "type": "module",
@@ -17,7 +17,11 @@
       "import": "./dist/raw.js"
     }
   },
-  "files": ["dist", "data", "NOTICE"],
+  "files": [
+    "dist",
+    "data",
+    "NOTICE"
+  ],
   "scripts": {
     "build": "tsup src/index.ts src/raw.ts --format esm --dts --clean",
     "dev": "tsup src/index.ts src/raw.ts --format esm --dts --watch"
@@ -25,7 +29,14 @@
   "dependencies": {
     "@url-sanitize/core": "workspace:*"
   },
-  "keywords": ["clearurls", "clearurls-ts", "clearurls-typescript", "url", "tracking", "privacy"],
+  "keywords": [
+    "clearurls",
+    "clearurls-ts",
+    "clearurls-typescript",
+    "url",
+    "tracking",
+    "privacy"
+  ],
   "publishConfig": {
     "access": "public"
   },

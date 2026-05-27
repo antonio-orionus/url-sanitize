@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Pure TypeScript URL sanitization engine with explainable results and pluggable catalogs.",
   "license": "MIT",
   "type": "module",
@@ -13,12 +13,20 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsup src/index.ts --format esm --dts --watch"
   },
-  "keywords": ["url", "sanitize", "tracking", "clearurls", "privacy"],
+  "keywords": [
+    "url",
+    "sanitize",
+    "tracking",
+    "clearurls",
+    "privacy"
+  ],
   "publishConfig": {
     "access": "public"
   },
