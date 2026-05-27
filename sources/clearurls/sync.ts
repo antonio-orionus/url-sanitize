@@ -11,7 +11,7 @@
  * @url-sanitize/fetch's `pinnedHash` option (v0.2+).
  */
 import { createHash } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -20,11 +20,26 @@ const HASH_URL = 'https://rules2.clearurls.xyz/rules.minify.hash';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = resolve(here, '../../packages/clearurls/data');
+const metadataPath = resolve(dataDir, 'metadata.json');
+
+type ExistingMetadata = {
+  hash?: unknown;
+};
 
 async function fetchText(url: string): Promise<string> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Fetch ${url} failed: ${res.status}`);
   return res.text();
+}
+
+async function readExistingHash(): Promise<string | null> {
+  try {
+    const metadata = JSON.parse(await readFile(metadataPath, 'utf8')) as ExistingMetadata;
+    return typeof metadata.hash === 'string' ? metadata.hash.toLowerCase() : null;
+  } catch (err) {
+    if (err instanceof Error && 'code' in err && err.code === 'ENOENT') return null;
+    throw err;
+  }
 }
 
 async function main(): Promise<void> {
@@ -40,6 +55,12 @@ async function main(): Promise<void> {
     throw new Error(
       `ClearURLs rules hash mismatch.\n  expected: ${expectedHash}\n  actual:   ${actualHash}\nThe upstream CDN may have served stale hash vs rules (10min cache-control max-age). Retry in a few minutes.`
     );
+  }
+
+  const existingHash = await readExistingHash();
+  if (existingHash === actualHash) {
+    console.log(`rules unchanged: ${actualHash}`);
+    return;
   }
 
   let parsed: unknown;
@@ -71,7 +92,7 @@ async function main(): Promise<void> {
     fetchedAt: new Date().toISOString(),
     upstream: RULES_URL
   };
-  await writeFile(resolve(dataDir, 'metadata.json'), `${JSON.stringify(metadata, null, 2)}\n`);
+  await writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`);
 
   console.log(`wrote ${dataDir}/data.json + metadata.json`);
   console.log(`hash: ${actualHash}`);

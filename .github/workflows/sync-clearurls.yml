@@ -42,9 +42,11 @@ jobs:
           for pkg in packages/core packages/clearurls packages/cli; do
             node -e "
               const fs = require('fs');
-              const p = JSON.parse(fs.readFileSync('./$pkg/package.json', 'utf8'));
-              p.version = '$NEW_VERSION';
-              fs.writeFileSync('./$pkg/package.json', JSON.stringify(p, null, 2) + '\n');
+              const path = './$pkg/package.json';
+              const text = fs.readFileSync(path, 'utf8');
+              const next = text.replace(/(\"version\": \")[^\"]+(\")/, (_, before, after) => before + '$NEW_VERSION' + after);
+              if (next === text) throw new Error('No version field found in ' + path);
+              fs.writeFileSync(path, next);
             "
           done
           echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
