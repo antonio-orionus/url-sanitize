@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  test:
+  ts:
+    name: TypeScript engine + conformance
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,6 +18,34 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - name: Verify generated catalog matches checked-in catalog
+        run: |
+          pnpm build:catalog
+          git diff --exit-code catalog/clearurls.json \
+            || (echo "catalog/clearurls.json is stale — run \`pnpm build:catalog\` and commit" && exit 1)
+      - name: Verify generated conformance corpus matches checked-in files
+        run: |
+          pnpm build:conformance
+          git diff --exit-code conformance/vectors.jsonl conformance/clearurls-corpus.jsonl conformance/manifest.json \
+            || (echo "conformance corpus is stale — run \`pnpm build:conformance\` and commit" && exit 1)
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm lint
+
+  rust:
+    name: Rust engine + conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --workspace --all-targets
+      - run: cargo test --workspace
+      - name: Release binary size check
+        run: |
+          cargo build --release -p url-sanitize
+          ls -lh target/release/url-sanitize
+          size=$(stat -c%s target/release/url-sanitize)
+          echo "release binary size: $size bytes"
+          # M1 soft cap: 1.5 MB. M3 target: < 1 MB.
+          test "$size" -lt 1572864 || (echo "binary exceeded 1.5 MB soft cap" && exit 1)

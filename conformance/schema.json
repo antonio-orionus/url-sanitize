@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://url-sanitize.dev/schema/v1/conformance.json",
+  "title": "url-sanitize conformance vector",
+  "description": "One JSON object per line in vectors.jsonl / clearurls-corpus.jsonl.",
+  "type": "object",
+  "required": ["id", "input", "expected"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier, kebab-case."
+    },
+    "note": {
+      "type": "string",
+      "description": "Human comment explaining what the vector exercises."
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "stripReferralMarketing": { "type": "boolean" },
+        "unwrapRedirects": { "type": "boolean" },
+        "domainBlocking": { "type": "boolean" }
+      }
+    },
+    "input": {
+      "type": "string"
+    },
+    "expected": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "url"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "unchanged" },
+            "url": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "url"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "cleaned" },
+            "url": { "type": "string" },
+            "strippedParamsContains": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Subset assertion: every name listed must appear in strippedParams."
+            },
+            "matchedProviders": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "url"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "redirected" },
+            "url": { "type": "string" },
+            "viaProvider": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "blocked" },
+            "viaProvider": { "type": "string" }
+          }
+        }
+      ]
+    }
+  }
+}

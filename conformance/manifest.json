@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-05-28T10:06:30.783Z",
+  "catalog": {
+    "hash": "df97eb5c1aeeb9f96d0c28a6a60604f3cb2b1f9e7776eee228258e1b2bae1424",
+    "version": "df97eb5c1aee",
+    "fetchedAt": "2026-05-26T13:53:53.463Z",
+    "upstream": "https://rules2.clearurls.xyz/data.minify.json"
+  },
+  "counts": {
+    "vectors": 32,
+    "corpus": 46
+  },
+  "fileHashes": {
+    "vectors.jsonl": "ba1203f1f1d84606b1aa8d16ec16d6742cfbe0bf997ef839db016ec108c6b899",
+    "clearurls-corpus.jsonl": "41519ef112c6c03158d5481229737081e155aa8d2929016e9ef1ea7e0b3fade2"
+  }
+}

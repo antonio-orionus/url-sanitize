@@ -1,0 +1,32 @@
+{"id":"unchanged-clean","note":"clean URL is unchanged","input":"https://example.com/article"}
+{"id":"unchanged-with-kept-params","note":"non-tracking params kept","input":"https://example.com/search?q=hello&page=2"}
+{"id":"unchanged-empty","note":"empty input","input":""}
+{"id":"unchanged-malformed","note":"P4: malformed input returns unchanged verbatim","input":"not a url"}
+{"id":"unchanged-malformed-scheme","note":"no scheme separator","input":"htps:/x"}
+{"id":"strip-utm-basic","note":"globalRules utm_* via strip-param","input":"https://example.com/article?utm_source=newsletter&utm_medium=email&id=123"}
+{"id":"strip-fbclid","note":"globalRules fbclid","input":"https://example.com/?fbclid=ABCDEF"}
+{"id":"strip-gclid","note":"globalRules gclid","input":"https://example.com/path?gclid=xyz&keep=1"}
+{"id":"strip-multiple-trackers","note":"utm + fbclid + mkt_tok","input":"https://news.example.com/article?utm_source=tw&fbclid=ABC&mkt_tok=zzz&id=99"}
+{"id":"strip-no-eq-param","note":"param without value, just name","input":"https://example.com/?utm_source&kept"}
+{"id":"strip-fragment-params","note":"P8: tracker in fragment-as-query","input":"https://example.com/#utm_source=hash&keep=ok"}
+{"id":"strip-percent-encoded","note":"P9: percent-encoded kept value preserved","input":"https://example.com/?q=hello%20world&utm_source=x"}
+{"id":"strip-empty-after","note":"all params were trackers — query removed","input":"https://example.com/path?utm_source=x&fbclid=y"}
+{"id":"youtube-strip-si","note":"youtube si tracker","input":"https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=ABCDEFG&feature=share"}
+{"id":"amazon-ref-raw-replace","note":"amazon /ref=... raw-replace path strip","input":"https://www.amazon.com/dp/B08N5WRWNW/ref=cm_sw_r_cp_x"}
+{"id":"amazon-tag-kept-by-default","note":"referralMarketing tag is kept unless --strip-referral","input":"https://www.amazon.com/dp/B0?tag=affiliate-20"}
+{"id":"amazon-tag-stripped-with-opt","note":"opt-in: strip referral tag","input":"https://www.amazon.com/dp/B0?tag=affiliate-20","options":{"stripReferralMarketing":true}}
+{"id":"google-redirect-unwrap","note":"google /url?q= unwraps","input":"https://www.google.com/url?sa=t&q=https%3A%2F%2Fexample.com%2Ftarget"}
+{"id":"google-redirect-disabled","note":"--no-unwrap-redirects leaves it","input":"https://www.google.com/url?sa=t&q=https%3A%2F%2Fexample.com%2Ftarget","options":{"unwrapRedirects":false}}
+{"id":"youtube-redirect-unwrap","note":"youtube /redirect?q= unwraps","input":"https://www.youtube.com/redirect?q=https%3A%2F%2Fexample.org%2Fdest&v=x"}
+{"id":"facebook-l-php-unwrap","note":"l.facebook.com l.php?u= unwraps","input":"https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage&h=hash"}
+{"id":"idempotent-utm","note":"P1: idempotence — second pass is no-op","input":"https://example.com/?utm_source=a&keep=1"}
+{"id":"idempotent-already-clean","note":"P1: clean URL idempotent","input":"https://example.com/article?keep=1"}
+{"id":"host-integrity","note":"P2: cleaning never changes host","input":"https://news.example.com/path?utm_campaign=x"}
+{"id":"path-integrity-strip","note":"P3: strip-only never touches path","input":"https://example.com/some/deep/path?utm_source=x"}
+{"id":"option-monotonic-default","note":"P5 baseline","input":"https://www.amazon.com/dp/B0?utm_source=x&tag=aff"}
+{"id":"option-monotonic-referral","note":"P5 superset: adds referral strip","input":"https://www.amazon.com/dp/B0?utm_source=x&tag=aff","options":{"stripReferralMarketing":true}}
+{"id":"reddit-redirect","note":"out.reddit.com unwraps","input":"https://out.reddit.com/t3_xxx?url=https%3A%2F%2Fexample.com%2Fx&token=abc"}
+{"id":"twitter-strip-s-t","note":"twitter s + t params","input":"https://twitter.com/user/status/123?s=20&t=abcdef"}
+{"id":"non-http-scheme","note":"ftp URL — most rules don't fire","input":"ftp://files.example.com/x"}
+{"id":"weird-port","note":"explicit port preserved","input":"https://example.com:8443/?utm_source=x"}
+{"id":"trailing-slash","note":"bare host gets trailing slash normalized","input":"https://example.com"}

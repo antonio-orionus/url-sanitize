@@ -1,0 +1,20 @@
+[package]
+name = "url-sanitize-core"
+description = "Pure-Rust URL sanitization engine (ClearURLs-compatible). Companion to the TypeScript @url-sanitize/core."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "README.md"
+keywords = ["url", "sanitize", "clearurls", "tracking", "privacy"]
+categories = ["web-programming", "command-line-utilities"]
+
+[dependencies]
+regex-lite = { workspace = true }
+url = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+percent-encoding = "2"

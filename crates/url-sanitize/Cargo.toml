@@ -1,0 +1,22 @@
+[package]
+name = "url-sanitize"
+description = "Sub-1MB native CLI to strip tracking parameters from URLs. ClearURLs ruleset baked in, agent-friendly JSON output."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "README.md"
+keywords = ["url", "sanitize", "clearurls", "tracking", "privacy"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "url-sanitize"
+path = "src/main.rs"
+
+[dependencies]
+url-sanitize-core = { workspace = true }
+serde_json = { workspace = true }
+serde = { workspace = true }

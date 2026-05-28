@@ -16,6 +16,8 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "sync:clearurls": "tsx sources/clearurls/sync.ts",
+    "build:catalog": "tsx scripts/build-catalog.ts",
+    "build:conformance": "tsx scripts/build-conformance.ts",
     "changeset": "changeset",
     "release": "pnpm build && changeset publish",
     "prepare": "husky"
@@ -24,6 +26,8 @@
     "@biomejs/biome": "^1.9.4",
     "@changesets/cli": "^2.27.11",
     "@types/node": "^22.10.5",
+    "@url-sanitize/clearurls": "workspace:*",
+    "@url-sanitize/core": "workspace:*",
     "husky": "^9.1.7",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",

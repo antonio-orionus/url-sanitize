@@ -10,3 +10,11 @@ coverage/
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Rust
+target/
+Cargo.lock.bak
+**/*.rs.bk
+
+# local-only planning docs
+PLAN.md

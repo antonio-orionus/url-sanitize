@@ -1,0 +1,69 @@
+# One URL per line. Empty lines and # comments ignored.
+# Real-world tracking URLs. Expected output computed by the TS oracle engine
+# (see scripts/build-conformance.ts). Both engines must match.
+
+# --- globalRules: utm/fbclid/gclid/mkt_tok across arbitrary hosts ---
+https://www.nytimes.com/2024/01/01/world/article.html?utm_source=twitter&utm_medium=social
+https://blog.example.com/post/42?utm_campaign=spring-launch&utm_source=email
+https://shop.example.io/products/widget?fbclid=IwAR0abc123XYZ
+https://example.com/page?gclid=Cj0KCQjwabc
+https://news.site.com/x?mkt_tok=eyJpIjoiTUdRMk56UTROemt5TlRsbCJ9
+https://m.example.net/article?utm_source=fb&utm_medium=cpc&utm_campaign=q1&id=42
+https://example.com/?_ga=2.1234.5678.1234567890
+https://example.com/?_gl=1*abcdef*_ga
+https://example.com/?srsltid=AfmBOoo123
+https://example.com/?yclid=4567890123
+https://example.com/?dclid=CL1234
+https://example.com/?__twitter_impression=true
+https://x.example.com/path?utm_source=a&utm_medium=b&utm_campaign=c&utm_term=d&utm_content=e
+https://example.com/article?fbclid=ABC&utm_source=X&keep=yes
+https://example.com/?_openstat=abc.def.ghi
+
+# --- Amazon ---
+https://www.amazon.com/dp/B08N5WRWNW/ref=cm_sw_r_cp_x
+https://www.amazon.com/Some-Product/dp/B0/ref=sr_1_1?keywords=foo&qid=123
+https://www.amazon.co.uk/dp/B0?tag=affiliate-20
+https://www.amazon.de/s?k=test&ref=nb_sb_noss&__mk_de_DE=ÅMÅŽÕÑ
+https://www.amazon.com/dp/B0?pd_rd_w=abc&pf_rd_p=xyz&keep=1
+
+# --- YouTube ---
+https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=abc123
+https://www.youtube.com/watch?v=abc&feature=share&si=xyz
+https://youtu.be/dQw4w9WgXcQ?si=abc
+https://www.youtube.com/redirect?q=https%3A%2F%2Fexample.com%2Fdest&v=x
+
+# --- Google ---
+https://www.google.com/url?sa=t&q=https%3A%2F%2Fexample.com%2Ftarget
+https://www.google.com/url?url=https%3A%2F%2Fexample.org%2F&rct=j
+https://www.google.com/search?q=test&ved=2ahUKEwabc&source=hp&ei=xyz
+https://www.google.com/search?q=hello&sxsrf=ALeKk0&rlz=1C1CHBF
+
+# --- Facebook / Meta ---
+https://www.facebook.com/page/posts/123?__tn__=K-R&eid=abc
+https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage&h=AT0
+https://www.facebook.com/share/p/abc?mibextid=xyz
+
+# --- Twitter / X ---
+https://twitter.com/user/status/1234567890?s=20&t=abcdefghi
+https://twitter.com/i/web/status/1?ref_src=twsrc%5Etfw
+https://x.com/user/status/1234?s=46&t=ABC
+
+# --- Reddit ---
+https://out.reddit.com/t3_xxx?url=https%3A%2F%2Fexample.com%2Fdest&token=abc
+https://www.reddit.com/r/programming/comments/abc?utm_source=share&utm_medium=web2x
+
+# --- LinkedIn / others ---
+https://www.linkedin.com/feed/update/urn:li:activity:123?utm_source=share
+https://example.com/?spm=abc.def.ghi.jkl
+
+# --- No-op / control cases ---
+https://example.com/article
+https://example.com/search?q=hello&page=2&sort=newest
+https://example.com/
+https://example.com:8443/api/v1/items?limit=50
+
+# --- Edge cases ---
+https://example.com/#utm_source=hash&keep=ok
+https://example.com/?utm_source&keep
+https://example.com/?utm_source=hello%20world&q=value%26with%26amps
+https://example.com/path%20with%20spaces/?utm_source=x

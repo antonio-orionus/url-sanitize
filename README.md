@@ -45,6 +45,8 @@ const sanitize = compileSanitizer(clearurlsCatalog, { stripReferralMarketing: tr
 | [`@url-sanitize/core`](packages/core) | Pure sanitization engine. Zero deps. | MIT |
 | [`@url-sanitize/clearurls`](packages/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
 | [`@url-sanitize/cli`](packages/cli) | Command-line URL sanitizer. | MIT |
+| [`url-sanitize-core`](crates/url-sanitize-core) | Rust port of the sanitization engine. Zero deps beyond `regex-lite`, `url`, `serde`. | MIT |
+| [`url-sanitize`](crates/url-sanitize) | Rust CLI — sub-1MB native binary with embedded catalog. | MIT |
 | `@url-sanitize/fetch` | (coming v0.2) Fetch + hash-verify remote catalogs. | MIT |
 | `@url-sanitize/action` | (coming v0.3) GitHub Action for PR / docs hygiene. | MIT |
 
