@@ -46,10 +46,6 @@ jobs:
             target: aarch64-unknown-linux-gnu
             archive: url-sanitize-aarch64-unknown-linux-gnu.tar.gz
             binary: url-sanitize
-          - os: macos-13
-            target: x86_64-apple-darwin
-            archive: url-sanitize-x86_64-apple-darwin.tar.gz
-            binary: url-sanitize
           - os: macos-14
             target: aarch64-apple-darwin
             archive: url-sanitize-aarch64-apple-darwin.tar.gz
