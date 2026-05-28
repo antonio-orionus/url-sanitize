@@ -131,7 +131,7 @@ async function main(): Promise<void> {
 
   // manifest with catalog provenance
   const manifest = {
-    generatedAt: new Date().toISOString(),
+    generatedAt: clearurlsMetadata.fetchedAt,
     catalog: {
       hash: clearurlsMetadata.hash,
       version: clearurlsMetadata.version,
