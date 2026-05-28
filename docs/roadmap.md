@@ -2,16 +2,30 @@
 
 This document is the **canonical roadmap** for `url-sanitize`. It captures both the planned releases and the reasoning behind the decisions, so future contributors (and future-me) don't lose context.
 
-## v0.1 — ClearURLs-compatible core (weekend MVP)
+## Current status
+
+`v0.1.1` is live on npm and crates.io:
+
+- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
+- crates.io: `url-sanitize-core`, `url-sanitize`
+- TypeScript and Rust engines pass the same conformance corpus.
+- The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
+
+The next adoption bottleneck is not the engine. It is distribution: people should be able to install the same native CLI from npm, PyPI, crates.io, Homebrew, Scoop, direct GitHub Release downloads, and CI environments.
+
+## v0.1 — ClearURLs-compatible core + Rust CLI
 
 **Ships:**
 
 - `@url-sanitize/core` — pure algorithm, factory pattern `compileSanitizer(catalog, options)`, discriminated-union result type, zero deps
 - `@url-sanitize/clearurls` — ClearURLs catalog adapter + bundled snapshot + SHA256 verified during sync
 - `@url-sanitize/cli` — minimal: positional URL args, `--json`, `--strip-referral`, `--help`
+- `url-sanitize-core` — Rust engine crate matching the TypeScript behavior contract
+- `url-sanitize` — native Rust CLI with embedded ClearURLs-compatible catalog
+- Shared conformance corpus for TypeScript and Rust
 - Daily sync workflow → opens PR on rule changes with auto-generated changeset
 - Vitest snapshot suite — fixtures live in `sources/clearurls/fixtures/`
-- CI workflow — typecheck, lint, test, build
+- CI workflow — typecheck, lint, test, build, generated-corpus freshness, Rust conformance, binary size check
 - License model docs + threat model + non-goals + ClearURLs compatibility migration guide
 
 **Deferred from day 1 (intentionally):**
@@ -20,15 +34,21 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 - `@url-sanitize/action` — GitHub Action. Distribution channel, not core value. Ships after CLI proves out.
 - Profiles (`safe`/`standard`/`aggressive`) — locks API too early. Start with explicit option flags, add profile shorthand once real-world combinations emerge.
 
-## v0.2 — Hot refresh + CLI polish
+## v0.2 — Distribution reach
 
 **Ships:**
 
-- `@url-sanitize/fetch` — fetch + SHA256-verify upstream catalog at runtime. Supports `pinnedHash` option for SaaS / paranoid deployments where consumer hardcodes a known-good hash and refuses any other.
-- CLI flags: `--stdin` (read URL list from stdin), `--explain` (verbose result attribution), `--fail-on-change` (CI mode), `--in-place` (file rewrite)
-- Cloudflare Worker example
-- Express / Hono middleware example
-- Bench harness — `benches/sanitize.bench.ts` measures regex compile time + per-URL sanitize cost
+- GitHub Release binaries for Linux, macOS, and Windows across common architectures, with SHA256SUMS.
+- `cargo-dist` or equivalent release automation for archives, shell installer, PowerShell installer, and Homebrew metadata.
+- npm CLI upgraded to prefer the native Rust binary through per-platform `optionalDependencies`, following the esbuild/swc pattern. No postinstall download.
+- PyPI package named `url-sanitize` with `python -m url_sanitize`, a `url-sanitize` console script, and a tiny `sanitize(url, **opts)` helper. Start by bundling or locating the native binary; add pyo3 only if Python users need in-process throughput.
+- Homebrew and Scoop packages. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
+- CI/install docs for GitHub Actions, GitLab CI, Dockerfiles, direct binary download, npm, cargo, PyPI, brew, and scoop.
+- Packaging smoke tests proving each ecosystem wrapper invokes the same binary version/catalog hash and supports `--json`, stdin, and `--version`.
+
+**Why before more features:**
+
+`url-sanitize` is a small utility. Adoption comes from being available exactly where a user already is. More rule sources help later; first, the binary needs doors into every common environment.
 
 ## v0.3 — CI integration
 
@@ -37,11 +57,13 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 - `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs
 - Modes: `comment` (PR comment with cleaned URLs), `check` (fail CI), `fix` (commit patch)
 - Sample workflow showing docs-hygiene gate
+- `@url-sanitize/mcp` if agent demand is stronger than GitHub Action demand: exposes `sanitize_url` with pinned, explainable, structured output.
 
-## v0.4 — Custom rules
+## v0.4 — Runtime catalogs + custom rules
 
 **Ships:**
 
+- `@url-sanitize/fetch` — fetch + SHA256-verify upstream catalog at runtime. Supports `pinnedHash` option for SaaS / paranoid deployments where consumer hardcodes a known-good hash and refuses any other.
 - User-defined catalogs via plain TypeScript `SanitizerCatalog` literal
 - JSON Schema export for validating user-supplied catalogs
 - Custom allowlist / blocklist composition helpers
@@ -56,6 +78,7 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 - Published benchmark numbers
 - `SECURITY.md` with responsible-disclosure policy
 - Fuzz-testing in CI — ReDoS guard, 10k random URLs/run, fails if any sanitize call exceeds 50ms
+- Signed/provenance-backed native releases where the distribution tooling supports it.
 
 ## v2.0 — Multi-source expansion
 
