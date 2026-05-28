@@ -4,7 +4,7 @@ use std::sync::OnceLock;
 
 use url_sanitize_core::{Catalog, SanitizeResult, Sanitizer, SanitizerOptions};
 
-const EMBEDDED_CATALOG_JSON: &str = include_str!("../../../catalog/clearurls.json");
+const EMBEDDED_CATALOG_JSON: &str = include_str!("../catalog/clearurls.json");
 const CRATE_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 static CATALOG: OnceLock<Catalog> = OnceLock::new();
