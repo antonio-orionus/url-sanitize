@@ -289,7 +289,7 @@ dependencies = [
 
 [[package]]
 name = "url-sanitize"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde",
  "serde_json",
@@ -298,7 +298,7 @@ dependencies = [
 
 [[package]]
 name = "url-sanitize-core"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "percent-encoding",
  "regex-lite",

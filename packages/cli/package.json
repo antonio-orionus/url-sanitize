@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/cli",
-  "version": "0.1.1",
-  "description": "Command-line URL sanitizer for cleaning, explaining, and validating tracking-heavy URLs.",
+  "version": "0.1.2",
+  "description": "Command-line tool to remove tracking parameters and unwrap tracking redirects from URLs.",
   "license": "MIT",
   "type": "module",
   "bin": {

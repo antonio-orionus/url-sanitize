@@ -1,18 +1,18 @@
 # url-sanitize
 
-> URL sanitization engines for TypeScript and Rust, powered by ClearURLs-compatible rules, explainable results, and a shared conformance corpus.
+> Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs-compatible rules.
 
-**Looking for ClearURLs as a library or CLI?** You're in the right place. `url-sanitize` ships a MIT-licensed sanitization engine, ClearURLs-compatible rules with daily upstream sync, and explainable results that tell you exactly which rule changed your URL.
+**Looking for CleanURLs / ClearURLs behavior as a library or CLI?** You're in the right place. `url-sanitize` removes tracking junk like `utm_*`, `fbclid`, and redirector wrappers while telling you exactly which rule changed the URL.
 
-Use it from npm, crates.io, native binaries, CLIs, GitHub Actions, workers, browsers, edge runtimes, Node.js, Bun, and Deno.
+Use it from npm, crates.io, native release binaries, Python, CI, workers, browsers, edge runtimes, Node.js, Bun, and Deno.
 
 ## Why this exists
 
-- **One behavior contract across languages.** TypeScript and Rust engines are checked against the same JSONL conformance corpus.
+- **One behavior contract across languages.** TypeScript and Rust implementations are checked against the same JSONL conformance corpus.
 - **Explainable privacy cleanup.** Results include the stripped params, redirect provider, or block rule instead of returning an opaque string.
-- **ClearURLs-compatible without AGPL engine lock-in.** Engine, CLIs, and tooling are MIT; ClearURLs-derived rule data remains LGPL-3.0-only.
+- **ClearURLs-compatible without AGPL lock-in.** Code, CLIs, and tooling are MIT; ClearURLs-derived rule data remains LGPL-3.0-only.
 - **Automation-friendly.** The Rust CLI is deterministic, prompt-free, supports `--json`, and embeds a pinned catalog.
-- **Fresh rules.** GitHub Actions syncs the upstream ClearURLs catalog daily and release workflows publish npm packages plus crates.
+- **Fresh rules.** GitHub Actions syncs the upstream ClearURLs catalog daily and release workflows publish npm packages, crates, Python wheels, and native binaries.
 
 ## Install
 
@@ -34,6 +34,21 @@ npx @url-sanitize/cli "https://example.com/?utm_source=x"
 ```sh
 cargo add url-sanitize-core
 cargo install url-sanitize
+```
+
+**Python wrapper:**
+
+```sh
+pip install url-sanitize
+cargo install url-sanitize
+python -m url_sanitize "https://example.com/?utm_source=x"
+```
+
+**Direct native binary:**
+
+```sh
+curl --proto '=https' --tlsv1.2 -LsSf \
+  https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.sh | sh
 ```
 
 ## TypeScript Quick Start
@@ -91,9 +106,10 @@ println!("{}", serde_json::to_string(&result)?);
 | --- | --- | --- |
 | [`@url-sanitize/core`](packages/core) | Pure TypeScript sanitization engine. Zero runtime deps. | MIT |
 | [`@url-sanitize/clearurls`](packages/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
-| [`@url-sanitize/cli`](packages/cli) | npm command-line URL sanitizer. | MIT |
-| [`url-sanitize-core`](crates/url-sanitize-core) | Pure-Rust sanitization engine. | MIT |
+| [`@url-sanitize/cli`](packages/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
+| [`url-sanitize-core`](crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
 | [`url-sanitize`](crates/url-sanitize) | Native Rust CLI with embedded ClearURLs catalog. | MIT |
+| [`url-sanitize`](python) | Python wrapper around the native CLI. | MIT |
 | `@url-sanitize/fetch` | (coming v0.2) Fetch + hash-verify remote catalogs. | MIT |
 | `@url-sanitize/action` | (coming v0.3) GitHub Action for PR / docs hygiene. | MIT |
 
@@ -102,7 +118,7 @@ println!("{}", serde_json::to_string(&result)?);
 - `ci.yml` verifies TypeScript build, typecheck, lint, tests, generated catalog freshness, generated conformance freshness, Rust build, Rust tests, and release binary size.
 - `sync-clearurls.yml` checks upstream ClearURLs daily and opens a version-bump PR when rules change.
 - `auto-tag.yml` creates annotated release tags after package version bumps.
-- `release.yml` publishes npm packages and Rust crates from `v*` tags.
+- `release.yml` publishes npm packages, Rust crates, PyPI package, and native GitHub Release assets from `v*` tags.
 
 ## Compared to existing options
 
@@ -123,7 +139,7 @@ println!("{}", serde_json::to_string(&result)?);
 ## Roadmap
 
 - **v0.1** — TypeScript engine, ClearURLs adapter, npm CLI, Rust engine, Rust CLI, shared conformance, daily sync workflow
-- **v0.2** — `fetch` package, remote catalog verification, richer CLI install docs
+- **v0.2** — GitHub Release binaries, installer scripts, PyPI wrapper, Homebrew/Scoop docs, CI install docs
 - **v0.3** — `action` package for GH PR / docs hygiene
 - **v0.4** — custom user-defined catalogs, schema validation
 - **v1.0** — stable public API + result types + benchmarks + security policy

@@ -1,6 +1,8 @@
 # url-sanitize-core
 
-Pure-Rust implementation of the [url-sanitize behavioral spec](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.md).
+Pure-Rust implementation for removing tracking parameters and unwrapping
+tracking redirects according to the
+[url-sanitize behavioral spec](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.md).
 
 Engine only — no embedded catalog. For a ready-to-use binary with the
 ClearURLs ruleset baked in, see the [`url-sanitize`](https://crates.io/crates/url-sanitize) crate.

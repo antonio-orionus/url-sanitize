@@ -2,7 +2,7 @@
   "name": "url-sanitize",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript URL sanitization toolkit with ClearURLs-compatible rules, explainable results, and pluggable rule sources.",
+  "description": "Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs-compatible rules.",
   "type": "module",
   "packageManager": "pnpm@11.3.0",
   "engines": {
@@ -53,6 +53,11 @@
     "utm",
     "privacy",
     "url-cleaner",
-    "typescript"
+    "typescript",
+    "rust",
+    "cli",
+    "crates-io",
+    "pypi",
+    "github-actions"
   ]
 }

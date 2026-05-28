@@ -1,6 +1,8 @@
 # @url-sanitize/clearurls
 
 ClearURLs-compatible rule catalog and adapter for [`@url-sanitize/core`](../core).
+Use it to remove tracking parameters such as `utm_*` and `fbclid`, and to
+unwrap known tracking redirectors.
 
 Ships a snapshot of the ClearURLs ruleset, daily-synced from upstream
 `https://rules2.clearurls.xyz/data.minify.json` with SHA256 verification.

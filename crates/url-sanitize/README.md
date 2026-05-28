@@ -1,7 +1,8 @@
 # url-sanitize
 
-Sub-1MB native CLI to strip tracking parameters from URLs. Agent-friendly:
-deterministic, structured (`--json`), no prompts, pinned ruleset baked in.
+Sub-1MB native CLI to remove tracking parameters and unwrap tracking redirects
+from URLs. Agent-friendly: deterministic, structured (`--json`), no prompts,
+pinned ruleset baked in.
 
 ```
 url-sanitize 'https://example.com/?utm_source=x'

@@ -1,6 +1,6 @@
 [package]
 name = "url-sanitize"
-description = "Sub-1MB native CLI to strip tracking parameters from URLs. ClearURLs ruleset baked in, agent-friendly JSON output."
+description = "Native CLI to remove tracking parameters and unwrap tracking redirects. ClearURLs ruleset baked in."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

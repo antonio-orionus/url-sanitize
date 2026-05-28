@@ -4,14 +4,15 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 
 ## Current status
 
-`v0.1.1` is live on npm and crates.io:
+Public package state before the v0.1.2 alignment release:
 
-- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
-- crates.io: `url-sanitize-core`, `url-sanitize`
+- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli` are currently public at v0.1.0.
+- crates.io: `url-sanitize-core`, `url-sanitize` are currently public at v0.1.1.
+- v0.1.2 is the alignment release that brings npm, crates.io, PyPI, and native GitHub Release assets onto one version.
 - TypeScript and Rust engines pass the same conformance corpus.
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
 
-The next adoption bottleneck is not the engine. It is distribution: people should be able to install the same native CLI from npm, PyPI, crates.io, Homebrew, Scoop, direct GitHub Release downloads, and CI environments.
+The next adoption bottleneck is not behavior. It is distribution: people should be able to remove tracking parameters from URLs from npm, PyPI, crates.io, Homebrew, Scoop, direct GitHub Release downloads, and CI environments.
 
 ## Strategic bet
 
@@ -19,7 +20,7 @@ The next adoption bottleneck is not the engine. It is distribution: people shoul
 
 The adoption rule is blunt: meet people in their package manager, but run the same native core wherever possible.
 
-1. **Everywhere install** — npm, crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, AUR, and CI/container environments should all land on one native binary.
+1. **Everywhere install** — crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, AUR, and CI/container environments should land on one native binary; npm stays pure TypeScript until native npm packages are worth the extra registry overhead.
 2. **Agent-native output** — structured JSON, deterministic output, and explainable matches make this usable by agents without scraping terminal text.
 3. **Correctness + explainability** — never break a URL silently; report which param, redirect provider, or block rule fired.
 4. **Fresh rules with permissive engine licensing** — daily-synced ClearURLs-compatible data, MIT engine, no AGPL lock-in.
@@ -49,16 +50,13 @@ url-sanitize/
 │   └── url-sanitize-py/         # optional future in-process Python bindings
 ├── packages/                    # TypeScript/JavaScript packages
 │   ├── core/  clearurls/  cli/  fetch/  action/  mcp/
-├── npm-binaries/                # future optionalDependency native packages
-│   ├── url-sanitize-linux-x64/
-│   ├── url-sanitize-darwin-arm64/
-│   └── ...
+├── python/                      # PyPI wrapper around native CLI
 └── sources/                     # upstream sync scripts
 ```
 
 Engine decisions:
 
-- The Rust `url-sanitize-core` crate is the canonical native core for the CLI, npm native launcher, PyPI package, Homebrew/Scoop/AUR packages, GitHub Release binaries, and CI/container wrappers.
+- The Rust `url-sanitize-core` crate is the canonical native core for the Rust CLI, PyPI package, Homebrew/Scoop/AUR packages, GitHub Release binaries, and CI/container wrappers.
 - The pure TypeScript engine remains first-class. JS users should not be forced into WASM or native binaries for ordinary library use.
 - The conformance corpus is the law. TypeScript, Rust, Python wrappers, WASM, and native launchers must agree on behavior or CI fails.
 - Language packages are adoption channels, not excuses to fork behavior. Prefer packaging or invoking the native binary over maintaining another sanitizer implementation.
@@ -97,9 +95,9 @@ Engine decisions:
 **Ships:**
 
 - GitHub Release binaries for Linux, macOS, and Windows across common architectures, with SHA256SUMS.
-- `cargo-dist` or equivalent release automation for archives, shell installer, PowerShell installer, and Homebrew metadata.
-- npm CLI upgraded to prefer the native Rust binary through per-platform `optionalDependencies`, following the esbuild/swc pattern. No postinstall download.
-- PyPI package named `url-sanitize` with `python -m url_sanitize`, a `url-sanitize` console script, and a tiny `sanitize(url, **opts)` helper. Start by bundling or locating the native binary; add pyo3 only if Python users need in-process throughput.
+- Release automation for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets.
+- npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
+- PyPI package named `url-sanitize` with `python -m url_sanitize`, a `url-sanitize` console script, and a tiny `sanitize(url, **opts)` helper. v0.2 locates `URL_SANITIZE_BIN` or `url-sanitize` on `PATH`; platform-specific bundled wheels are deferred until there is demand.
 - Homebrew and Scoop packages. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
 - CI/install docs for GitHub Actions, GitLab CI, Dockerfiles, direct binary download, npm, cargo, PyPI, brew, and scoop.
 - Packaging smoke tests proving each ecosystem wrapper invokes the same binary version/catalog hash and supports `--json`, stdin, and `--version`.

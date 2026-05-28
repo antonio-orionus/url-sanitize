@@ -1,6 +1,6 @@
 # url-sanitize — agent context
 
-TypeScript URL sanitization toolkit. MIT-licensed engine, daily-synced ClearURLs rules, explainable discriminated-union results.
+ClearURLs-compatible URL tracking cleanup toolkit. Removes tracking parameters and unwraps tracking redirects from TypeScript, Rust, npm CLI, native binaries, and Python wrapper surfaces.
 
 ## Package layout
 
@@ -8,7 +8,12 @@ TypeScript URL sanitization toolkit. MIT-licensed engine, daily-synced ClearURLs
 packages/
   core/        @url-sanitize/core        pure algorithm, zero deps, MIT
   clearurls/   @url-sanitize/clearurls   ClearURLs catalog + pre-compiled sanitize(), LGPL-3.0 data
-  cli/         @url-sanitize/cli         CLI wrapper, MIT
+  cli/         @url-sanitize/cli         pure TypeScript npm CLI, MIT
+crates/
+  url-sanitize-core/                    Rust implementation
+  url-sanitize/                         native CLI with embedded catalog
+python/
+  url_sanitize/                         PyPI wrapper around native CLI / PATH binary
 sources/
   clearurls/   upstream sync script (pnpm sync:clearurls)
 docs/          threat model, license model, roadmap, compat notes
@@ -24,6 +29,11 @@ pnpm test                     # vitest run
 pnpm lint                     # biome check . (also enforces import order)
 pnpm format                   # biome format --write .
 pnpm typecheck                # tsc --noEmit across all packages
+cargo fmt --all --check       # Rust formatting check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace        # Rust conformance + unit tests
+cargo package -p url-sanitize-core
+cargo package -p url-sanitize
 ```
 
 Pre-push hook runs: `pnpm build && pnpm lint && pnpm test`
@@ -34,18 +44,27 @@ Pre-push hook runs: `pnpm build && pnpm lint && pnpm test`
 - **Build**: tsup (ESM only, `.d.ts` emitted). `dist/` is gitignored, included in npm via `"files"`.
 - **Test runner**: vitest. Single test file: `bunx vitest run packages/core/test/sanitize.test.ts`
 - **Imports**: must be alphabetically ordered (Biome enforces). Use `.js` extensions in source imports.
-- **Versions**: all three packages version-bumped together on every release.
+- **Versions**: npm packages, Rust workspace, and PyPI wrapper version-bump together on every release.
+- **Roadmap**: `docs/roadmap.md` is canonical. Do not recreate `PLAN.md`.
+- **npm native packages**: intentionally not used in v0.2. They create one package/trusted-publisher setup per platform. Keep npm CLI pure TypeScript unless this tradeoff is explicitly reopened.
 
 ## Publishing
 
-Publish is fully automated via trusted publishing (OIDC) — no token needed.
+Publish is fully automated from `v*` tags:
+
+- npm packages use npm trusted publishing (OIDC).
+- crates.io uses `rust-lang/crates-io-auth-action` trusted publishing.
+- PyPI uses trusted publishing with the `pypi` GitHub environment.
+- GitHub Releases receive native archives, SHA256SUMS, and installer scripts.
+
+No long-lived registry token should be required after trusted publishers are configured.
 
 ```bash
-# bump versions in packages/*/package.json
+# bump versions in packages/*/package.json, Cargo.toml, pyproject.toml
 git commit -m "release: vX.Y.Z"
 git tag -a vX.Y.Z -m "release X.Y.Z"
 git push --follow-tags
-# .github/workflows/release.yml fires automatically and publishes all three packages
+# .github/workflows/release.yml publishes npm, crates, PyPI, and native assets
 ```
 
 ## Architecture

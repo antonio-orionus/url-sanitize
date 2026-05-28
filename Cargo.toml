@@ -3,7 +3,7 @@ resolver = "2"
 members = ["crates/url-sanitize-core", "crates/url-sanitize"]
 
 [workspace.package]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 rust-version = "1.75"
 license = "MIT"
@@ -12,7 +12,7 @@ repository = "https://github.com/antonio-orionus/url-sanitize"
 homepage = "https://github.com/antonio-orionus/url-sanitize"
 
 [workspace.dependencies]
-url-sanitize-core = { path = "crates/url-sanitize-core", version = "0.1.1" }
+url-sanitize-core = { path = "crates/url-sanitize-core", version = "0.1.2" }
 regex-lite = "0.1"
 url = "2.5"
 serde = { version = "1", features = ["derive"] }

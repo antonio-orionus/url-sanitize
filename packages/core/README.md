@@ -1,6 +1,6 @@
 # @url-sanitize/core
 
-Pure TypeScript URL sanitization engine with explainable results and pluggable catalogs.
+Pure TypeScript implementation for removing tracking parameters and unwrapping tracking redirects with explainable results and pluggable catalogs.
 
 ## Install
 

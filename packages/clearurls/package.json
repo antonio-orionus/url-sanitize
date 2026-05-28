@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/clearurls",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ClearURLs-compatible rule catalog and adapter for @url-sanitize/core. Daily-synced from upstream.",
   "license": "LGPL-3.0-only",
   "type": "module",

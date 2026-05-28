@@ -1,1 +1,4 @@
-pnpm build && pnpm lint && pnpm test
+#!/usr/bin/env sh
+set -eu
+
+sh scripts/pre-push.sh

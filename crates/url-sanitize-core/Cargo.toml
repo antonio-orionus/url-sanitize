@@ -1,6 +1,6 @@
 [package]
 name = "url-sanitize-core"
-description = "Pure-Rust URL sanitization engine (ClearURLs-compatible). Companion to the TypeScript @url-sanitize/core."
+description = "Pure-Rust library for removing tracking parameters and unwrapping tracking redirects."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

@@ -39,16 +39,7 @@ jobs:
           CURRENT=$(node -p "require('./packages/core/package.json').version")
           IFS='.' read -r major minor patch <<< "$CURRENT"
           NEW_VERSION="$major.$minor.$((patch + 1))"
-          for pkg in packages/core packages/clearurls packages/cli; do
-            node -e "
-              const fs = require('fs');
-              const path = './$pkg/package.json';
-              const text = fs.readFileSync(path, 'utf8');
-              const next = text.replace(/(\"version\": \")[^\"]+(\")/, (_, before, after) => before + '$NEW_VERSION' + after);
-              if (next === text) throw new Error('No version field found in ' + path);
-              fs.writeFileSync(path, next);
-            "
-          done
+          node scripts/bump-version.mjs "$NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
         id: bump
 

@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/core",
-  "version": "0.1.1",
-  "description": "Pure TypeScript URL sanitization engine with explainable results and pluggable catalogs.",
+  "version": "0.1.2",
+  "description": "Pure TypeScript library for removing tracking parameters and unwrapping tracking redirects.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",

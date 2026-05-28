@@ -6,11 +6,11 @@ on:
       - 'v*'
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
-  publish-npm:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,36 +20,163 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
-
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm lint
+      - run: cargo build --workspace --all-targets
+      - run: cargo test --workspace
+      - run: cargo package -p url-sanitize-core
 
-      - name: Publish to npm
-        run: pnpm -r --filter './packages/*' publish --access public --no-git-checks
-        env:
-          NPM_CONFIG_PROVENANCE: true
+  build-native:
+    needs: verify
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: url-sanitize-x86_64-unknown-linux-gnu.tar.gz
+            binary: url-sanitize
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            archive: url-sanitize-aarch64-unknown-linux-gnu.tar.gz
+            binary: url-sanitize
+          - os: macos-13
+            target: x86_64-apple-darwin
+            archive: url-sanitize-x86_64-apple-darwin.tar.gz
+            binary: url-sanitize
+          - os: macos-14
+            target: aarch64-apple-darwin
+            archive: url-sanitize-aarch64-apple-darwin.tar.gz
+            binary: url-sanitize
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: url-sanitize-x86_64-pc-windows-msvc.zip
+            binary: url-sanitize.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Build native binary
+        run: cargo build --release -p url-sanitize --target "${{ matrix.target }}"
+        shell: bash
+      - name: Stage binary
+        run: |
+          set -euo pipefail
+          src="target/${{ matrix.target }}/release/${{ matrix.binary }}"
+          mkdir -p "dist/${{ matrix.target }}"
+          cp "$src" "dist/${{ matrix.target }}/${{ matrix.binary }}"
+          chmod +x "dist/${{ matrix.target }}/${{ matrix.binary }}" || true
+        shell: bash
+      - name: Smoke native binary
+        run: |
+          set -euo pipefail
+          "dist/${{ matrix.target }}/${{ matrix.binary }}" --version
+          "dist/${{ matrix.target }}/${{ matrix.binary }}" --json "https://example.com/?utm_source=x"
+          printf '%s\n' "https://example.com/?utm_source=x" | "dist/${{ matrix.target }}/${{ matrix.binary }}" -
+        shell: bash
+      - name: Build release archive
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          if [[ "${{ matrix.archive }}" == *.zip ]]; then
+            powershell -NoProfile -Command "Compress-Archive -Path 'dist/${{ matrix.target }}/*' -DestinationPath 'release-assets/${{ matrix.archive }}'"
+          else
+            tar -czf "release-assets/${{ matrix.archive }}" -C "dist/${{ matrix.target }}" .
+          fi
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.target }}
+          path: release-assets/*
+  github-release:
+    needs: build-native
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          path: release-assets
+          merge-multiple: true
+      - name: Add installer scripts and checksums
+        run: |
+          cp scripts/install.sh release-assets/url-sanitize-installer.sh
+          cp scripts/install.ps1 release-assets/url-sanitize-installer.ps1
+          chmod +x release-assets/url-sanitize-installer.sh
+          (cd release-assets && sha256sum * > SHA256SUMS)
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          generate_release_notes: true
+
+  publish-npm:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.14'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g 'npm@^11.5.1'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Publish TypeScript npm packages
+        run: |
+          set -euo pipefail
+          mkdir -p npm-packages
+          pnpm --filter @url-sanitize/core pack --pack-destination "$PWD/npm-packages"
+          npm publish npm-packages/*.tgz --access public
+          rm -f npm-packages/*.tgz
+
+          pnpm --filter @url-sanitize/clearurls pack --pack-destination "$PWD/npm-packages"
+          npm publish npm-packages/*.tgz --access public
+          rm -f npm-packages/*.tgz
+
+          pnpm --filter @url-sanitize/cli pack --pack-destination "$PWD/npm-packages"
+          npm publish npm-packages/*.tgz --access public
 
   publish-crates:
+    needs: verify
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-
-      - name: Verify workspace builds and tests pass
-        run: |
-          cargo build --workspace --all-targets
-          cargo test --workspace
-
+      - uses: rust-lang/crates-io-auth-action@v1
+        id: auth
       - name: Publish url-sanitize-core to crates.io
-        run: cargo publish -p url-sanitize-core --token "$CARGO_REGISTRY_TOKEN"
+        run: cargo publish -p url-sanitize-core
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
       - name: Wait for crates.io index propagation
         run: sleep 30
-
       - name: Publish url-sanitize to crates.io
-        run: cargo publish -p url-sanitize --token "$CARGO_REGISTRY_TOKEN"
+        run: cargo publish -p url-sanitize
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+
+  publish-pypi:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Build Python package
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
