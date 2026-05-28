@@ -15,6 +15,3 @@ coverage/
 target/
 Cargo.lock.bak
 **/*.rs.bk
-
-# local-only planning docs
-PLAN.md

@@ -1,6 +1,6 @@
 # Roadmap
 
-This document is the **canonical roadmap** for `url-sanitize`. It captures both the planned releases and the reasoning behind the decisions, so future contributors (and future-me) don't lose context.
+This document is the **canonical roadmap** for `url-sanitize`. It captures both the planned releases and the reasoning behind the decisions, so future contributors (and future-me) don't lose context. For day-to-day repo commands and agent-specific conventions, see [`AGENTS.md`](../AGENTS.md).
 
 ## Current status
 
@@ -12,6 +12,64 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
 
 The next adoption bottleneck is not the engine. It is distribution: people should be able to install the same native CLI from npm, PyPI, crates.io, Homebrew, Scoop, direct GitHub Release downloads, and CI environments.
+
+## Strategic bet
+
+`url-sanitize` is a rarely-needed, do-one-thing utility. It should win on the `jq` / `ripgrep` / `yt-dlp` model: tiny single binary, installable everywhere, callable ad-hoc by humans and AI agents.
+
+The adoption rule is blunt: meet people in their package manager, but run the same native core wherever possible.
+
+1. **Everywhere install** — npm, crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, AUR, and CI/container environments should all land on one native binary.
+2. **Agent-native output** — structured JSON, deterministic output, and explainable matches make this usable by agents without scraping terminal text.
+3. **Correctness + explainability** — never break a URL silently; report which param, redirect provider, or block rule fired.
+4. **Fresh rules with permissive engine licensing** — daily-synced ClearURLs-compatible data, MIT engine, no AGPL lock-in.
+5. **Multi-source later** — AdGuard/Brave/Firefox sources matter, but only after the install story is strong enough for users to notice.
+
+The moat is execution and reach, not secrecy. The engine is small glue around public rule lists; the project wins by being the most correct, most current, most installable, and most automation-friendly option.
+
+## Target architecture
+
+One behavioral spec, many shells:
+
+```text
+url-sanitize/
+├── catalog/                     # language-agnostic catalog artifacts
+│   ├── clearurls.json           # synced source today
+│   ├── catalog.json             # future merged catalog, with provenance
+│   ├── adguard.json             # future synced source
+│   └── schema.json              # JSON Schema for catalog interchange
+├── conformance/                 # behavior contract every implementation must pass
+│   ├── vectors.jsonl
+│   ├── clearurls-corpus.jsonl
+│   └── properties.md
+├── crates/                      # Rust workspace
+│   ├── url-sanitize-core/       # canonical native engine
+│   ├── url-sanitize/            # native CLI
+│   ├── url-sanitize-wasm/       # optional future WASM path
+│   └── url-sanitize-py/         # optional future in-process Python bindings
+├── packages/                    # TypeScript/JavaScript packages
+│   ├── core/  clearurls/  cli/  fetch/  action/  mcp/
+├── npm-binaries/                # future optionalDependency native packages
+│   ├── url-sanitize-linux-x64/
+│   ├── url-sanitize-darwin-arm64/
+│   └── ...
+└── sources/                     # upstream sync scripts
+```
+
+Engine decisions:
+
+- The Rust `url-sanitize-core` crate is the canonical native core for the CLI, npm native launcher, PyPI package, Homebrew/Scoop/AUR packages, GitHub Release binaries, and CI/container wrappers.
+- The pure TypeScript engine remains first-class. JS users should not be forced into WASM or native binaries for ordinary library use.
+- The conformance corpus is the law. TypeScript, Rust, Python wrappers, WASM, and native launchers must agree on behavior or CI fails.
+- Language packages are adoption channels, not excuses to fork behavior. Prefer packaging or invoking the native binary over maintaining another sanitizer implementation.
+
+## Guardrails
+
+- **Correctness over coverage.** A cleaner that strips a real query param or mangles a path is worse than no cleaner.
+- **Deterministic by default.** Pinned rules are the default for non-interactive use; live updates are opt-in. `--version` and structured output must surface catalog identity.
+- **Licensing is legal, not marketing.** Verify each upstream list before bundling; keep NOTICE and [`docs/license-model.md`](license-model.md) rigorous.
+- **No registry squatting.** Reserve names only when the milestone actually publishes them.
+- **Demand sets priority.** Ship what humans, CI, and agents actually invoke before speculative wrappers.
 
 ## v0.1 — ClearURLs-compatible core + Rust CLI
 
@@ -79,6 +137,7 @@ The next adoption bottleneck is not the engine. It is distribution: people shoul
 - `SECURITY.md` with responsible-disclosure policy
 - Fuzz-testing in CI — ReDoS guard, 10k random URLs/run, fails if any sanitize call exceeds 50ms
 - Signed/provenance-backed native releases where the distribution tooling supports it.
+- Every package ecosystem wrapper proves it invokes the same version/hash of the Rust binary or passes the same conformance smoke subset.
 
 ## v2.0 — Multi-source expansion
 
