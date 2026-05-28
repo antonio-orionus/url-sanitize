@@ -135,17 +135,24 @@ jobs:
       - name: Publish TypeScript npm packages
         run: |
           set -euo pipefail
+          VERSION="$(node -p "require('./packages/core/package.json').version")"
           mkdir -p npm-packages
-          pnpm --filter @url-sanitize/core pack --pack-destination "$PWD/npm-packages"
-          npm publish npm-packages/*.tgz --access public
-          rm -f npm-packages/*.tgz
 
-          pnpm --filter @url-sanitize/clearurls pack --pack-destination "$PWD/npm-packages"
-          npm publish npm-packages/*.tgz --access public
-          rm -f npm-packages/*.tgz
+          publish_pkg() {
+            pkg="$1"
+            filter="$2"
+            if npm view "$pkg@$VERSION" version >/dev/null 2>&1; then
+              echo "$pkg@$VERSION already published; skipping"
+              return
+            fi
+            rm -f npm-packages/*.tgz
+            pnpm --filter "$filter" pack --pack-destination "$PWD/npm-packages"
+            npm publish "$PWD"/npm-packages/*.tgz --access public
+          }
 
-          pnpm --filter @url-sanitize/cli pack --pack-destination "$PWD/npm-packages"
-          npm publish npm-packages/*.tgz --access public
+          publish_pkg "@url-sanitize/core" "@url-sanitize/core"
+          publish_pkg "@url-sanitize/clearurls" "@url-sanitize/clearurls"
+          publish_pkg "@url-sanitize/cli" "@url-sanitize/cli"
 
   publish-crates:
     needs: verify
@@ -156,14 +163,29 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - uses: rust-lang/crates-io-auth-action@v1
         id: auth
+      - name: Read crate version
+        id: version
+        run: |
+          version="$(python3 -c 'import json, subprocess; data=json.loads(subprocess.check_output(["cargo", "metadata", "--no-deps", "--format-version=1"])); print(next(p["version"] for p in data["packages"] if p["name"] == "url-sanitize-core"))')"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
       - name: Publish url-sanitize-core to crates.io
-        run: cargo publish -p url-sanitize-core
+        run: |
+          if curl -fsSA "url-sanitize-release" "https://crates.io/api/v1/crates/url-sanitize-core/${{ steps.version.outputs.version }}" >/dev/null; then
+            echo "url-sanitize-core ${{ steps.version.outputs.version }} already published; skipping"
+          else
+            cargo publish -p url-sanitize-core
+          fi
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
       - name: Wait for crates.io index propagation
         run: sleep 30
       - name: Publish url-sanitize to crates.io
-        run: cargo publish -p url-sanitize
+        run: |
+          if curl -fsSA "url-sanitize-release" "https://crates.io/api/v1/crates/url-sanitize/${{ steps.version.outputs.version }}" >/dev/null; then
+            echo "url-sanitize ${{ steps.version.outputs.version }} already published; skipping"
+          else
+            cargo publish -p url-sanitize
+          fi
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
@@ -181,3 +203,5 @@ jobs:
           python -m pip install --upgrade build
           python -m build
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
