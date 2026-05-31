@@ -124,6 +124,121 @@ jobs:
           files: release-assets/*
           generate_release_notes: true
 
+  smoke-installers:
+    needs: github-release
+    if: startsWith(github.ref, 'refs/tags/')
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Smoke published Linux installer
+        if: runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          install_dir="$RUNNER_TEMP/url-sanitize-bin"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            "https://github.com/antonio-orionus/url-sanitize/releases/download/${{ github.ref_name }}/url-sanitize-installer.sh" \
+            -o "$RUNNER_TEMP/url-sanitize-installer.sh"
+          URL_SANITIZE_INSTALL_DIR="$install_dir" sh "$RUNNER_TEMP/url-sanitize-installer.sh"
+          "$install_dir/url-sanitize" --version
+          output="$("$install_dir/url-sanitize" "https://example.com/?utm_source=x")"
+          test "$output" = "https://example.com/"
+
+      - name: Smoke published Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $InstallDir = Join-Path $env:RUNNER_TEMP "url-sanitize-bin"
+          $Installer = Join-Path $env:RUNNER_TEMP "url-sanitize-installer.ps1"
+          Invoke-WebRequest `
+            -Uri "https://github.com/antonio-orionus/url-sanitize/releases/download/${{ github.ref_name }}/url-sanitize-installer.ps1" `
+            -OutFile $Installer
+          $env:URL_SANITIZE_INSTALL_DIR = $InstallDir
+          & $Installer
+          & (Join-Path $InstallDir "url-sanitize.exe") --version
+          $Output = & (Join-Path $InstallDir "url-sanitize.exe") "https://example.com/?utm_source=x"
+          if ($Output -ne "https://example.com/") {
+            throw "unexpected sanitized URL: $Output"
+          }
+
+  publish-package-managers:
+    needs: smoke-installers
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    env:
+      PACKAGING_REPO_TOKEN: ${{ secrets.PACKAGING_REPO_TOKEN }}
+      HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
+      SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
+    steps:
+      - name: Skip if package-manager publishing is not configured
+        if: env.PACKAGING_REPO_TOKEN == ''
+        run: echo "PACKAGING_REPO_TOKEN is not configured; skipping Homebrew/Scoop publishing"
+
+      - uses: actions/checkout@v6
+        if: env.PACKAGING_REPO_TOKEN != ''
+        with:
+          path: source
+
+      - name: Render package-manager files
+        if: env.PACKAGING_REPO_TOKEN != ''
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            "https://github.com/antonio-orionus/url-sanitize/releases/download/${GITHUB_REF_NAME}/SHA256SUMS" \
+            -o "$RUNNER_TEMP/SHA256SUMS"
+          node source/scripts/render-package-manager-files.mjs \
+            --version "$version" \
+            --sums "$RUNNER_TEMP/SHA256SUMS" \
+            --out "$RUNNER_TEMP/package-managers"
+
+      - uses: actions/checkout@v6
+        if: env.PACKAGING_REPO_TOKEN != ''
+        with:
+          repository: ${{ env.HOMEBREW_TAP_REPO }}
+          token: ${{ env.PACKAGING_REPO_TOKEN }}
+          path: homebrew-tap
+
+      - uses: actions/checkout@v6
+        if: env.PACKAGING_REPO_TOKEN != ''
+        with:
+          repository: ${{ env.SCOOP_BUCKET_REPO }}
+          token: ${{ env.PACKAGING_REPO_TOKEN }}
+          path: scoop-bucket
+
+      - name: Publish Homebrew formula
+        if: env.PACKAGING_REPO_TOKEN != ''
+        run: |
+          set -euo pipefail
+          mkdir -p homebrew-tap/Formula
+          cp "$RUNNER_TEMP/package-managers/homebrew/Formula/url-sanitize.rb" homebrew-tap/Formula/url-sanitize.rb
+          git -C homebrew-tap config user.name "github-actions[bot]"
+          git -C homebrew-tap config user.email "github-actions[bot]@users.noreply.github.com"
+          if git -C homebrew-tap diff --quiet -- Formula/url-sanitize.rb; then
+            echo "Homebrew formula already up to date"
+          else
+            git -C homebrew-tap add Formula/url-sanitize.rb
+            git -C homebrew-tap commit -m "url-sanitize ${GITHUB_REF_NAME}"
+            git -C homebrew-tap push
+          fi
+
+      - name: Publish Scoop manifest
+        if: env.PACKAGING_REPO_TOKEN != ''
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/package-managers/scoop/url-sanitize.json" scoop-bucket/url-sanitize.json
+          git -C scoop-bucket config user.name "github-actions[bot]"
+          git -C scoop-bucket config user.email "github-actions[bot]@users.noreply.github.com"
+          if git -C scoop-bucket diff --quiet -- url-sanitize.json; then
+            echo "Scoop manifest already up to date"
+          else
+            git -C scoop-bucket add url-sanitize.json
+            git -C scoop-bucket commit -m "url-sanitize ${GITHUB_REF_NAME}"
+            git -C scoop-bucket push
+          fi
+
   publish-npm:
     needs: verify
     runs-on: ubuntu-latest
