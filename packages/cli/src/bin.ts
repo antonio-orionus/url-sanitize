@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { clearurlsCatalog, clearurlsMetadata } from '@url-sanitize/clearurls';
-import { type SanitizeResult, type SanitizerOptions, compileSanitizer } from '@url-sanitize/core';
+import { compileSanitizer, type SanitizeResult, type SanitizerOptions } from '@url-sanitize/core';
 
 const args = process.argv.slice(2);
 
