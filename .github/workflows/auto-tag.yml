@@ -6,7 +6,6 @@ on:
     types: [completed]
 
 permissions:
-  actions: write
   contents: write
 
 env:
@@ -36,6 +35,12 @@ jobs:
         id: version
         run: echo "version=$(node -p "require('./packages/core/package.json').version")" >> "$GITHUB_OUTPUT"
 
+      - name: Verify release metadata before tagging
+        if: steps.changed.outputs.changed == 'true'
+        env:
+          TAG: v${{ steps.version.outputs.version }}
+        run: node scripts/verify-release.mjs --tag "$TAG"
+
       - name: Create and push tag if missing
         if: steps.changed.outputs.changed == 'true'
         env:
@@ -49,5 +54,4 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag -a "$TAG" -m "release $TAG"
             git push origin "$TAG"
-            gh workflow run release.yml --ref "$TAG"
           fi
