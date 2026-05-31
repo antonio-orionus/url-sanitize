@@ -6,6 +6,7 @@ on:
     types: [completed]
 
 permissions:
+  actions: write
   contents: write
 
 env:
@@ -54,4 +55,5 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag -a "$TAG" -m "release $TAG"
             git push origin "$TAG"
+            gh workflow run release.yml --ref "$TAG"
           fi
