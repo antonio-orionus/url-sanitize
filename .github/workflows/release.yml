@@ -39,7 +39,14 @@ jobs:
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace
       - run: cargo package -p url-sanitize-core
-      - run: cargo package -p url-sanitize
+      - name: Package url-sanitize archive when core dependency is published
+        run: |
+          version="$(python3 -c 'import json, subprocess; data=json.loads(subprocess.check_output(["cargo", "metadata", "--no-deps", "--format-version=1"])); print(next(p["version"] for p in data["packages"] if p["name"] == "url-sanitize-core"))')"
+          if curl -fsSA "url-sanitize-release" "https://crates.io/api/v1/crates/url-sanitize-core/${version}" >/dev/null; then
+            cargo package -p url-sanitize
+          else
+            echo "url-sanitize-core ${version} is not on crates.io yet; skipping dependent package verification"
+          fi
       - run: pnpm smoke
 
   build-native:
