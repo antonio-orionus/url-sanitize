@@ -24,7 +24,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.4.16",
     "@changesets/cli": "^2.27.11",
     "@types/node": "^22.10.5",
     "@url-sanitize/clearurls": "workspace:*",
