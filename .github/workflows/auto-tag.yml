@@ -1,27 +1,45 @@
 name: auto-tag
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'packages/core/package.json'
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
 
 permissions:
   actions: write
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   tag:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 2
+
+      - name: Check package version changed
+        id: changed
+        run: |
+          if git diff --quiet HEAD^ HEAD -- packages/core/package.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Read version
+        if: steps.changed.outputs.changed == 'true'
         id: version
         run: echo "version=$(node -p "require('./packages/core/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Create and push tag if missing
+        if: steps.changed.outputs.changed == 'true'
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: v${{ steps.version.outputs.version }}
         run: |
           if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
