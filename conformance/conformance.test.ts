@@ -12,8 +12,8 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
-import { compileSanitizer } from '@url-sanitize/core';
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
+import { compileSanitizer } from '@url-sanitize/core';
 import { describe, expect, it } from 'vitest';
 
 type Expected =

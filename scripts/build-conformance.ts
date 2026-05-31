@@ -16,8 +16,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { clearurlsCatalog, clearurlsMetadata } from '@url-sanitize/clearurls';
-import { compileSanitizer } from '@url-sanitize/core';
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
+import { compileSanitizer } from '@url-sanitize/core';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');

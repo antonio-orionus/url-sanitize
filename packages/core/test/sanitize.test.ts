@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { compileSanitizer } from '../src/index.js';
 import type { SanitizerCatalog } from '../src/index.js';
+import { compileSanitizer } from '../src/index.js';
 
 const miniCatalog: SanitizerCatalog = {
   version: '0.0.0-test',
