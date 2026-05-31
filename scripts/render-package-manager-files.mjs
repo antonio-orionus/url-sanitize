@@ -2,6 +2,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { loadReleasePlatforms } from './release-platforms.mjs';
+
 const args = parseArgs(process.argv.slice(2));
 
 if (!args.version || !args.sums || !args.out) {
@@ -16,13 +18,7 @@ if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(args.version)) {
 }
 
 const sums = parseSums(readFileSync(args.sums, 'utf8'));
-const assets = {
-  darwinArm64: 'url-sanitize-aarch64-apple-darwin.tar.gz',
-  darwinX64: 'url-sanitize-x86_64-apple-darwin.tar.gz',
-  linuxArm64: 'url-sanitize-aarch64-unknown-linux-gnu.tar.gz',
-  linuxX64: 'url-sanitize-x86_64-unknown-linux-gnu.tar.gz',
-  windowsX64: 'url-sanitize-x86_64-pc-windows-msvc.zip'
-};
+const assets = assetsFromPlatforms(loadReleasePlatforms());
 
 for (const asset of Object.values(assets)) {
   if (!sums.has(asset)) {
@@ -128,6 +124,32 @@ function parseSums(text) {
     sums.set(match[2], match[1].toLowerCase());
   }
   return sums;
+}
+
+function assetsFromPlatforms(platforms) {
+  return {
+    darwinArm64: findArchive(platforms, { homebrew: { os: 'macos', cpu: 'arm' } }),
+    darwinX64: findArchive(platforms, { homebrew: { os: 'macos', cpu: 'intel' } }),
+    linuxArm64: findArchive(platforms, { homebrew: { os: 'linux', cpu: 'arm' } }),
+    linuxX64: findArchive(platforms, { homebrew: { os: 'linux', cpu: 'intel' } }),
+    windowsX64: findArchive(platforms, { scoop: { architecture: '64bit' } })
+  };
+}
+
+function findArchive(platforms, expected) {
+  const platform = platforms.find((candidate) => {
+    if (expected.homebrew) {
+      return (
+        candidate.homebrew?.os === expected.homebrew.os &&
+        candidate.homebrew?.cpu === expected.homebrew.cpu
+      );
+    }
+    return candidate.scoop?.architecture === expected.scoop.architecture;
+  });
+  if (!platform) {
+    throw new Error(`missing release platform for ${JSON.stringify(expected)}`);
+  }
+  return platform.archive;
 }
 
 function parseArgs(argv) {
