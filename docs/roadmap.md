@@ -4,16 +4,18 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 
 ## Current status
 
-Public package state after the v0.1.2 alignment release:
+Public package state after the v0.1.3 distribution release:
 
-- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, and `@url-sanitize/cli` are public at v0.1.2.
-- crates.io: `url-sanitize-core` and `url-sanitize` are public at v0.1.2.
-- PyPI: `url-sanitize` is public at v0.1.2.
-- GitHub Releases publish v0.1.2 native assets for Linux x64, Linux ARM64, macOS Apple Silicon, and Windows x64, plus installer scripts and SHA256SUMS.
+- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, and `@url-sanitize/cli` are public at v0.1.3.
+- crates.io: `url-sanitize-core` and `url-sanitize` are public at v0.1.3.
+- PyPI: `url-sanitize` is public at v0.1.3.
+- GitHub Releases publish v0.1.3 native assets for Linux x64, Linux ARM64, macOS Apple Silicon, and Windows x64, plus installer scripts and SHA256SUMS.
+- Homebrew installs from `antonio-orionus/url-sanitize/url-sanitize` and passes install/test/audit smoke at v0.1.3.
+- Scoop installs from `antonio-orionus/scoop-url-sanitize`; the bucket manifest is published at v0.1.3 and its Windows archive hash is verified.
 - TypeScript and Rust engines pass the same conformance corpus.
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
 
-The next adoption bottleneck is not behavior. It is distribution reach: people should be able to remove tracking parameters from URLs from package managers such as Homebrew and Scoop, direct GitHub Release downloads, and CI environments. Intel macOS native archives are not published yet, so the shell installer must fail clearly on that platform until support is added.
+The next adoption bottleneck is still distribution reach, but the first package-manager path is now proven. Remaining gaps are Intel macOS native archives, optional AUR/Winget coverage, and stronger package-manager smoke automation for environments that are not available on the Linux CI host. Intel macOS native archives are not published yet, so the shell installer must fail clearly on that platform until support is added.
 
 ## Strategic bet
 
@@ -96,9 +98,9 @@ Engine decisions:
 **Ships:**
 
 - Broader GitHub Release binary coverage where CI can build and smoke-test the target, including a decision on Intel macOS support.
-- Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets.
+- Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets. v0.1.3 proved GitHub Release assets, installer smokes, and automated Homebrew/Scoop metadata publication.
 - npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
-- Homebrew and Scoop packages. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
+- Homebrew and Scoop packages shipped in v0.1.3. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
 - CI/install docs for GitHub Actions, GitLab CI, Dockerfiles, direct binary download, npm, cargo, PyPI, brew, and scoop.
 - Packaging smoke tests proving each ecosystem wrapper invokes the same binary version/catalog hash and supports `--json`, stdin, and `--version`.
 
@@ -300,11 +302,12 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 1. README ready — clear value prop, install + quick start, comparison table
 2. v0.1.0 published to npm — `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
 3. v0.1.2 aligned npm, crates.io, PyPI, and GitHub Release assets on one version
-4. Arroxy migration from vendored `src/shared/clearurls/` to npm dep remains the dogfood path
-5. Future announcement channels:
+4. v0.1.3 added verified Homebrew and Scoop publication on top of the automated release pipeline
+5. Arroxy migration from vendored `src/shared/clearurls/` to npm dep remains the dogfood path
+6. Future announcement channels:
    - r/typescript
    - HN Show
    - lobste.rs
    - fediverse (Mastodon dev community)
    - ClearURLs maintainers (ask for blessing + link from their docs)
-6. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
+7. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
