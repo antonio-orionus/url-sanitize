@@ -117,3 +117,46 @@ jobs:
           python-version: '3.9'
       - run: pnpm install --frozen-lockfile
       - run: pnpm smoke
+
+  install-smoke:
+    name: Installer smoke tests
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate install metadata
+        if: runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          jq -e '.version and .architecture["64bit"].url and .architecture["64bit"].hash and .bin and .checkver and .autoupdate' bucket/url-sanitize.json
+          ruby -c Formula/url-sanitize.rb
+          sh -n scripts/install.sh
+
+      - name: Smoke Linux installer
+        if: runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          install_dir="$RUNNER_TEMP/url-sanitize-bin"
+          URL_SANITIZE_INSTALL_DIR="$install_dir" sh scripts/install.sh
+          "$install_dir/url-sanitize" --version
+          output="$("$install_dir/url-sanitize" "https://example.com/?utm_source=x")"
+          test "$output" = "https://example.com/"
+
+      - name: Smoke Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $InstallDir = Join-Path $env:RUNNER_TEMP "url-sanitize-bin"
+          $env:URL_SANITIZE_INSTALL_DIR = $InstallDir
+          ./scripts/install.ps1
+          & (Join-Path $InstallDir "url-sanitize.exe") --version
+          $Output = & (Join-Path $InstallDir "url-sanitize.exe") "https://example.com/?utm_source=x"
+          if ($Output -ne "https://example.com/") {
+            throw "unexpected sanitized URL: $Output"
+          }

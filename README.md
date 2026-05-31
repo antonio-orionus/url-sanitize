@@ -16,40 +16,38 @@ Use it from npm, crates.io, native release binaries, Python, CI, workers, browse
 
 ## Install
 
-**TypeScript / JavaScript library:**
+**Fastest CLI path:**
 
 ```sh
-npm install @url-sanitize/core @url-sanitize/clearurls
-```
-
-**npm CLI:**
-
-```sh
-npm install -g @url-sanitize/cli
 npx @url-sanitize/cli "https://example.com/?utm_source=x"
 ```
 
-**Rust library / native CLI:**
-
-```sh
-cargo add url-sanitize-core
-cargo install url-sanitize
-```
-
-**Python wrapper:**
-
-```sh
-pip install url-sanitize
-cargo install url-sanitize
-python -m url_sanitize "https://example.com/?utm_source=x"
-```
-
-**Direct native binary:**
+**Native binary, Linux/macOS:**
 
 ```sh
 curl --proto '=https' --tlsv1.2 -LsSf \
   https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.sh | sh
 ```
+
+**Native binary, Windows x64 PowerShell:**
+
+```powershell
+irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.ps1 | iex
+```
+
+**Package managers and libraries:**
+
+```sh
+npm install -g @url-sanitize/cli
+npm install @url-sanitize/core @url-sanitize/clearurls
+cargo install url-sanitize
+cargo add url-sanitize-core
+pip install url-sanitize
+```
+
+The Python package shells out to the native CLI, so install `url-sanitize` with
+one of the native paths too. See [docs/install.md](docs/install.md) for the full
+Windows/macOS/Linux matrix, package-manager status, and CI snippets.
 
 ## TypeScript Quick Start
 

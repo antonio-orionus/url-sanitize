@@ -23,10 +23,40 @@ trap 'rm -rf "$tmp"' EXIT
 
 asset="url-sanitize-${target}.tar.gz"
 url="https://github.com/${repo}/releases/latest/download/${asset}"
+sums_url="https://github.com/${repo}/releases/latest/download/SHA256SUMS"
 
 mkdir -p "$install_dir"
 curl --proto '=https' --tlsv1.2 -fsSL "$url" -o "$tmp/$asset"
+curl --proto '=https' --tlsv1.2 -fsSL "$sums_url" -o "$tmp/SHA256SUMS"
+
+expected="$(awk -v asset="$asset" '$2 == asset { print $1 }' "$tmp/SHA256SUMS")"
+if [ -z "$expected" ]; then
+  echo "checksum for $asset not found in SHA256SUMS" >&2
+  exit 1
+fi
+
+if command -v sha256sum >/dev/null 2>&1; then
+  actual="$(sha256sum "$tmp/$asset" | awk '{ print $1 }')"
+elif command -v shasum >/dev/null 2>&1; then
+  actual="$(shasum -a 256 "$tmp/$asset" | awk '{ print $1 }')"
+else
+  echo "sha256sum or shasum is required to verify $asset" >&2
+  exit 1
+fi
+
+if [ "$actual" != "$expected" ]; then
+  echo "checksum mismatch for $asset" >&2
+  echo "expected: $expected" >&2
+  echo "actual:   $actual" >&2
+  exit 1
+fi
+
 tar -xzf "$tmp/$asset" -C "$tmp"
 install -m 0755 "$tmp/url-sanitize" "$install_dir/url-sanitize"
 
 echo "installed url-sanitize to $install_dir/url-sanitize"
+
+case ":$PATH:" in
+  *":$install_dir:"*) ;;
+  *) echo "warning: $install_dir is not on PATH" >&2 ;;
+esac

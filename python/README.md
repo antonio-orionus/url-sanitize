@@ -18,3 +18,6 @@ print(result["url"])
 The package shells out to the same Rust binary used by crates.io,
 Homebrew/Scoop, and GitHub Release downloads. Set
 `URL_SANITIZE_BIN=/path/to/url-sanitize` or put `url-sanitize` on `PATH`.
+
+See the [install guide](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/install.md)
+for OS-specific native binary commands.
