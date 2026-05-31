@@ -12,14 +12,15 @@ is already the toolchain you have.
 | Any OS with Rust | `cargo install url-sanitize` | Builds from crates.io. |
 | Linux x64 / ARM64 | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | macOS Apple Silicon | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
-| macOS Intel | `cargo install url-sanitize` | Native release automation is wired for the next release after v0.1.3. |
+| macOS Intel | `cargo install url-sanitize` for v0.1.3; shell installer after the next release | Native release automation is wired, but v0.1.3 does not include the archive. |
 | Windows x64 | PowerShell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | Windows ARM64 | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | Native release archives are not published yet. |
 | Python | `pip install url-sanitize` plus one native CLI install above | Python shells out to `url-sanitize` on `PATH`, or `URL_SANITIZE_BIN`. |
 
 ## Direct Installers
 
-Linux x64/ARM64 and macOS Apple Silicon:
+Linux x64/ARM64, macOS Apple Silicon, and macOS Intel after the first
+post-v0.1.3 release:
 
 ```sh
 curl --proto '=https' --tlsv1.2 -LsSf \

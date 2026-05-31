@@ -23,14 +23,19 @@ url="https://github.com/${repo}/releases/latest/download/${asset}"
 sums_url="https://github.com/${repo}/releases/latest/download/SHA256SUMS"
 
 mkdir -p "$install_dir"
-curl --proto '=https' --tlsv1.2 -fsSL "$url" -o "$tmp/$asset"
 curl --proto '=https' --tlsv1.2 -fsSL "$sums_url" -o "$tmp/SHA256SUMS"
 
 expected="$(awk -v asset="$asset" '$2 == asset { print $1 }' "$tmp/SHA256SUMS")"
 if [ -z "$expected" ]; then
+  if [ "$uname_s:$uname_m" = "Darwin:x86_64" ]; then
+    echo "macOS Intel release archives are not published in the selected release yet; use \`cargo install url-sanitize\` or a newer release" >&2
+    exit 1
+  fi
   echo "checksum for $asset not found in SHA256SUMS" >&2
   exit 1
 fi
+
+curl --proto '=https' --tlsv1.2 -fsSL "$url" -o "$tmp/$asset"
 
 if command -v sha256sum >/dev/null 2>&1; then
   actual="$(sha256sum "$tmp/$asset" | awk '{ print $1 }')"
