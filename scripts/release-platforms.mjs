@@ -40,6 +40,8 @@ function validatePlatforms(platforms) {
   const ids = new Set();
   const archives = new Set();
   const targets = new Set();
+  const targetPattern = /^[A-Za-z0-9_]+-[A-Za-z0-9_]+-[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)?$/;
+  const binaryPattern = /^[A-Za-z0-9._-]+$/;
 
   for (const platform of platforms) {
     for (const key of ['id', 'os', 'target', 'archive', 'binary']) {
@@ -58,6 +60,19 @@ function validatePlatforms(platforms) {
 
     if (!platform.archive.endsWith('.tar.gz') && !platform.archive.endsWith('.zip')) {
       throw new Error(`archive must be .tar.gz or .zip: ${platform.archive}`);
+    }
+
+    if (!targetPattern.test(platform.target)) {
+      throw new Error(`target must be a safe Cargo target triple: ${platform.target}`);
+    }
+
+    if (
+      !binaryPattern.test(platform.binary) ||
+      platform.binary.includes('..') ||
+      platform.binary.includes('/') ||
+      platform.binary.includes('\\')
+    ) {
+      throw new Error(`binary must be a safe filename: ${platform.binary}`);
     }
   }
 

@@ -12,29 +12,39 @@ for (const path of [
   'packages/clearurls/package.json',
   'packages/cli/package.json'
 ]) {
-  versions.set(path, JSON.parse(readFileSync(path, 'utf8')).version);
+  setVersion(path, () => JSON.parse(readFileSync(path, 'utf8')).version);
 }
 
 const rootCargo = readFileSync('Cargo.toml', 'utf8');
-versions.set(
-  'Cargo.toml [workspace.package]',
+setVersion('Cargo.toml [workspace.package]', () =>
   mustMatch(
     rootCargo,
     /\[workspace\.package\][\s\S]*?version = "([^"]+)"/,
     'Cargo workspace version'
   )
 );
-versions.set(
-  'Cargo.toml [workspace.dependencies.url-sanitize-core]',
-  mustMatch(
+setVersion('Cargo.toml [workspace.dependencies.url-sanitize-core]', () => {
+  const dependency = mustMatch(
     rootCargo,
-    /url-sanitize-core = \{ path = "crates\/url-sanitize-core", version = "([^"]+)" \}/,
-    'Cargo workspace dependency version'
+    /url-sanitize-core\s*=\s*\{([\s\S]*?)\}/,
+    'Cargo workspace dependency entry'
+  );
+  if (!/path\s*=\s*"crates\/url-sanitize-core"/.test(dependency)) {
+    throw new Error('Cargo workspace dependency path for url-sanitize-core is invalid');
+  }
+  return mustMatch(dependency, /version\s*=\s*"([^"]+)"/, 'Cargo workspace dependency version');
+});
+
+setVersion('pyproject.toml', () =>
+  mustMatch(
+    mustMatch(
+      readFileSync('pyproject.toml', 'utf8'),
+      /\[project\]([\s\S]*?)(?:\n\[|$)/,
+      'PyPI project table'
+    ),
+    /\nversion\s*=\s*"([^"]+)"/,
+    'PyPI version'
   )
-);
-versions.set(
-  'pyproject.toml',
-  mustMatch(readFileSync('pyproject.toml', 'utf8'), /\nversion = "([^"]+)"/, 'PyPI version')
 );
 
 const uniqueVersions = new Set(versions.values());
@@ -84,6 +94,18 @@ function mustMatch(text, pattern, label) {
     throw new Error(`${label} not found`);
   }
   return match[1];
+}
+
+function setVersion(label, readVersion) {
+  try {
+    const version = readVersion();
+    if (typeof version !== 'string' || version.length === 0) {
+      throw new Error(`${label} is empty`);
+    }
+    versions.set(label, version);
+  } catch (error) {
+    errors.push(`${label}: ${error.message}`);
+  }
 }
 
 function parseArgs(argv) {
