@@ -78,11 +78,37 @@ function validatePlatforms(platforms) {
 
   const homebrewPlatforms = platforms.filter((platform) => platform.homebrew);
   const scoopPlatforms = platforms.filter((platform) => platform.scoop);
-  if (homebrewPlatforms.length !== 4) {
-    throw new Error(`expected 4 Homebrew platforms, found ${homebrewPlatforms.length}`);
+
+  const expectedHomebrew = new Set(['linux:arm', 'linux:intel', 'macos:arm', 'macos:intel']);
+  const actualHomebrew = new Set(
+    homebrewPlatforms.map((platform) => `${platform.homebrew?.os}:${platform.homebrew?.cpu}`)
+  );
+  const missingHomebrew = [...expectedHomebrew].filter((entry) => !actualHomebrew.has(entry));
+  const unexpectedHomebrew = [...actualHomebrew].filter((entry) => !expectedHomebrew.has(entry));
+  if (
+    homebrewPlatforms.length !== expectedHomebrew.size ||
+    missingHomebrew.length > 0 ||
+    unexpectedHomebrew.length > 0
+  ) {
+    throw new Error(
+      [
+        `expected Homebrew platforms: ${[...expectedHomebrew].join(', ')}`,
+        missingHomebrew.length > 0 ? `missing: ${missingHomebrew.join(', ')}` : undefined,
+        unexpectedHomebrew.length > 0 ? `unexpected: ${unexpectedHomebrew.join(', ')}` : undefined
+      ]
+        .filter(Boolean)
+        .join('; ')
+    );
   }
-  if (scoopPlatforms.length !== 1 || scoopPlatforms[0].scoop.architecture !== '64bit') {
-    throw new Error('expected exactly one Scoop 64bit platform');
+
+  const scoopPlatform = scoopPlatforms[0];
+  if (
+    scoopPlatforms.length !== 1 ||
+    scoopPlatform?.id !== 'windows-x64' ||
+    scoopPlatform?.target !== 'x86_64-pc-windows-msvc' ||
+    scoopPlatform?.scoop?.architecture !== '64bit'
+  ) {
+    throw new Error('expected exactly one Scoop 64bit platform for windows-x64');
   }
 }
 
