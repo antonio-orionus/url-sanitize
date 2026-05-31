@@ -1,5 +1,13 @@
 packages:
   - 'packages/*'
+minimumReleaseAge: 4320
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+trustLockfile: false
+blockExoticSubdeps: true
+strictDepBuilds: true
+dangerouslyAllowAllBuilds: false
+savePrefix: ""
 allowBuilds:
   '@biomejs/biome': true
   esbuild: true

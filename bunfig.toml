@@ -1,0 +1,8 @@
+[install]
+linker = "isolated"
+
+# Bun uses seconds here.
+minimumReleaseAge = 259200
+
+# This repo is pnpm-managed; keep accidental Bun installs from running scripts.
+ignoreScripts = true
