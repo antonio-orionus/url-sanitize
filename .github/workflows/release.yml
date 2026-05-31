@@ -23,14 +23,21 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm lint
+      - run: cargo fmt --all --check
       - run: cargo build --workspace --all-targets
+      - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace
       - run: cargo package -p url-sanitize-core
+      - run: cargo package -p url-sanitize
+      - run: pnpm smoke
 
   build-native:
     needs: verify

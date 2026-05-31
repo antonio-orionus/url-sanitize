@@ -115,7 +115,7 @@ println!("{}", serde_json::to_string(&result)?);
 
 ## GitHub Automation
 
-- `ci.yml` verifies TypeScript build, typecheck, lint, tests, generated catalog freshness, generated conformance freshness, Rust build, Rust tests, and release binary size.
+- `ci.yml` verifies TypeScript build, typecheck, lint, tests, generated catalog freshness, generated conformance freshness, Rust fmt/clippy/tests/package checks, release binary size, and npm/Python package smoke tests.
 - `sync-clearurls.yml` checks upstream ClearURLs daily and opens a version-bump PR when rules change.
 - `auto-tag.yml` creates annotated release tags after package version bumps.
 - `release.yml` publishes npm packages, Rust crates, PyPI package, and native GitHub Release assets from `v*` tags.
