@@ -254,9 +254,11 @@ custom('...');
 ### 7.2 Rust
 
 ```rust
-use url_sanitize_core::{Sanitizer, SanitizerOptions, EMBEDDED_CATALOG};
+use url_sanitize_core::{Catalog, SanitizerOptions};
 
-let sanitizer = Sanitizer::compile(&EMBEDDED_CATALOG, SanitizerOptions::default());
+let json = std::fs::read_to_string("catalog/clearurls.json")?;
+let catalog = Catalog::from_json(&json)?;
+let sanitizer = catalog.compile(SanitizerOptions::default());
 let result = sanitizer.sanitize("https://example.com/?utm_source=x");
 ```
 

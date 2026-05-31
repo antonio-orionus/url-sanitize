@@ -10,7 +10,7 @@ Use ClearURLs Addon (https://clearurls.xyz/) for browser-level interception. `ur
 
 We don't proxy, we don't MITM, we don't hook `fetch()`. We accept URL strings, return cleaned URL strings (plus result metadata). Composition with networking is the consumer's job.
 
-For HTTP middleware wrappers, see the examples directory (Express, Hono, Cloudflare Worker). Those are demos, not core functionality.
+HTTP middleware wrappers can live as future examples or third-party packages. They are demos, not core functionality.
 
 ## Will never do DNS-level blocking
 
@@ -24,7 +24,7 @@ No analytics, no usage reporting, no "phone home". This is a sanitization librar
 
 `@url-sanitize/core` is a pure function: catalog + URL → result. Zero I/O. Zero dependencies. Runs in any JavaScript environment that has `URL` and `RegExp` (which is all of them).
 
-If you need network fetching, use `@url-sanitize/fetch` (v0.2+). Keeping `core` I/O-free preserves:
+If you need network fetching, use the planned `@url-sanitize/fetch` package once it ships in v0.4. Keeping `core` I/O-free preserves:
 
 - SSR safety
 - Edge / worker runtime support (no `node:*` imports)
@@ -41,7 +41,7 @@ OSS, MIT (mostly), no commercial tier, no enterprise edition. If sponsors appear
 
 ## Will never silently change rule behavior
 
-Every rule change ships via daily sync workflow → opens a PR → published as a patch version of `@url-sanitize/clearurls` via changesets. Consumers who pin versions are never surprised by rule changes. Consumers who hot-refresh via `@url-sanitize/fetch` are doing so explicitly.
+Every rule change ships via daily sync workflow → opens a PR → published as a patch version of `@url-sanitize/clearurls` via changesets. Consumers who pin versions are never surprised by rule changes. Once `@url-sanitize/fetch` exists, consumers who hot-refresh through it will be doing so explicitly.
 
 ## Will never depend on a yanked / abandoned upstream
 

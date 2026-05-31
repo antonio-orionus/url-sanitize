@@ -1,3 +1,17 @@
+## Shell command wrapper
+
+This repo prefers `rtk` as a token-optimized shell command proxy.
+
+Bootstrap exception: before using `rtk`, check whether it is available:
+
+```bash
+command -v rtk
+```
+
+If available, prefix repo shell commands with `rtk`. If unavailable, run commands directly and mention that `rtk` was not found.
+
+@/home/anton/projects/url-sanitize/RTK.md
+
 # url-sanitize — agent context
 
 ClearURLs-compatible URL tracking cleanup toolkit. Removes tracking parameters and unwraps tracking redirects from TypeScript, Rust, npm CLI, native binaries, and Python wrapper surfaces.
@@ -36,7 +50,7 @@ cargo package -p url-sanitize-core
 cargo package -p url-sanitize
 ```
 
-Pre-push hook runs: `pnpm build && pnpm lint && pnpm test`
+Pre-push hook runs: `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, and `cargo package -p url-sanitize-core --allow-dirty`.
 
 ## Key conventions
 

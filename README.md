@@ -110,7 +110,7 @@ println!("{}", serde_json::to_string(&result)?);
 | [`url-sanitize-core`](crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
 | [`url-sanitize`](crates/url-sanitize) | Native Rust CLI with embedded ClearURLs catalog. | MIT |
 | [`url-sanitize`](python) | Python wrapper around the native CLI. | MIT |
-| `@url-sanitize/fetch` | (coming v0.2) Fetch + hash-verify remote catalogs. | MIT |
+| `@url-sanitize/fetch` | (coming v0.4) Fetch + hash-verify remote catalogs. | MIT |
 | `@url-sanitize/action` | (coming v0.3) GitHub Action for PR / docs hygiene. | MIT |
 
 ## GitHub Automation
@@ -139,9 +139,9 @@ println!("{}", serde_json::to_string(&result)?);
 ## Roadmap
 
 - **v0.1** — TypeScript engine, ClearURLs adapter, npm CLI, Rust engine, Rust CLI, shared conformance, daily sync workflow
-- **v0.2** — GitHub Release binaries, installer scripts, PyPI wrapper, Homebrew/Scoop docs, CI install docs
+- **v0.2** — broader native archive coverage, installer refinements, Homebrew/Scoop docs, CI install docs
 - **v0.3** — `action` package for GH PR / docs hygiene
-- **v0.4** — custom user-defined catalogs, schema validation
+- **v0.4** — runtime catalog fetching, custom user-defined catalogs, schema validation
 - **v1.0** — stable public API + result types + benchmarks + security policy
 - **v2.0** — multi-source: AdGuard URL Tracking, Brave Debouncer, Firefox query-strip
 

@@ -10,7 +10,10 @@ uname_m="$(uname -m)"
 case "$uname_s:$uname_m" in
   Linux:x86_64) target="x86_64-unknown-linux-gnu" ;;
   Linux:aarch64|Linux:arm64) target="aarch64-unknown-linux-gnu" ;;
-  Darwin:x86_64) target="x86_64-apple-darwin" ;;
+  Darwin:x86_64)
+    echo "unsupported platform: macOS Intel release archives are not published yet; install with 'cargo install url-sanitize' instead" >&2
+    exit 1
+    ;;
   Darwin:arm64) target="aarch64-apple-darwin" ;;
   *) echo "unsupported platform: $uname_s $uname_m" >&2; exit 1 ;;
 esac

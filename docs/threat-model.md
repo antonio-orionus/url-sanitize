@@ -4,7 +4,7 @@ This document describes what integrity guarantees `url-sanitize` provides — an
 
 ## What we verify
 
-The `@url-sanitize/clearurls` package ships a bundled snapshot of the ClearURLs ruleset. When that snapshot is updated (via the daily sync workflow, or via `@url-sanitize/fetch` at runtime), we verify:
+The `@url-sanitize/clearurls` package ships a bundled snapshot of the ClearURLs ruleset. When that snapshot is updated via the daily sync workflow, we verify:
 
 1. **TLS transport integrity** — HTTPS connection to `https://rules2.clearurls.xyz/` (served from GitHub Pages)
 2. **SHA256 consistency** — the downloaded JSON's SHA256 hex digest matches the content of `rules.minify.hash` fetched from the same origin
@@ -18,7 +18,7 @@ Mismatch = abort + retry (cache-control timing on the hash file is 600s, so tran
 
 ## What you can do for stricter deployments
 
-For consumers who need stronger guarantees (e.g. security-sensitive SaaS, regulated environments), v0.2's `@url-sanitize/fetch` exposes a `pinnedHash` option:
+For consumers who need stronger guarantees (e.g. security-sensitive SaaS, regulated environments), the planned v0.4 `@url-sanitize/fetch` package will expose a `pinnedHash` option. Planned API shape:
 
 ```ts
 import { fetchClearurlsCatalog } from '@url-sanitize/fetch';
@@ -28,7 +28,7 @@ const catalog = await fetchClearurlsCatalog({
 });
 ```
 
-`fetchClearurlsCatalog` refuses to return any catalog whose SHA256 doesn't match `pinnedHash`. The tradeoff: rules can go stale silently if you don't rotate the pin.
+`fetchClearurlsCatalog` will refuse to return any catalog whose SHA256 doesn't match `pinnedHash`. The tradeoff: rules can go stale silently if you don't rotate the pin.
 
 The pinned-bundle in `@url-sanitize/clearurls` is hash-checked at sync time, so for most users the bundled snapshot is already vetted up to the moment of npm publish. Hash pinning matters mainly for runtime hot-refresh scenarios.
 

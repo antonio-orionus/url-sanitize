@@ -4,15 +4,16 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 
 ## Current status
 
-Public package state before the v0.1.2 alignment release:
+Public package state after the v0.1.2 alignment release:
 
-- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli` are currently public at v0.1.0.
-- crates.io: `url-sanitize-core`, `url-sanitize` are currently public at v0.1.1.
-- v0.1.2 is the alignment release that brings npm, crates.io, PyPI, and native GitHub Release assets onto one version.
+- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, and `@url-sanitize/cli` are public at v0.1.2.
+- crates.io: `url-sanitize-core` and `url-sanitize` are public at v0.1.2.
+- PyPI: `url-sanitize` is public at v0.1.2.
+- GitHub Releases publish v0.1.2 native assets for Linux x64, Linux ARM64, macOS Apple Silicon, and Windows x64, plus installer scripts and SHA256SUMS.
 - TypeScript and Rust engines pass the same conformance corpus.
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
 
-The next adoption bottleneck is not behavior. It is distribution: people should be able to remove tracking parameters from URLs from npm, PyPI, crates.io, Homebrew, Scoop, direct GitHub Release downloads, and CI environments.
+The next adoption bottleneck is not behavior. It is distribution reach: people should be able to remove tracking parameters from URLs from package managers such as Homebrew and Scoop, direct GitHub Release downloads, and CI environments. Intel macOS native archives are not published yet, so the shell installer must fail clearly on that platform until support is added.
 
 ## Strategic bet
 
@@ -94,10 +95,9 @@ Engine decisions:
 
 **Ships:**
 
-- GitHub Release binaries for Linux, macOS, and Windows across common architectures, with SHA256SUMS.
-- Release automation for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets.
+- Broader GitHub Release binary coverage where CI can build and smoke-test the target, including a decision on Intel macOS support.
+- Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets.
 - npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
-- PyPI package named `url-sanitize` with `python -m url_sanitize`, a `url-sanitize` console script, and a tiny `sanitize(url, **opts)` helper. v0.2 locates `URL_SANITIZE_BIN` or `url-sanitize` on `PATH`; platform-specific bundled wheels are deferred until there is demand.
 - Homebrew and Scoop packages. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
 - CI/install docs for GitHub Actions, GitLab CI, Dockerfiles, direct binary download, npm, cargo, PyPI, brew, and scoop.
 - Packaging smoke tests proving each ecosystem wrapper invokes the same binary version/catalog hash and supports `--json`, stdin, and `--version`.
@@ -213,7 +213,7 @@ What we add:
 
 - Sync workflow verifies hash before writing files; mismatch = abort + retry
 - Cache-control issue: hash file has `max-age=600` (10min). Hash can be stale vs JSON. Sync script + workflow retry on mismatch instead of failing immediately.
-- v0.2: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value)
+- v0.4: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value)
 
 Stricter integrity (e.g. signing) would need upstream ClearURLs maintainers to opt in. Not our project's gap to fix.
 
@@ -295,15 +295,16 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 | AdGuard URL Tracking filter | Filter-list format, not API. We could adapt (v2.0). |
 | Unalix Python / Nim | Archived. Confirms TS gap. |
 
-## Launch plan (when v0.1 ships)
+## v0.1 launch history
 
 1. README ready — clear value prop, install + quick start, comparison table
-2. v0.1.0 publish to npm — `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
-3. Arroxy migrates from vendored `src/shared/clearurls/` to npm dep — dogfood + first production user
-4. Announce on:
+2. v0.1.0 published to npm — `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
+3. v0.1.2 aligned npm, crates.io, PyPI, and GitHub Release assets on one version
+4. Arroxy migration from vendored `src/shared/clearurls/` to npm dep remains the dogfood path
+5. Future announcement channels:
    - r/typescript
    - HN Show
    - lobste.rs
    - fediverse (Mastodon dev community)
    - ClearURLs maintainers (ask for blessing + link from their docs)
-5. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
+6. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
