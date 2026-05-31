@@ -12,7 +12,7 @@ is already the toolchain you have.
 | Any OS with Rust | `cargo install url-sanitize` | Builds from crates.io. |
 | Linux x64 / ARM64 | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | macOS Apple Silicon | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
-| macOS Intel | `cargo install url-sanitize` | Native release archives are not published yet. |
+| macOS Intel | `cargo install url-sanitize` | Native release automation is wired for the next release after v0.1.3. |
 | Windows x64 | PowerShell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | Windows ARM64 | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | Native release archives are not published yet. |
 | Python | `pip install url-sanitize` plus one native CLI install above | Python shells out to `url-sanitize` on `PATH`, or `URL_SANITIZE_BIN`. |
@@ -32,37 +32,39 @@ Windows x64 PowerShell:
 irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.ps1 | iex
 ```
 
-## Package Manager Status
+## Package Managers
 
 ### Homebrew
 
-Homebrew is planned for v0.2, but there is not a dedicated public tap yet. For
-now, use the direct installer or `cargo install url-sanitize`.
+The public tap is `antonio-orionus/homebrew-url-sanitize`:
 
-The repository includes a candidate formula at
-[`Formula/url-sanitize.rb`](../Formula/url-sanitize.rb) so CI can validate the
-packaging shape. The release workflow can publish a generated copy to a tap once
-`PACKAGING_REPO_TOKEN` and the tap repo are configured. For local maintainer
-testing only:
+```sh
+brew install antonio-orionus/url-sanitize/url-sanitize
+```
+
+The repository also includes a validation fixture at
+[`Formula/url-sanitize.rb`](../Formula/url-sanitize.rb). The release workflow
+publishes a generated copy to the tap from each release `SHA256SUMS`.
 
 ```sh
 brew install --formula ./Formula/url-sanitize.rb
 ```
 
-That formula currently supports macOS Apple Silicon and Linux x64/ARM64 release
-archives. macOS Intel users should use `cargo install url-sanitize` until an
-Intel macOS archive is published.
+The published v0.1.3 formula supports macOS Apple Silicon and Linux x64/ARM64
+release archives. Intel macOS archive generation is wired for the next release.
 
 ### Scoop
 
-Scoop is planned for v0.2, but there is not a dedicated public bucket yet. For
-now, use the PowerShell installer.
+The public bucket is `antonio-orionus/scoop-url-sanitize`:
 
-The repository includes a candidate manifest at
-[`bucket/url-sanitize.json`](../bucket/url-sanitize.json) so CI can validate the
-packaging shape. The release workflow can publish a generated copy to a bucket
-once `PACKAGING_REPO_TOKEN` and the bucket repo are configured. For local
-maintainer testing only:
+```powershell
+scoop bucket add url-sanitize https://github.com/antonio-orionus/scoop-url-sanitize
+scoop install url-sanitize
+```
+
+The repository also includes a validation fixture at
+[`bucket/url-sanitize.json`](../bucket/url-sanitize.json). CI installs this
+manifest with Scoop on Windows.
 
 ```powershell
 scoop install .\bucket\url-sanitize.json
@@ -75,7 +77,7 @@ The manifest currently supports Windows x64.
 For CI, prefer a pinned release instead of `latest`:
 
 ```sh
-version="v0.1.2"
+version="v0.1.3"
 target="x86_64-unknown-linux-gnu"
 asset="url-sanitize-${target}.tar.gz"
 

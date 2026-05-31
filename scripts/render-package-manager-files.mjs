@@ -18,6 +18,7 @@ if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(args.version)) {
 const sums = parseSums(readFileSync(args.sums, 'utf8'));
 const assets = {
   darwinArm64: 'url-sanitize-aarch64-apple-darwin.tar.gz',
+  darwinX64: 'url-sanitize-x86_64-apple-darwin.tar.gz',
   linuxArm64: 'url-sanitize-aarch64-unknown-linux-gnu.tar.gz',
   linuxX64: 'url-sanitize-x86_64-unknown-linux-gnu.tar.gz',
   windowsX64: 'url-sanitize-x86_64-pc-windows-msvc.zip'
@@ -52,8 +53,11 @@ function renderHomebrew(version, assetNames, checksums) {
     if Hardware::CPU.arm?
       url "https://github.com/antonio-orionus/url-sanitize/releases/download/v#{version}/${assetNames.darwinArm64}"
       sha256 "${checksums.get(assetNames.darwinArm64)}"
+    elsif Hardware::CPU.intel?
+      url "https://github.com/antonio-orionus/url-sanitize/releases/download/v#{version}/${assetNames.darwinX64}"
+      sha256 "${checksums.get(assetNames.darwinX64)}"
     else
-      odie "macOS Intel release archives are not published yet; use \`cargo install url-sanitize\`"
+      odie "unsupported macOS architecture"
     end
   elsif OS.linux?
     if Hardware::CPU.arm?

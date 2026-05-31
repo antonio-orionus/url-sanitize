@@ -167,3 +167,24 @@ jobs:
           if ($Output -ne "https://example.com/") {
             throw "unexpected sanitized URL: $Output"
           }
+
+      - name: Smoke Scoop manifest
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:SCOOP = Join-Path $env:RUNNER_TEMP "scoop"
+          $env:SCOOP_GLOBAL = Join-Path $env:RUNNER_TEMP "scoop-global"
+          [Environment]::SetEnvironmentVariable("SCOOP", $env:SCOOP, "User")
+          [Environment]::SetEnvironmentVariable("SCOOP_GLOBAL", $env:SCOOP_GLOBAL, "User")
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+          $env:Path = "$env:SCOOP\shims;$env:Path"
+          scoop install .\bucket\url-sanitize.json
+          url-sanitize --version
+          $Output = url-sanitize "https://example.com/?utm_source=x"
+          if ($Output -ne "https://example.com/") {
+            throw "unexpected sanitized URL: $Output"
+          }
