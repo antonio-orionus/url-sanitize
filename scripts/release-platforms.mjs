@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const platformsPath = new URL('../release/platforms.json', import.meta.url);
 
@@ -13,7 +15,7 @@ export function expectedReleaseAssets(platforms = loadReleasePlatforms()) {
   return platforms.map((platform) => platform.archive);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule()) {
   const args = parseArgs(process.argv.slice(2));
   const platforms = loadReleasePlatforms();
 
@@ -30,6 +32,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   } else {
     console.log(JSON.stringify(platforms, null, 2));
   }
+}
+
+function isMainModule() {
+  return process.argv[1] ? fileURLToPath(import.meta.url) === resolve(process.argv[1]) : false;
 }
 
 function validatePlatforms(platforms) {
