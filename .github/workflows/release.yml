@@ -14,6 +14,15 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
+  platform-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: matrix
+        run: node scripts/release-platforms.mjs --gha-matrix >> "$GITHUB_OUTPUT"
+
   verify:
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +39,13 @@ jobs:
         with:
           python-version: '3.9'
       - run: pnpm install --frozen-lockfile
+      - name: Verify release metadata
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            pnpm verify:release -- --tag "${GITHUB_REF_NAME}"
+          else
+            pnpm verify:release
+          fi
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
@@ -50,31 +66,10 @@ jobs:
       - run: pnpm smoke
 
   build-native:
-    needs: verify
+    needs: [verify, platform-matrix]
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            archive: url-sanitize-x86_64-unknown-linux-gnu.tar.gz
-            binary: url-sanitize
-          - os: ubuntu-24.04-arm
-            target: aarch64-unknown-linux-gnu
-            archive: url-sanitize-aarch64-unknown-linux-gnu.tar.gz
-            binary: url-sanitize
-          - os: macos-14
-            target: aarch64-apple-darwin
-            archive: url-sanitize-aarch64-apple-darwin.tar.gz
-            binary: url-sanitize
-          - os: macos-15-intel
-            target: x86_64-apple-darwin
-            archive: url-sanitize-x86_64-apple-darwin.tar.gz
-            binary: url-sanitize
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            archive: url-sanitize-x86_64-pc-windows-msvc.zip
-            binary: url-sanitize.exe
+      matrix: ${{ fromJson(needs.platform-matrix.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6

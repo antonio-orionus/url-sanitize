@@ -1,0 +1,29 @@
+name: post-release-smoke
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version, with or without leading v'
+        required: true
+        type: string
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
+  SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
+
+jobs:
+  public-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Verify public release surfaces
+        env:
+          VERSION: ${{ github.event.release.tag_name || inputs.version }}
+        run: node scripts/verify-published-release.mjs "$VERSION"
