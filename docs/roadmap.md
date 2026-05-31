@@ -15,7 +15,7 @@ Public package state after the v0.1.3 distribution release:
 - TypeScript and Rust engines pass the same conformance corpus.
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
 
-The next adoption bottleneck is still distribution reach, but the first package-manager path is now proven. Remaining gaps are Intel macOS native archives, optional AUR/Winget coverage, and stronger package-manager smoke automation for environments that are not available on the Linux CI host. Intel macOS native archives are not published yet, so the shell installer must fail clearly on that platform until support is added.
+The next adoption bottleneck is still distribution reach, but the first package-manager path is now proven. Intel macOS native archive generation and a real Windows Scoop install smoke are wired for the next release after v0.1.3. Remaining optional gaps are AUR/Winget coverage and broader package-manager smoke automation where the ecosystem runtime is available in CI.
 
 ## Strategic bet
 
@@ -97,7 +97,7 @@ Engine decisions:
 
 **Ships:**
 
-- Broader GitHub Release binary coverage where CI can build and smoke-test the target, including a decision on Intel macOS support.
+- Broader GitHub Release binary coverage where CI can build and smoke-test the target. Intel macOS support is wired for the next release after v0.1.3.
 - Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets. v0.1.3 proved GitHub Release assets, installer smokes, and automated Homebrew/Scoop metadata publication.
 - npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
 - Homebrew and Scoop packages shipped in v0.1.3. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.

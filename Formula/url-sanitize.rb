@@ -1,23 +1,23 @@
 class UrlSanitize < Formula
   desc "Remove tracking parameters and unwrap tracking redirects from URLs"
   homepage "https://github.com/antonio-orionus/url-sanitize"
-  version "0.1.2"
+  version "0.1.3"
   license "MIT"
 
   if OS.mac?
     if Hardware::CPU.arm?
       url "https://github.com/antonio-orionus/url-sanitize/releases/download/v#{version}/url-sanitize-aarch64-apple-darwin.tar.gz"
-      sha256 "3a11ede5f1f9682a538b6badfc8bd453075c25b2459c2ad67b242ce8a3a3c4f7"
+      sha256 "bb9ac5665a13e7fafdbe55457d9c3b322403d02d96f5dde6885d01e6ba4cd501"
     else
       odie "macOS Intel release archives are not published yet; use `cargo install url-sanitize`"
     end
   elsif OS.linux?
     if Hardware::CPU.arm?
       url "https://github.com/antonio-orionus/url-sanitize/releases/download/v#{version}/url-sanitize-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "fc2dd9911e1e8739395964e8b39fd0093d9c24959e9bcdbdb611bc383593a1d0"
+      sha256 "ea01a2151e43d076ec2d042a38ff6ef8ecba5113c472fed9064f8e047f0e97ba"
     elsif Hardware::CPU.intel?
       url "https://github.com/antonio-orionus/url-sanitize/releases/download/v#{version}/url-sanitize-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "130801abd4f3fb32b5442398c1ab08346f0e96c01de8152f43858e72aadec8d8"
+      sha256 "ff5216835c5b61518d193922b71e93f0a610c75e55f936625c2f161d280f33cd"
     else
       odie "unsupported Linux architecture"
     end
