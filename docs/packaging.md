@@ -33,6 +33,10 @@ Configure the main `url-sanitize` repository:
 - Variable `SCOOP_BUCKET_REPO`: defaults to
   `antonio-orionus/scoop-url-sanitize`.
 
+`HOMEBREW_TAP_REPO` and `SCOOP_BUCKET_REPO` are defaulted in the release
+workflow; see [`.github/workflows/release.yml`](../.github/workflows/release.yml)
+for the exact logic.
+
 After `github-release` and installer smoke tests pass, `release.yml` renders the
 formula and manifest from the published `SHA256SUMS`, commits changed files to
 those repos, and pushes them. If `PACKAGING_REPO_TOKEN` is absent, the release

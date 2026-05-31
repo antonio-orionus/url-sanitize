@@ -135,11 +135,13 @@ jobs:
     steps:
       - name: Smoke published Linux installer
         if: runner.os == 'Linux'
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
           set -euo pipefail
           install_dir="$RUNNER_TEMP/url-sanitize-bin"
           curl --proto '=https' --tlsv1.2 -fsSL \
-            "https://github.com/antonio-orionus/url-sanitize/releases/download/${{ github.ref_name }}/url-sanitize-installer.sh" \
+            "https://github.com/antonio-orionus/url-sanitize/releases/download/${REF_NAME}/url-sanitize-installer.sh" \
             -o "$RUNNER_TEMP/url-sanitize-installer.sh"
           URL_SANITIZE_INSTALL_DIR="$install_dir" sh "$RUNNER_TEMP/url-sanitize-installer.sh"
           "$install_dir/url-sanitize" --version
@@ -149,11 +151,13 @@ jobs:
       - name: Smoke published Windows installer
         if: runner.os == 'Windows'
         shell: pwsh
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
           $InstallDir = Join-Path $env:RUNNER_TEMP "url-sanitize-bin"
           $Installer = Join-Path $env:RUNNER_TEMP "url-sanitize-installer.ps1"
           Invoke-WebRequest `
-            -Uri "https://github.com/antonio-orionus/url-sanitize/releases/download/${{ github.ref_name }}/url-sanitize-installer.ps1" `
+            -Uri "https://github.com/antonio-orionus/url-sanitize/releases/download/$env:REF_NAME/url-sanitize-installer.ps1" `
             -OutFile $Installer
           $env:URL_SANITIZE_INSTALL_DIR = $InstallDir
           & $Installer
@@ -216,10 +220,10 @@ jobs:
           cp "$RUNNER_TEMP/package-managers/homebrew/Formula/url-sanitize.rb" homebrew-tap/Formula/url-sanitize.rb
           git -C homebrew-tap config user.name "github-actions[bot]"
           git -C homebrew-tap config user.email "github-actions[bot]@users.noreply.github.com"
-          if git -C homebrew-tap diff --quiet -- Formula/url-sanitize.rb; then
+          git -C homebrew-tap add Formula/url-sanitize.rb
+          if git -C homebrew-tap diff --cached --quiet -- Formula/url-sanitize.rb; then
             echo "Homebrew formula already up to date"
           else
-            git -C homebrew-tap add Formula/url-sanitize.rb
             git -C homebrew-tap commit -m "url-sanitize ${GITHUB_REF_NAME}"
             git -C homebrew-tap push
           fi
@@ -231,10 +235,10 @@ jobs:
           cp "$RUNNER_TEMP/package-managers/scoop/url-sanitize.json" scoop-bucket/url-sanitize.json
           git -C scoop-bucket config user.name "github-actions[bot]"
           git -C scoop-bucket config user.email "github-actions[bot]@users.noreply.github.com"
-          if git -C scoop-bucket diff --quiet -- url-sanitize.json; then
+          git -C scoop-bucket add url-sanitize.json
+          if git -C scoop-bucket diff --cached --quiet -- url-sanitize.json; then
             echo "Scoop manifest already up to date"
           else
-            git -C scoop-bucket add url-sanitize.json
             git -C scoop-bucket commit -m "url-sanitize ${GITHUB_REF_NAME}"
             git -C scoop-bucket push
           fi

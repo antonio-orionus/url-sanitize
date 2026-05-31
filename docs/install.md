@@ -10,12 +10,27 @@ is already the toolchain you have.
 | --- | --- | --- |
 | Any OS with Node.js | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | No native binary. |
 | Any OS with Rust | `cargo install url-sanitize` | Builds from crates.io. |
-| Linux x64 / ARM64 | `curl --proto '=https' --tlsv1.2 -LsSf https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.sh \| sh` | Installs the native binary and verifies `SHA256SUMS`. |
-| macOS Apple Silicon | `curl --proto '=https' --tlsv1.2 -LsSf https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.sh \| sh` | Installs the native binary and verifies `SHA256SUMS`. |
+| Linux x64 / ARM64 | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
+| macOS Apple Silicon | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | macOS Intel | `cargo install url-sanitize` | Native release archives are not published yet. |
-| Windows x64 | `irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.ps1 \| iex` | Installs the native binary and verifies `SHA256SUMS`. |
+| Windows x64 | PowerShell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | Windows ARM64 | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | Native release archives are not published yet. |
 | Python | `pip install url-sanitize` plus one native CLI install above | Python shells out to `url-sanitize` on `PATH`, or `URL_SANITIZE_BIN`. |
+
+## Direct Installers
+
+Linux x64/ARM64 and macOS Apple Silicon:
+
+```sh
+curl --proto '=https' --tlsv1.2 -LsSf \
+  https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.sh | sh
+```
+
+Windows x64 PowerShell:
+
+```powershell
+irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url-sanitize-installer.ps1 | iex
+```
 
 ## Package Manager Status
 
