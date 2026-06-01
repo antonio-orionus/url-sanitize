@@ -153,7 +153,9 @@ jobs:
         run: |
           set -euo pipefail
           formula_version="$(ruby -e 'print File.read("Formula/url-sanitize.rb")[/version "([^"]+)"/, 1]')"
-          brew install --formula ./Formula/url-sanitize.rb
+          brew tap-new local/url-sanitize
+          cp Formula/url-sanitize.rb "$(brew --repository local/url-sanitize)/Formula/url-sanitize.rb"
+          brew install local/url-sanitize/url-sanitize
           scripts/smoke-cli.sh "$(brew --prefix)/bin/url-sanitize" "$formula_version"
 
       - name: Smoke Linux installer
