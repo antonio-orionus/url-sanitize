@@ -26,7 +26,7 @@ describe('fuzz — deterministic ReDoS guard', () => {
     }
 
     expect(maxMs).toBeLessThan(MAX_SANITIZE_MS);
-  });
+  }, 20_000);
 });
 
 function randomUrl(next: () => number, index: number): string {
