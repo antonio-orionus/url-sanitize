@@ -76,6 +76,10 @@ Publish is automated from version-bump PRs and `v*` tags:
 
 No long-lived registry token should be required after trusted publishers are configured.
 
+> **First publish of a NEW package needs a manual bootstrap.** OIDC trusted publishing cannot create a package name that has zero published versions — the trusted-publisher binding is per-package and does not exist yet. The automated release will fail with `npm error 404 ... could not be found or you do not have permission` (npm) or the equivalent on crates.io/PyPI. Before relying on CI/CD for a brand-new package, publish v1 manually once, then configure its trusted publisher on the registry. See [Adding a new package](#adding-a-new-package).
+>
+> After the manual publish, registry propagation lags ~minutes. Re-running CI too soon makes the "already published; skipping" guard miss and retry the publish, which then fails with `403 cannot publish over the previously published versions`. Wait for propagation, then re-run.
+
 ```bash
 # bump versions in packages/*/package.json, Cargo.toml, Cargo.lock, pyproject.toml
 git commit -m "release: vX.Y.Z"
@@ -107,6 +111,14 @@ Result is a discriminated union: `{ kind: 'unchanged' } | { kind: 'cleaned', str
 3. Add `"build"` script using tsup
 4. Add `"files": ["dist"]`
 5. `pnpm install` to link workspace
+6. **Bootstrap the first publish manually — do this BEFORE the release CI runs for this package.** OIDC trusted publishing cannot create a name with zero published versions (see [Publishing](#publishing)). Once:
+   ```bash
+   pnpm build
+   npm login                                                          # account with @url-sanitize scope access
+   pnpm --filter "@url-sanitize/<name>" pack --pack-destination "$PWD/npm-packages"
+   npm publish "$PWD"/npm-packages/url-sanitize-<name>-*.tgz --access public
+   ```
+   Then on npmjs.org open the package → **Settings → Trusted Publisher** and add the GitHub Actions publisher (repo `antonio-orionus/url-sanitize`, workflow `release.yml`) to match the existing packages. After that, every release publishes via OIDC automatically.
 
 ## Non-goals
 
