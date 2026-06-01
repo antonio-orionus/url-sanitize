@@ -312,4 +312,4 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
    - lobste.rs
    - fediverse (Mastodon dev community)
    - ClearURLs maintainers (ask for blessing + link from their docs)
-7. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
+8. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
