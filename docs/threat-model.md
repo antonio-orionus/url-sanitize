@@ -23,8 +23,13 @@ For consumers who need stronger guarantees (e.g. security-sensitive SaaS, regula
 ```ts
 import { fetchClearurlsCatalog } from '@url-sanitize/fetch';
 
+const pinnedHash = process.env.CLEARURLS_RULES_HASH;
+if (!pinnedHash) {
+  throw new Error('CLEARURLS_RULES_HASH is required');
+}
+
 const { catalog } = await fetchClearurlsCatalog({
-  pinnedHash: process.env.CLEARURLS_RULES_HASH
+  pinnedHash
 });
 ```
 

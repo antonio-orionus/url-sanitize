@@ -37,6 +37,22 @@ describe('fetchClearurlsCatalog', () => {
     });
   });
 
+  it('hashes the raw rules text before parsing', async () => {
+    const rulesTextWithNewline = `${rulesText}\n`;
+    const rulesHashWithNewline = sha256(rulesTextWithNewline);
+
+    const result = await fetchClearurlsCatalog({
+      rulesUrl,
+      hashUrl,
+      fetch: fakeFetch({
+        [rulesUrl]: rulesTextWithNewline,
+        [hashUrl]: rulesHashWithNewline
+      })
+    });
+
+    expect(result.metadata.hash).toBe(rulesHashWithNewline);
+  });
+
   it('uses the injected fetch implementation', async () => {
     const seen: string[] = [];
     await fetchClearurlsCatalog({
@@ -49,6 +65,49 @@ describe('fetchClearurlsCatalog', () => {
     });
 
     expect(seen.sort()).toEqual([hashUrl, rulesUrl].sort());
+  });
+
+  it('binds the default fetch implementation to globalThis', async () => {
+    const originalFetch = globalThis.fetch;
+    const seenThisValues: unknown[] = [];
+    globalThis.fetch = async function (
+      this: typeof globalThis,
+      url: Parameters<typeof globalThis.fetch>[0]
+    ): Promise<Response> {
+      seenThisValues.push(this);
+      return textResponse(String(url) === rulesUrl ? rulesText : rulesHash);
+    } as typeof globalThis.fetch;
+
+    try {
+      await fetchClearurlsCatalog({ rulesUrl, hashUrl });
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+
+    expect(seenThisValues).toEqual([globalThis, globalThis]);
+  });
+
+  it('throws a timeout-specific error when a fetch stalls', async () => {
+    await expect(
+      fetchClearurlsCatalog({
+        rulesUrl,
+        hashUrl,
+        timeoutMs: 1,
+        fetch: (_url, init) =>
+          new Promise<Response>((_resolve, reject) => {
+            const signal = init?.signal;
+            if (!signal) {
+              reject(new Error('missing timeout signal'));
+              return;
+            }
+            signal.addEventListener(
+              'abort',
+              () => reject(new DOMException('timed out', 'TimeoutError')),
+              { once: true }
+            );
+          })
+      })
+    ).rejects.toThrow(/timed out after 1ms/);
   });
 
   it('throws on HTTP failures', async () => {
@@ -127,5 +186,5 @@ function textResponse(body: string, status = 200): Response {
 }
 
 function sha256(text: string): string {
-  return createHash('sha256').update(text.trim()).digest('hex');
+  return createHash('sha256').update(text).digest('hex');
 }

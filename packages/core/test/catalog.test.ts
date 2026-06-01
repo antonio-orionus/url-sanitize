@@ -94,10 +94,15 @@ describe('JSON Schema exports', () => {
     const sanitize = compileSanitizer(mergeCatalogs(customCatalog, secondCatalog), {
       domainBlocking: true
     });
+    const redirected = sanitize(
+      `https://redirect.example/?to=${encodeURIComponent('https://target.example/')}`
+    );
+    expect(redirected.kind).toBe('redirected');
+
     const results: SanitizeResult[] = [
       sanitize('https://example.com/clean'),
       sanitize('https://example.com/?utm_source=newsletter&id=123'),
-      sanitize(`https://redirect.example/?to=${encodeURIComponent('https://target.example/')}`),
+      redirected,
       sanitize('https://blocked.example/')
     ];
 

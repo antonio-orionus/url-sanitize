@@ -56,16 +56,20 @@ if (uniqueVersions.size !== 1) {
 }
 
 const version = [...uniqueVersions][0];
-if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
-  errors.push(`invalid release version: ${version}`);
-}
+if (!version) {
+  errors.push('failed to resolve a release version from manifests');
+} else {
+  if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
+    errors.push(`invalid release version: ${version}`);
+  }
 
-if (!isStableReleaseVersion(version)) {
-  errors.push(`release version must be >= 1.0.0, got ${version}`);
-}
+  if (!isStableReleaseVersion(version)) {
+    errors.push(`release version must be >= 1.0.0, got ${version}`);
+  }
 
-if (args.tag && args.tag !== `v${version}`) {
-  errors.push(`tag ${args.tag} does not match release version v${version}`);
+  if (args.tag && args.tag !== `v${version}`) {
+    errors.push(`tag ${args.tag} does not match release version v${version}`);
+  }
 }
 
 const platforms = loadReleasePlatforms();

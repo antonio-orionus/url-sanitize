@@ -10,6 +10,7 @@ export interface FetchClearurlsCatalogOptions {
   rulesUrl?: string;
   hashUrl?: string;
   fetch?: typeof globalThis.fetch;
+  timeoutMs?: number;
 }
 
 export interface FetchClearurlsCatalogResult {
@@ -23,19 +24,21 @@ export async function fetchClearurlsCatalog(
 ): Promise<FetchClearurlsCatalogResult> {
   const rulesUrl = options.rulesUrl ?? DEFAULT_CLEARURLS_RULES_URL;
   const hashUrl = options.hashUrl ?? DEFAULT_CLEARURLS_HASH_URL;
-  const fetchImpl = options.fetch ?? globalThis.fetch;
+  const fetchImpl =
+    options.fetch ?? (globalThis.fetch ? globalThis.fetch.bind(globalThis) : undefined);
+  const timeoutMs = options.timeoutMs ?? 10_000;
 
   if (!fetchImpl) {
     throw new Error('fetchClearurlsCatalog requires a fetch implementation');
   }
 
   const [rulesTextRaw, expectedHashRaw] = await Promise.all([
-    fetchText(fetchImpl, rulesUrl),
-    fetchText(fetchImpl, hashUrl)
+    fetchText(fetchImpl, rulesUrl, timeoutMs),
+    fetchText(fetchImpl, hashUrl, timeoutMs)
   ]);
   const rulesText = rulesTextRaw.trim();
   const expectedHash = normalizeSha256(expectedHashRaw, 'published hash');
-  const actualHash = await sha256Hex(rulesText);
+  const actualHash = await sha256Hex(rulesTextRaw);
 
   if (actualHash !== expectedHash) {
     throw new Error(`ClearURLs rules hash mismatch: expected ${expectedHash}, got ${actualHash}`);
@@ -63,12 +66,51 @@ export async function fetchClearurlsCatalog(
   };
 }
 
-async function fetchText(fetchImpl: typeof globalThis.fetch, url: string): Promise<string> {
-  const response = await fetchImpl(url);
+async function fetchText(
+  fetchImpl: typeof globalThis.fetch,
+  url: string,
+  timeoutMs: number
+): Promise<string> {
+  const { signal, cleanup } = createTimeoutSignal(timeoutMs);
+  let response: Response;
+  try {
+    response = await fetchImpl(url, { signal });
+  } catch (error) {
+    if (isAbortError(error)) {
+      throw new Error(`Fetch ${url} timed out after ${timeoutMs}ms`);
+    }
+    throw error;
+  } finally {
+    cleanup();
+  }
+
   if (!response.ok) {
     throw new Error(`Fetch ${url} failed: ${response.status} ${response.statusText}`.trim());
   }
   return response.text();
+}
+
+function createTimeoutSignal(timeoutMs: number): { cleanup: () => void; signal: AbortSignal } {
+  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+    throw new Error('fetchClearurlsCatalog timeoutMs must be a positive finite number');
+  }
+
+  if (typeof AbortSignal.timeout === 'function') {
+    return { signal: AbortSignal.timeout(timeoutMs), cleanup: () => {} };
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return {
+    signal: controller.signal,
+    cleanup: () => clearTimeout(timer)
+  };
+}
+
+function isAbortError(error: unknown): boolean {
+  return (
+    error instanceof DOMException && (error.name === 'AbortError' || error.name === 'TimeoutError')
+  );
 }
 
 function normalizeSha256(hash: string, label: string): string {

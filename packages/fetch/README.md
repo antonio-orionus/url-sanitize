@@ -25,7 +25,8 @@ console.log(sanitize('https://example.com/?utm_source=x'));
 ```
 
 `pinnedHash` is optional. When set, the downloaded rules must match both the
-upstream `rules.minify.hash` and the consumer-provided pin.
+upstream `rules.minify.hash` and the consumer-provided pin. `timeoutMs` defaults
+to `10000` and bounds each rules/hash request.
 
 ## License
 

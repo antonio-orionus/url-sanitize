@@ -293,6 +293,7 @@ serializes to identical JSON via `serde`.
 ## 8. Versioning
 
 All packages (`@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`,
-`@url-sanitize/fetch`, `url-sanitize-core` crate, `url-sanitize` crate) version-bump together. The
-public API is governed by **semver of the result schema and CLI contract**, not
-by any single language binding. Breaking the schema is a major bump everywhere.
+`@url-sanitize/fetch`, `url-sanitize-core` crate, `url-sanitize` crate, and the
+Python package in `pyproject.toml`) version-bump together. The public API is
+governed by **semver of the result schema and CLI contract**, not by any single
+language binding. Breaking the schema is a major bump everywhere.

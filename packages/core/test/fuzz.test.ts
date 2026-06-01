@@ -15,17 +15,36 @@ describe('fuzz — deterministic ReDoS guard', () => {
     });
     const rng = mulberry32(0x5eed_2026);
     let maxMs = 0;
+    let slowestInput = '';
+    let thrown:
+      | {
+          error: unknown;
+          index: number;
+          input: string;
+        }
+      | undefined;
 
     for (let index = 0; index < CASES; index += 1) {
       const input = randomUrl(rng, index);
       const started = performance.now();
-      expect(() => sanitize(input), `fuzz input ${index}: ${input}`).not.toThrow();
+      try {
+        sanitize(input);
+      } catch (error) {
+        thrown = { error, index, input };
+      }
       const elapsed = performance.now() - started;
-      maxMs = Math.max(maxMs, elapsed);
-      expect(elapsed, `fuzz input ${index}: ${input}`).toBeLessThan(MAX_SANITIZE_MS);
+      if (elapsed > maxMs) {
+        maxMs = elapsed;
+        slowestInput = `fuzz input ${index}: ${input}`;
+      }
+      if (thrown) break;
     }
 
-    expect(maxMs).toBeLessThan(MAX_SANITIZE_MS);
+    if (thrown) {
+      const message = thrown.error instanceof Error ? thrown.error.message : String(thrown.error);
+      throw new Error(`fuzz input ${thrown.index}: ${thrown.input}: ${message}`);
+    }
+    expect(maxMs, slowestInput).toBeLessThan(MAX_SANITIZE_MS);
   }, 20_000);
 });
 
