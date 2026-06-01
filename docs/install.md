@@ -72,7 +72,7 @@ scoop install .\bucket\url-sanitize.json
 
 The manifest currently supports Windows x64.
 
-## CI
+## CI And Containers
 
 For CI, prefer a pinned release instead of `latest`:
 
@@ -89,3 +89,94 @@ tar -xzf "${asset}"
 ```
 
 For Node-based CI, `npx @url-sanitize/cli` is usually simpler.
+
+### GitHub Actions
+
+```yaml
+jobs:
+  url-sanitize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install url-sanitize
+        run: |
+          set -euo pipefail
+          version="v0.1.4"
+          target="x86_64-unknown-linux-gnu"
+          asset="url-sanitize-${target}.tar.gz"
+
+          curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/${asset}"
+          curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/SHA256SUMS"
+          grep "  ${asset}$" SHA256SUMS | sha256sum -c -
+          tar -xzf "${asset}"
+          sudo install -m 0755 url-sanitize /usr/local/bin/url-sanitize
+
+      - name: Smoke url-sanitize
+        run: |
+          url-sanitize --version
+          url-sanitize --json "https://example.com/article?utm_source=newsletter&id=123"
+          printf '%s\n' "https://example.com/article?utm_source=newsletter&id=123" | url-sanitize -
+```
+
+### GitLab CI
+
+```yaml
+url-sanitize:
+  image: ubuntu:24.04
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends ca-certificates curl coreutils tar
+  script:
+    - |
+      set -eu
+      version="v0.1.4"
+      target="x86_64-unknown-linux-gnu"
+      asset="url-sanitize-${target}.tar.gz"
+
+      curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/${asset}"
+      curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/SHA256SUMS"
+      grep "  ${asset}$" SHA256SUMS | sha256sum -c -
+      tar -xzf "${asset}"
+      install -m 0755 url-sanitize /usr/local/bin/url-sanitize
+    - url-sanitize --version
+    - url-sanitize --json "https://example.com/article?utm_source=newsletter&id=123"
+    - printf '%s\n' "https://example.com/article?utm_source=newsletter&id=123" | url-sanitize -
+```
+
+### Dockerfile
+
+```Dockerfile
+FROM ubuntu:24.04
+
+ARG URL_SANITIZE_VERSION=v0.1.4
+ARG URL_SANITIZE_TARGET=x86_64-unknown-linux-gnu
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl coreutils tar \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+  asset="url-sanitize-${URL_SANITIZE_TARGET}.tar.gz"; \
+  curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${URL_SANITIZE_VERSION}/${asset}"; \
+  curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${URL_SANITIZE_VERSION}/SHA256SUMS"; \
+  grep "  ${asset}$" SHA256SUMS | sha256sum -c -; \
+  tar -xzf "${asset}"; \
+  install -m 0755 url-sanitize /usr/local/bin/url-sanitize; \
+  rm -f "${asset}" SHA256SUMS url-sanitize; \
+  url-sanitize --version
+```
+
+### Package-Manager CI
+
+Use Homebrew or Scoop in CI when that ecosystem is already present in the
+runner image:
+
+```sh
+brew install antonio-orionus/url-sanitize/url-sanitize
+url-sanitize --version
+```
+
+```powershell
+scoop bucket add url-sanitize https://github.com/antonio-orionus/scoop-url-sanitize
+scoop install url-sanitize
+url-sanitize --version
+```

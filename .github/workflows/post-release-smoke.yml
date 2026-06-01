@@ -34,3 +34,47 @@ jobs:
         env:
           VERSION: ${{ github.event.release.tag_name || inputs.version }}
         run: node scripts/verify-published-release.mjs "$VERSION"
+
+  homebrew-smoke:
+    runs-on: macos-14
+    env:
+      HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
+      VERSION: ${{ github.event.release.tag_name || inputs.version }}
+    steps:
+      # actions/checkout@v6 pinned 2026-05-31.
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Install and smoke published Homebrew formula
+        run: |
+          set -euo pipefail
+          brew tap "$HOMEBREW_TAP_REPO"
+          brew install "$HOMEBREW_TAP_REPO/url-sanitize"
+          scripts/smoke-cli.sh "$(brew --prefix)/bin/url-sanitize" "${VERSION#v}"
+
+  scoop-smoke:
+    runs-on: windows-latest
+    env:
+      SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
+      VERSION: ${{ github.event.release.tag_name || inputs.version }}
+    steps:
+      # actions/checkout@v6 pinned 2026-05-31.
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Install and smoke published Scoop manifest
+        shell: pwsh
+        run: |
+          $env:SCOOP = Join-Path $env:RUNNER_TEMP "scoop"
+          $env:SCOOP_GLOBAL = Join-Path $env:RUNNER_TEMP "scoop-global"
+          [Environment]::SetEnvironmentVariable("SCOOP", $env:SCOOP, "User")
+          [Environment]::SetEnvironmentVariable("SCOOP_GLOBAL", $env:SCOOP_GLOBAL, "User")
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+          $env:Path = "$env:SCOOP\shims;$env:Path"
+          scoop bucket add url-sanitize "https://github.com/$env:SCOOP_BUCKET_REPO"
+          scoop install url-sanitize
+          ./scripts/smoke-cli.ps1 -Command "url-sanitize" -ExpectedVersion ($env:VERSION -replace '^v', '')

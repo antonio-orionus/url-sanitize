@@ -113,11 +113,11 @@ println!("{}", serde_json::to_string(&result)?);
 
 ## GitHub Automation
 
-- `ci.yml` verifies TypeScript build, typecheck, lint, tests, generated catalog freshness, generated conformance freshness, Rust fmt/clippy/tests/package checks, release binary size, and npm/Python package smoke tests.
+- `ci.yml` verifies TypeScript build, typecheck, lint, tests, generated catalog freshness, generated conformance freshness, Rust fmt/clippy/tests/package checks, release binary size, npm/Python package smoke tests, installer smoke, and Homebrew/Scoop fixture smoke where runner support exists.
 - `sync-clearurls.yml` checks upstream ClearURLs daily and opens a version-bump PR when rules change.
 - `release-dry-run.yml` builds the release matrix on PRs, assembles archives, renders Homebrew/Scoop metadata, and validates installer/package-manager syntax before merge.
 - `auto-tag.yml` verifies release metadata, creates annotated release tags after package version bumps land on `main`, and explicitly dispatches `release.yml`.
-- `release.yml` publishes npm packages, Rust crates, PyPI package, native GitHub Release assets, Homebrew/Scoop metadata, installer smoke tests, and public endpoint smoke from `v*` tags.
+- `release.yml` publishes npm packages, Rust crates, PyPI package, native GitHub Release assets, Homebrew/Scoop metadata, installer smoke tests, package-manager install smoke, and public endpoint smoke from `v*` tags.
 - `post-release-smoke.yml` remains available for manual public smoke reruns against an already-published version.
 
 ## Compared to existing options

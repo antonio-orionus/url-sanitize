@@ -40,7 +40,8 @@ for the exact logic.
 After `github-release` and installer smoke tests pass, `release.yml` renders the
 formula and manifest from the published `SHA256SUMS`, commits changed files to
 those repos, and pushes them. It then runs public endpoint smoke against npm,
-crates.io, PyPI, GitHub Release assets, Homebrew, and Scoop. If
+crates.io, PyPI, GitHub Release assets, Homebrew, and Scoop, plus install-and-run
+smoke for the published Homebrew and Scoop packages. If
 `PACKAGING_REPO_TOKEN` is absent, package-manager publishing is skipped.
 
 ## User Commands

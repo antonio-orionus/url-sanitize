@@ -74,8 +74,19 @@ function renderHomebrew(version, assetNames, checksums) {
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/url-sanitize --version")
-    assert_equal "https://example.com/", shell_output("#{bin}/url-sanitize https://example.com/?utm_source=x").strip
+    test_url = "https://example.com/article?utm_source=newsletter&id=123"
+    cleaned_url = "https://example.com/article?id=123"
+
+    version_output = shell_output("#{bin}/url-sanitize --version")
+    assert_match version.to_s, version_output
+    assert_match(/catalog [0-9a-f]{64}/, version_output)
+
+    assert_equal cleaned_url, pipe_output("#{bin}/url-sanitize -", "#{test_url}\\n").strip
+
+    json_output = pipe_output("#{bin}/url-sanitize --json -", "#{test_url}\\n")
+    assert_match %("kind":"cleaned"), json_output
+    assert_match %("url":"#{cleaned_url}"), json_output
+    assert_match %("strippedParams":["utm_source"]), json_output
   end
 end
 `;
