@@ -4,18 +4,19 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 
 ## Current status
 
-Public package state after the v0.1.3 distribution release:
+Public package state after the v0.1.4 distribution release:
 
-- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, and `@url-sanitize/cli` are public at v0.1.3.
-- crates.io: `url-sanitize-core` and `url-sanitize` are public at v0.1.3.
-- PyPI: `url-sanitize` is public at v0.1.3.
-- GitHub Releases publish v0.1.3 native assets for Linux x64, Linux ARM64, macOS Apple Silicon, and Windows x64, plus installer scripts and SHA256SUMS.
-- Homebrew installs from `antonio-orionus/url-sanitize/url-sanitize` and passes install/test/audit smoke at v0.1.3.
-- Scoop installs from `antonio-orionus/scoop-url-sanitize`; the bucket manifest is published at v0.1.3 and its Windows archive hash is verified.
+- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, and `@url-sanitize/cli` are public at v0.1.4.
+- crates.io: `url-sanitize-core` and `url-sanitize` are public at v0.1.4.
+- PyPI: `url-sanitize` is public at v0.1.4.
+- GitHub Releases publish v0.1.4 native assets for Linux x64, Linux ARM64, macOS Apple Silicon, macOS Intel, and Windows x64, plus installer scripts and SHA256SUMS.
+- Homebrew installs from `antonio-orionus/url-sanitize/url-sanitize` and supports macOS Apple Silicon/Intel plus Linux x64/ARM64.
+- Scoop installs from `antonio-orionus/scoop-url-sanitize`; the bucket manifest is published at v0.1.4 and its Windows archive hash is verified.
 - TypeScript and Rust engines pass the same conformance corpus.
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
+- Release automation uses a centralized platform matrix, verifies aligned npm/Cargo/PyPI versions, dry-runs archive/package-manager generation on PRs, auto-tags version bumps after `main` CI passes, publishes from `v*` tags, and runs public endpoint smoke inside `release.yml`.
 
-The next adoption bottleneck is still distribution reach, but the first package-manager path is now proven. Intel macOS native archive generation and a real Windows Scoop install smoke are wired for the next release after v0.1.3. Remaining optional gaps are AUR/Winget coverage and broader package-manager smoke automation where the ecosystem runtime is available in CI.
+The next adoption bottleneck is still distribution reach, but the main package-manager path is now proven across Homebrew and Scoop. Remaining optional gaps are AUR/Winget coverage and broader package-manager smoke automation where the ecosystem runtime is available in CI.
 
 ## Strategic bet
 
@@ -97,10 +98,10 @@ Engine decisions:
 
 **Ships:**
 
-- Broader GitHub Release binary coverage where CI can build and smoke-test the target. Intel macOS support is wired for the next release after v0.1.3.
-- Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets. v0.1.3 proved GitHub Release assets, installer smokes, and automated Homebrew/Scoop metadata publication.
+- Broader GitHub Release binary coverage where CI can build and smoke-test the target. v0.1.4 ships Linux x64/ARM64, macOS Apple Silicon/Intel, and Windows x64 archives.
+- Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets. v0.1.4 proved GitHub Release assets, installer smokes, automated Homebrew/Scoop metadata publication, and public endpoint smoke.
 - npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
-- Homebrew and Scoop packages shipped in v0.1.3. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
+- Homebrew and Scoop packages shipped and are release-verified. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
 - CI/install docs for GitHub Actions, GitLab CI, Dockerfiles, direct binary download, npm, cargo, PyPI, brew, and scoop.
 - Packaging smoke tests proving each ecosystem wrapper invokes the same binary version/catalog hash and supports `--json`, stdin, and `--version`.
 
@@ -303,11 +304,12 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 2. v0.1.0 published to npm — `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
 3. v0.1.2 aligned npm, crates.io, PyPI, and GitHub Release assets on one version
 4. v0.1.3 added verified Homebrew and Scoop publication on top of the automated release pipeline
-5. Arroxy migration from vendored `src/shared/clearurls/` to npm dep remains the dogfood path
-6. Future announcement channels:
+5. v0.1.4 added Intel macOS native archives, centralized release matrix dry-runs, auto-tag dispatch hardening, and public release smoke inside the release workflow
+6. Arroxy migration from vendored `src/shared/clearurls/` to npm dep remains the dogfood path
+7. Future announcement channels:
    - r/typescript
    - HN Show
    - lobste.rs
    - fediverse (Mastodon dev community)
    - ClearURLs maintainers (ask for blessing + link from their docs)
-7. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
+8. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback

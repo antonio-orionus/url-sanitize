@@ -12,15 +12,14 @@ is already the toolchain you have.
 | Any OS with Rust | `cargo install url-sanitize` | Builds from crates.io. |
 | Linux x64 / ARM64 | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | macOS Apple Silicon | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
-| macOS Intel | `cargo install url-sanitize` for v0.1.3; shell installer after the next release | Native release automation is wired, but v0.1.3 does not include the archive. |
+| macOS Intel | Shell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | Windows x64 | PowerShell installer below | Installs the native binary and verifies `SHA256SUMS`. |
 | Windows ARM64 | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | Native release archives are not published yet. |
 | Python | `pip install url-sanitize` plus one native CLI install above | Python shells out to `url-sanitize` on `PATH`, or `URL_SANITIZE_BIN`. |
 
 ## Direct Installers
 
-Linux x64/ARM64, macOS Apple Silicon, and macOS Intel after the first
-post-v0.1.3 release:
+Linux x64/ARM64, macOS Apple Silicon/Intel:
 
 ```sh
 curl --proto '=https' --tlsv1.2 -LsSf \
@@ -51,8 +50,8 @@ publishes a generated copy to the tap from each release `SHA256SUMS`.
 brew install --formula ./Formula/url-sanitize.rb
 ```
 
-The published v0.1.3 formula supports macOS Apple Silicon and Linux x64/ARM64
-release archives. Intel macOS archive generation is wired for the next release.
+The published formula supports macOS Apple Silicon/Intel and Linux x64/ARM64
+release archives.
 
 ### Scoop
 
@@ -78,7 +77,7 @@ The manifest currently supports Windows x64.
 For CI, prefer a pinned release instead of `latest`:
 
 ```sh
-version="v0.1.3"
+version="v0.1.4"
 target="x86_64-unknown-linux-gnu"
 asset="url-sanitize-${target}.tar.gz"
 

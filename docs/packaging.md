@@ -1,6 +1,6 @@
 # Packaging
 
-This repository contains package-manager metadata for v0.2:
+This repository contains package-manager metadata for Homebrew and Scoop:
 
 - [`Formula/url-sanitize.rb`](../Formula/url-sanitize.rb) for Homebrew formula validation
 - [`bucket/url-sanitize.json`](../bucket/url-sanitize.json) for Scoop manifest validation
@@ -39,8 +39,9 @@ for the exact logic.
 
 After `github-release` and installer smoke tests pass, `release.yml` renders the
 formula and manifest from the published `SHA256SUMS`, commits changed files to
-those repos, and pushes them. If `PACKAGING_REPO_TOKEN` is absent, the release
-continues and package-manager publishing is skipped.
+those repos, and pushes them. It then runs public endpoint smoke against npm,
+crates.io, PyPI, GitHub Release assets, Homebrew, and Scoop. If
+`PACKAGING_REPO_TOKEN` is absent, package-manager publishing is skipped.
 
 ## User Commands
 
