@@ -41,7 +41,7 @@ OSS, MIT (mostly), no commercial tier, no enterprise edition. If sponsors appear
 
 ## Will never silently change rule behavior
 
-Every rule change ships via daily sync workflow → opens a PR → published as a patch version of `@url-sanitize/clearurls` via changesets. Consumers who pin versions are never surprised by rule changes. Once `@url-sanitize/fetch` exists, consumers who hot-refresh through it will be doing so explicitly.
+Every rule change ships via daily sync workflow → opens a version-bump PR → publishes through the same auto-tagged release pipeline as normal releases. Consumers who pin versions are never surprised by rule changes. Once `@url-sanitize/fetch` exists, consumers who hot-refresh through it will be doing so explicitly.
 
 ## Will never depend on a yanked / abandoned upstream
 

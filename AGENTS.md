@@ -64,22 +64,25 @@ Pre-push hook runs: `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `c
 
 ## Publishing
 
-Publish is fully automated from `v*` tags:
+Publish is automated from version-bump PRs and `v*` tags:
 
 - npm packages use npm trusted publishing (OIDC).
 - crates.io uses `rust-lang/crates-io-auth-action` trusted publishing.
 - PyPI uses trusted publishing with the `pypi` GitHub environment.
-- GitHub Releases receive native archives, SHA256SUMS, and installer scripts.
+- GitHub Releases receive native archives, SHA256SUMS, and installer scripts for Linux x64/ARM64, macOS Apple Silicon/Intel, and Windows x64.
+- Homebrew and Scoop metadata are rendered from the published `SHA256SUMS` and pushed to the configured tap/bucket repos.
+- Public release smoke verifies npm, crates.io, PyPI, GitHub Release assets, Homebrew, and Scoop after publishing.
 
 No long-lived registry token should be required after trusted publishers are configured.
 
 ```bash
-# bump versions in packages/*/package.json, Cargo.toml, pyproject.toml
+# bump versions in packages/*/package.json, Cargo.toml, Cargo.lock, pyproject.toml
 git commit -m "release: vX.Y.Z"
-git tag -a vX.Y.Z -m "release X.Y.Z"
-git push --follow-tags
-# .github/workflows/release.yml publishes npm, crates, PyPI, and native assets
+git push
+# After main CI passes, .github/workflows/auto-tag.yml creates vX.Y.Z and dispatches release.yml.
 ```
+
+`release.yml` also supports manual dispatch from an existing `v*` tag for recovery, but normal releases should go through the version-bump PR path. Tags pushed with `GITHUB_TOKEN` do not trigger another tag-push workflow automatically, so `auto-tag.yml` explicitly dispatches `release.yml`.
 
 ## Architecture
 
