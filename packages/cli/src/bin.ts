@@ -168,7 +168,7 @@ function packageVersion(): string {
 function printHelp(stream: NodeJS.WritableStream): void {
   stream.write(
     [
-      `url-sanitize ${packageVersion()} (catalog ${clearurlsMetadata.hash})`,
+      `url-sanitize ${packageVersion()} (catalog ${clearurlsMetadata.hash} ${clearurlsMetadata.fetchedAt})`,
       '',
       'Strip tracking parameters from URLs.',
       '',
@@ -185,7 +185,7 @@ function printHelp(stream: NodeJS.WritableStream): void {
       '    --unwrap-redirects      Unwrap redirector URLs (default)',
       '    --no-unwrap-redirects   Leave redirector URLs untouched',
       '    --block-domains         Emit blocked for domain-blocked URLs',
-      '    --version               Print version + catalog hash',
+      '    --version               Print version + catalog hash/date',
       '    -h, --help              Show this help',
       '',
       'Runtime: TypeScript',

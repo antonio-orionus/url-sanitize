@@ -4,7 +4,7 @@ What `url-sanitize` will never do. Stops scope-creep PRs cold.
 
 ## Will never be a browser extension
 
-Use ClearURLs Addon (https://clearurls.xyz/) for browser-level interception. `url-sanitize` is a developer library + CLI + GH Action.
+Use ClearURLs Addon (https://clearurls.xyz/) for browser-level interception. `url-sanitize` is a developer library + CLI. A GitHub Action is deferred until downstream demand is concrete.
 
 ## Will never intercept HTTP requests
 
@@ -24,7 +24,7 @@ No analytics, no usage reporting, no "phone home". This is a sanitization librar
 
 `@url-sanitize/core` is a pure function: catalog + URL → result. Zero I/O. Zero dependencies. Runs in any JavaScript environment that has `URL` and `RegExp` (which is all of them).
 
-If you need network fetching, use the planned `@url-sanitize/fetch` package once it ships in v0.4. Keeping `core` I/O-free preserves:
+If you need network fetching, use `@url-sanitize/fetch`. Keeping `core` I/O-free preserves:
 
 - SSR safety
 - Edge / worker runtime support (no `node:*` imports)

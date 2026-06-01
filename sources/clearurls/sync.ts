@@ -8,7 +8,7 @@
  * same origin as the rules, so it only proves consistency (rules ↔ hash
  * match), not provenance. A compromised upstream origin would compromise
  * both. For stricter deployments, pin a known-good hash via
- * @url-sanitize/fetch's `pinnedHash` option (v0.2+).
+ * @url-sanitize/fetch's `pinnedHash` option.
  */
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';

@@ -34,6 +34,11 @@ jobs:
         env:
           VERSION: ${{ github.event.release.tag_name || inputs.version }}
         run: node scripts/verify-published-release.mjs "$VERSION"
+      - name: Verify release asset attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ github.event.release.tag_name || inputs.version }}
+        run: scripts/verify-release-attestations.sh "$VERSION"
 
   homebrew-smoke:
     runs-on: macos-14

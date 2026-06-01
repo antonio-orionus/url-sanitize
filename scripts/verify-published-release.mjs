@@ -31,6 +31,11 @@ await checkJson(
   (json) => json.version === version
 );
 await checkJson(
+  `https://registry.npmjs.org/@url-sanitize%2ffetch/${version}`,
+  'npm @url-sanitize/fetch',
+  (json) => json.version === version
+);
+await checkJson(
   `https://crates.io/api/v1/crates/url-sanitize-core/${version}`,
   'crates.io url-sanitize-core',
   (json) => json.version?.num === version

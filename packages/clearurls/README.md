@@ -32,6 +32,12 @@ tooling), use the secondary entrypoint:
 import { clearurlsRawData, clearurlsMetadata } from '@url-sanitize/clearurls/raw';
 ```
 
+If you only need the adapter without importing the bundled snapshot, use:
+
+```ts
+import { clearurlsToCatalog } from '@url-sanitize/clearurls/adapter';
+```
+
 ## License
 
 - `src/` (adapter, types) — **MIT**

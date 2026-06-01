@@ -2,7 +2,7 @@
 
 This document is the **contract** every implementation must satisfy. It applies
 to both the TypeScript engine (`@url-sanitize/core`) and the Rust engine
-(`url-sanitize-core`), as well as any future shell (WASM, PyO3, MCP).
+(`url-sanitize-core`), as well as any future shell such as WASM or PyO3.
 
 All implementations are validated against the [conformance corpus](../conformance/).
 Any divergence is a release-blocking bug.
@@ -46,8 +46,10 @@ A sanitization call returns exactly one of four variants (discriminated union):
 the parameter names that matched (for diagnostics — not stable order across
 implementations, do not parse).
 
-The JSON Schema for the catalog and results is in
-[`conformance/schema.json`](../conformance/schema.json).
+JSON Schema exports for catalogs and results are provided by
+`@url-sanitize/core`. The schema in
+[`conformance/schema.json`](../conformance/schema.json) covers conformance
+vector files only.
 
 ---
 
@@ -64,6 +66,27 @@ interface SanitizerOptions {
 Defaults are chosen so the default sanitizer is **safe** (never turns a working
 URL into a broken one) and **agent-friendly** (predictable, never blocks
 without opt-in).
+
+### 2.1 Catalog shape
+
+```ts
+interface SanitizerCatalog {
+  version: string;
+  generatedAt: string;
+  sources: Array<{
+    name: 'clearurls' | 'adguard' | 'brave' | 'firefox' | 'custom';
+    version?: string;
+    hash?: string;
+    license?: string;
+    upstream?: string;
+  }>;
+  rules: SanitizerRule[];
+}
+```
+
+Catalogs are plain data. `@url-sanitize/core` exports JSON Schema constants for
+catalogs, options, and results, plus `defineCatalog()` for typed custom catalog
+literals and `mergeCatalogs()` for deterministic order-preserving composition.
 
 ---
 
@@ -190,11 +213,11 @@ If no URLs are passed positionally and stdin is a pipe/file, read from stdin.
 | `--unwrap-redirects`  | on      | Set `unwrapRedirects: true` |
 | `--no-unwrap-redirects` | off   | Set `unwrapRedirects: false` |
 | `--block-domains`     | off     | Set `domainBlocking: true` |
-| `--version`           |         | Print `url-sanitize <version> (catalog <hash> <date>)` and exit 0 |
+| `--version`           |         | Print `url-sanitize <version> (catalog <hash> <generatedAt>)` and exit 0 |
 | `-h`, `--help`        |         | Print usage and exit 0 |
 
-The catalog is **pinned** at build time. There is no `--update` in M1 (planned
-for M3 along with cargo-dist).
+The catalog is **pinned** at build time. There is no `--update`; runtime
+catalog refresh lives in `@url-sanitize/fetch`.
 
 ### 6.3 Output
 
@@ -270,6 +293,7 @@ serializes to identical JSON via `serde`.
 ## 8. Versioning
 
 All packages (`@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`,
-`url-sanitize-core` crate, `url-sanitize` crate) version-bump together. The
-public API is governed by **semver of the result schema and CLI contract**, not
-by any single language binding. Breaking the schema is a major bump everywhere.
+`@url-sanitize/fetch`, `url-sanitize-core` crate, `url-sanitize` crate, and the
+Python package in `pyproject.toml`) version-bump together. The public API is
+governed by **semver of the result schema and CLI contract**, not by any single
+language binding. Breaking the schema is a major bump everywhere.

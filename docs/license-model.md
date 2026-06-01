@@ -10,7 +10,7 @@
 | `@url-sanitize/clearurls` | **MIT (code) + LGPL-3.0-only (data)** | Adapter code is fresh; bundled `data.json` is derived from ClearURLs Rules repo, which is LGPL-3.0. |
 | `@url-sanitize/cli` | **MIT** | Wraps `core` + `clearurls`. CLI tool itself is fresh code. |
 | `@url-sanitize/fetch` | **MIT** | Network + hash-verify utilities. Fresh code. |
-| `@url-sanitize/action` | **MIT** | GH Action wrapping CLI. Fresh code. |
+| `@url-sanitize/action` | **MIT** | Deferred downstream Action wrapping CLI if demand appears. Fresh code. |
 
 ## What this means for consumers
 
