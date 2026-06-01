@@ -13,9 +13,11 @@ on:
       - 'scripts/render-package-manager-files.mjs'
       - 'scripts/release-platforms.mjs'
       - 'scripts/verify-release.mjs'
+      - 'scripts/verify-release-attestations.sh'
       - 'Formula/url-sanitize.rb'
       - 'bucket/url-sanitize.json'
       - 'package.json'
+      - 'packages/*/package.json'
       - 'Cargo.toml'
       - 'pyproject.toml'
 

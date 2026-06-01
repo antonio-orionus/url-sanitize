@@ -1,7 +1,7 @@
 {
-  "name": "@url-sanitize/core",
+  "name": "@url-sanitize/fetch",
   "version": "1.0.0",
-  "description": "Pure TypeScript library for removing tracking parameters and unwrapping tracking redirects.",
+  "description": "Runtime ClearURLs catalog fetching with SHA256 and optional pinned-hash verification.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,12 +20,16 @@
     "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsup src/index.ts --format esm --dts --watch"
   },
+  "dependencies": {
+    "@url-sanitize/clearurls": "workspace:*",
+    "@url-sanitize/core": "workspace:*"
+  },
   "keywords": [
-    "url",
-    "sanitize",
-    "tracking",
     "clearurls",
-    "privacy"
+    "url",
+    "tracking",
+    "privacy",
+    "fetch"
   ],
   "publishConfig": {
     "access": "public"
@@ -33,7 +37,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
-    "directory": "packages/core"
+    "directory": "packages/fetch"
   },
   "sideEffects": false
 }

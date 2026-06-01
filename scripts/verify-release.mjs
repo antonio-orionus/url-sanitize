@@ -10,7 +10,8 @@ const versions = new Map();
 for (const path of [
   'packages/core/package.json',
   'packages/clearurls/package.json',
-  'packages/cli/package.json'
+  'packages/cli/package.json',
+  'packages/fetch/package.json'
 ]) {
   setVersion(path, () => JSON.parse(readFileSync(path, 'utf8')).version);
 }
@@ -57,6 +58,10 @@ if (uniqueVersions.size !== 1) {
 const version = [...uniqueVersions][0];
 if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
   errors.push(`invalid release version: ${version}`);
+}
+
+if (!isStableReleaseVersion(version)) {
+  errors.push(`release version must be >= 1.0.0, got ${version}`);
 }
 
 if (args.tag && args.tag !== `v${version}`) {
@@ -106,6 +111,11 @@ function setVersion(label, readVersion) {
   } catch (error) {
     errors.push(`${label}: ${error.message}`);
   }
+}
+
+function isStableReleaseVersion(version) {
+  const major = Number.parseInt(version.split('.')[0] ?? '0', 10);
+  return major >= 1;
 }
 
 function parseArgs(argv) {

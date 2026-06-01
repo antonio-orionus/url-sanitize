@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "url-sanitize"
-version = "0.1.4"
+version = "1.0.0"
 description = "Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs-compatible rules."
 readme = "python/README.md"
 requires-python = ">=3.9"
@@ -12,7 +12,7 @@ license = { text = "MIT" }
 authors = [{ name = "Antonio Orionus", email = "OrionusAI@proton.me" }]
 keywords = ["url", "tracking", "privacy", "clearurls", "cli"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",

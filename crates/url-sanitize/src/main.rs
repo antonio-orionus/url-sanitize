@@ -26,7 +26,7 @@ struct Args {
 fn print_help(w: &mut dyn Write) {
     let _ = writeln!(
         w,
-        "url-sanitize {} (catalog {})
+        "url-sanitize {} (catalog {} {})
 
 Strip tracking parameters from URLs.
 
@@ -43,7 +43,7 @@ OPTIONS:
     --unwrap-redirects      Unwrap redirector URLs (default)
     --no-unwrap-redirects   Leave redirector URLs untouched
     --block-domains         Emit `blocked` for domain-blocked URLs
-    --version               Print version + catalog hash
+    --version               Print version + catalog hash/date
     -h, --help              Show this help
 
 EXIT CODES:
@@ -53,7 +53,8 @@ EXIT CODES:
 
 Full spec: https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.md",
         CRATE_VERSION,
-        catalog().catalog_hash().unwrap_or("unknown")
+        catalog().catalog_hash().unwrap_or("unknown"),
+        catalog().generated_at()
     );
 }
 
@@ -165,9 +166,10 @@ fn run() -> ExitCode {
     }
     if raw.iter().any(|a| a == "--version") {
         println!(
-            "url-sanitize {} (catalog {})",
+            "url-sanitize {} (catalog {} {})",
             CRATE_VERSION,
-            catalog().catalog_hash().unwrap_or("unknown")
+            catalog().catalog_hash().unwrap_or("unknown"),
+            catalog().generated_at()
         );
         return ExitCode::SUCCESS;
     }

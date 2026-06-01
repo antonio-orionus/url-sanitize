@@ -40,14 +40,134 @@ irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url
 ```sh
 npm install -g @url-sanitize/cli
 npm install @url-sanitize/core @url-sanitize/clearurls
+npm install @url-sanitize/fetch
 cargo install url-sanitize
 cargo add url-sanitize-core
 pip install url-sanitize
 ```
 
 The Python package shells out to the native CLI, so install `url-sanitize` with
-one of the native paths too. See [docs/install.md](docs/install.md) for the full
-Windows/macOS/Linux matrix, package-manager status, and CI snippets.
+one of the native paths too.
+
+### Install Matrix
+
+| Platform | Recommended command | Notes |
+| --- | --- | --- |
+| Any OS with Node.js | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | No native binary. |
+| Any OS with Rust | `cargo install url-sanitize` | Builds from crates.io. |
+| Linux x64 / ARM64 | Shell installer above | Installs the native binary and verifies `SHA256SUMS`. |
+| macOS Apple Silicon / Intel | Shell installer above | Installs the native binary and verifies `SHA256SUMS`. |
+| Windows x64 | PowerShell installer above | Installs the native binary and verifies `SHA256SUMS`. |
+| Windows ARM64 | `npx @url-sanitize/cli "https://example.com/?utm_source=x"` | Native release archives are not published yet. |
+| Python | `pip install url-sanitize` plus one native CLI install | Python shells out to `url-sanitize` on `PATH`, or `URL_SANITIZE_BIN`. |
+
+### Homebrew And Scoop
+
+```sh
+brew install antonio-orionus/url-sanitize/url-sanitize
+```
+
+```powershell
+scoop bucket add url-sanitize https://github.com/antonio-orionus/scoop-url-sanitize
+scoop install url-sanitize
+```
+
+Homebrew supports macOS Apple Silicon/Intel and Linux x64/ARM64. Scoop currently
+supports Windows x64. This repository keeps validation fixtures at
+[`Formula/url-sanitize.rb`](Formula/url-sanitize.rb) and
+[`bucket/url-sanitize.json`](bucket/url-sanitize.json); release automation
+renders published metadata from GitHub Release `SHA256SUMS`.
+
+### CI And Containers
+
+For CI, prefer a pinned release instead of `latest`:
+
+```sh
+version="v1.0.0"
+target="x86_64-unknown-linux-gnu"
+asset="url-sanitize-${target}.tar.gz"
+
+curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/${asset}"
+curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/SHA256SUMS"
+grep "  ${asset}$" SHA256SUMS | sha256sum -c -
+tar -xzf "${asset}"
+./url-sanitize --version
+```
+
+GitHub Actions:
+
+```yaml
+jobs:
+  url-sanitize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install url-sanitize
+        run: |
+          set -euo pipefail
+          version="v1.0.0"
+          target="x86_64-unknown-linux-gnu"
+          asset="url-sanitize-${target}.tar.gz"
+
+          curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/${asset}"
+          curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/SHA256SUMS"
+          grep "  ${asset}$" SHA256SUMS | sha256sum -c -
+          tar -xzf "${asset}"
+          sudo install -m 0755 url-sanitize /usr/local/bin/url-sanitize
+
+      - name: Smoke url-sanitize
+        run: |
+          url-sanitize --version
+          url-sanitize --json "https://example.com/article?utm_source=newsletter&id=123"
+          printf '%s\n' "https://example.com/article?utm_source=newsletter&id=123" | url-sanitize -
+```
+
+GitLab CI:
+
+```yaml
+url-sanitize:
+  image: ubuntu:24.04
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends ca-certificates curl coreutils tar
+  script:
+    - |
+      set -eu
+      version="v1.0.0"
+      target="x86_64-unknown-linux-gnu"
+      asset="url-sanitize-${target}.tar.gz"
+
+      curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/${asset}"
+      curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${version}/SHA256SUMS"
+      grep "  ${asset}$" SHA256SUMS | sha256sum -c -
+      tar -xzf "${asset}"
+      install -m 0755 url-sanitize /usr/local/bin/url-sanitize
+    - url-sanitize --version
+    - url-sanitize --json "https://example.com/article?utm_source=newsletter&id=123"
+    - printf '%s\n' "https://example.com/article?utm_source=newsletter&id=123" | url-sanitize -
+```
+
+Dockerfile:
+
+```Dockerfile
+FROM ubuntu:24.04
+
+ARG URL_SANITIZE_VERSION=v1.0.0
+ARG URL_SANITIZE_TARGET=x86_64-unknown-linux-gnu
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl coreutils tar \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+  asset="url-sanitize-${URL_SANITIZE_TARGET}.tar.gz"; \
+  curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${URL_SANITIZE_VERSION}/${asset}"; \
+  curl --proto '=https' --tlsv1.2 -fsSLO "https://github.com/antonio-orionus/url-sanitize/releases/download/${URL_SANITIZE_VERSION}/SHA256SUMS"; \
+  grep "  ${asset}$" SHA256SUMS | sha256sum -c -; \
+  tar -xzf "${asset}"; \
+  install -m 0755 url-sanitize /usr/local/bin/url-sanitize; \
+  rm -f "${asset}" SHA256SUMS url-sanitize; \
+  url-sanitize --version
+```
 
 ## TypeScript Quick Start
 
@@ -105,11 +225,11 @@ println!("{}", serde_json::to_string(&result)?);
 | [`@url-sanitize/core`](packages/core) | Pure TypeScript sanitization engine. Zero runtime deps. | MIT |
 | [`@url-sanitize/clearurls`](packages/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
 | [`@url-sanitize/cli`](packages/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
+| [`@url-sanitize/fetch`](packages/fetch) | Runtime ClearURLs catalog fetch + SHA256 / pinned-hash verification. | MIT |
 | [`url-sanitize-core`](crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
 | [`url-sanitize`](crates/url-sanitize) | Native Rust CLI with embedded ClearURLs catalog. | MIT |
 | [`url-sanitize`](python) | Python wrapper around the native CLI. | MIT |
-| `@url-sanitize/fetch` | (coming v0.4) Fetch + hash-verify remote catalogs. | MIT |
-| `@url-sanitize/action` | (coming v0.3) GitHub Action for PR / docs hygiene. | MIT |
+| `@url-sanitize/action` | Deferred GitHub Action for downstream PR / docs hygiene. | MIT |
 
 ## GitHub Automation
 
@@ -119,6 +239,13 @@ println!("{}", serde_json::to_string(&result)?);
 - `auto-tag.yml` verifies release metadata, creates annotated release tags after package version bumps land on `main`, and explicitly dispatches `release.yml`.
 - `release.yml` publishes npm packages, Rust crates, PyPI package, native GitHub Release assets, Homebrew/Scoop metadata, installer smoke tests, package-manager install smoke, and public endpoint smoke from `v*` tags.
 - `post-release-smoke.yml` remains available for manual public smoke reruns against an already-published version.
+
+Package-manager publishing uses dedicated Homebrew tap and Scoop bucket
+repositories. Configure `PACKAGING_REPO_TOKEN` to write to those repos; optional
+repository variables `HOMEBREW_TAP_REPO` and `SCOOP_BUCKET_REPO` override the
+defaults `antonio-orionus/homebrew-url-sanitize` and
+`antonio-orionus/scoop-url-sanitize`. If the token is absent, release automation
+skips external package-manager publication.
 
 ## Compared to existing options
 
@@ -131,17 +258,21 @@ println!("{}", serde_json::to_string(&result)?);
 
 ## Docs
 
+- [Roadmap](docs/roadmap.md) — milestone detail, deferred surfaces, and strategic context
+- [Behavioral spec](docs/spec.md) — result schema and implementation contract
+- [Benchmarks](docs/benchmarks.md) — current sanitizer throughput numbers
 - [Threat model](docs/threat-model.md) — what hash verification proves and what it doesn't
 - [License model](docs/license-model.md) — why core is MIT and rules data is LGPL-3.0
 - [ClearURLs compatibility](docs/clearurls-compat.md) — migrating from ClearURLs / `@quik-fe/clear-urls`
 - [Non-goals](docs/non-goals.md) — what this project will never do
+- [Security policy](SECURITY.md) — responsible disclosure and supported versions
 
 ## Roadmap
 
 - **v0.1** — TypeScript engine, ClearURLs adapter, npm CLI, Rust engine, Rust CLI, shared conformance, daily sync workflow
-- **v0.2** — broader native archive coverage, installer refinements, Homebrew/Scoop docs, CI install docs
-- **v0.3** — `action` package for GH PR / docs hygiene
-- **v0.4** — runtime catalog fetching, custom user-defined catalogs, schema validation
+- **v0.2** — broader native archive coverage, installer refinements, Homebrew/Scoop, CI install examples
+- **v0.3** — runtime catalog fetching, custom user-defined catalogs, schema validation
+- **Deferred** — GitHub Action and MCP surfaces until downstream demand is concrete
 - **v1.0** — stable public API + result types + benchmarks + security policy
 - **v2.0** — multi-source: AdGuard URL Tracking, Brave Debouncer, Firefox query-strip
 

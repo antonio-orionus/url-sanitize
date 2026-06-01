@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/clearurls",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "ClearURLs-compatible rule catalog and adapter for @url-sanitize/core. Daily-synced from upstream.",
   "license": "LGPL-3.0-only",
   "type": "module",
@@ -12,9 +12,17 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./adapter": {
+      "types": "./dist/adapter.d.ts",
+      "import": "./dist/adapter.js"
+    },
     "./raw": {
       "types": "./dist/raw.d.ts",
       "import": "./dist/raw.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
     }
   },
   "files": [
@@ -23,8 +31,8 @@
     "NOTICE"
   ],
   "scripts": {
-    "build": "tsup src/index.ts src/raw.ts --format esm --dts --clean",
-    "dev": "tsup src/index.ts src/raw.ts --format esm --dts --watch"
+    "build": "tsup src/index.ts src/raw.ts src/adapter.ts src/types.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts src/raw.ts src/adapter.ts src/types.ts --format esm --dts --watch"
   },
   "dependencies": {
     "@url-sanitize/core": "workspace:*"

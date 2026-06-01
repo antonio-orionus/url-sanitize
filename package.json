@@ -20,6 +20,7 @@
     "sync:clearurls": "tsx sources/clearurls/sync.ts",
     "build:catalog": "tsx scripts/build-catalog.ts",
     "build:conformance": "tsx scripts/build-conformance.ts",
+    "benchmark": "tsx scripts/benchmark.ts",
     "changeset": "changeset",
     "release": "pnpm build && changeset publish",
     "prepare": "husky"
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
     "@changesets/cli": "^2.31.0",
+    "ajv": "8.17.1",
     "@types/node": "^25.9.1",
     "@url-sanitize/clearurls": "workspace:*",
     "@url-sanitize/core": "workspace:*",

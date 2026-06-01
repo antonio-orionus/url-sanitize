@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   id-token: write
+  attestations: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -125,6 +126,10 @@ jobs:
           cp scripts/install.ps1 release-assets/url-sanitize-installer.ps1
           chmod +x release-assets/url-sanitize-installer.sh
           (cd release-assets && sha256sum * > SHA256SUMS)
+      - name: Attest release assets
+        uses: actions/attest@v4
+        with:
+          subject-path: release-assets/*
       - uses: softprops/action-gh-release@v3
         with:
           files: release-assets/*
@@ -271,6 +276,10 @@ jobs:
           node-version: '22'
       - name: Verify public release surfaces
         run: node scripts/verify-published-release.mjs "${GITHUB_REF_NAME}"
+      - name: Verify release asset attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/verify-release-attestations.sh "$GITHUB_REF_NAME"
 
   post-release-homebrew-smoke:
     needs: publish-package-managers
@@ -348,6 +357,7 @@ jobs:
           publish_pkg "@url-sanitize/core" "@url-sanitize/core"
           publish_pkg "@url-sanitize/clearurls" "@url-sanitize/clearurls"
           publish_pkg "@url-sanitize/cli" "@url-sanitize/cli"
+          publish_pkg "@url-sanitize/fetch" "@url-sanitize/fetch"
 
   publish-crates:
     needs: verify

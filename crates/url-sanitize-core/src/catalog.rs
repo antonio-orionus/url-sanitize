@@ -52,4 +52,8 @@ impl Catalog {
     pub fn catalog_hash(&self) -> Option<&str> {
         self.sources.first().and_then(|s| s.hash.as_deref())
     }
+
+    pub fn generated_at(&self) -> &str {
+        &self.generated_at
+    }
 }

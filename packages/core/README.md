@@ -42,6 +42,25 @@ type SanitizeResult =
 - Factory pattern (`compileSanitizer(catalog)`) — no module-level cache, no singletons.
 - Discriminated union return type — exhaustive `switch (result.kind)`.
 
+## Custom catalogs
+
+```ts
+import { defineCatalog, mergeCatalogs, sanitizerCatalogJsonSchema } from '@url-sanitize/core';
+
+const custom = defineCatalog({
+  version: 'custom-1',
+  generatedAt: new Date().toISOString(),
+  sources: [{ name: 'custom' }],
+  rules: [{ kind: 'strip-param', source: 'custom', provider: 'local', paramPattern: 'utm_.+' }]
+});
+
+const merged = mergeCatalogs(custom);
+console.log(sanitizerCatalogJsonSchema.$id);
+```
+
+`mergeCatalogs()` preserves input order and concatenates sources/rules. It does
+not dedupe, reorder, or apply source precedence.
+
 ## License
 
 MIT.

@@ -4,19 +4,16 @@ This document is the **canonical roadmap** for `url-sanitize`. It captures both 
 
 ## Current status
 
-Public package state after the v0.1.4 distribution release:
+For current install commands, package surfaces, release channels, and automation
+status, use the [README](../README.md). This document keeps the milestone plan
+and rationale so there is one public discovery surface and one planning record.
 
-- npm: `@url-sanitize/core`, `@url-sanitize/clearurls`, and `@url-sanitize/cli` are public at v0.1.4.
-- crates.io: `url-sanitize-core` and `url-sanitize` are public at v0.1.4.
-- PyPI: `url-sanitize` is public at v0.1.4.
-- GitHub Releases publish v0.1.4 native assets for Linux x64, Linux ARM64, macOS Apple Silicon, macOS Intel, and Windows x64, plus installer scripts and SHA256SUMS.
-- Homebrew installs from `antonio-orionus/url-sanitize/url-sanitize` and supports macOS Apple Silicon/Intel plus Linux x64/ARM64.
-- Scoop installs from `antonio-orionus/scoop-url-sanitize`; the bucket manifest is published at v0.1.4 and its Windows archive hash is verified.
-- TypeScript and Rust engines pass the same conformance corpus.
-- The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
-- Release automation uses a centralized platform matrix, verifies aligned npm/Cargo/PyPI versions, dry-runs archive/package-manager generation on PRs, auto-tags version bumps after `main` CI passes, publishes from `v*` tags, and runs public endpoint smoke inside `release.yml`.
-
-The next adoption bottleneck is still distribution reach, but the main package-manager path is now proven across Homebrew and Scoop. v0.2 now has CI/container install examples plus install-and-exercise smoke for the package-manager surfaces that GitHub-hosted runners can reasonably execute. AUR, Winget, and distro packages are deferred until user demand or cheap automation makes them worth the maintenance surface.
+v0.1, v0.2, and v0.3 are complete. The main package-manager path is proven
+across Homebrew and Scoop, v0.2 has CI/container install examples plus
+install-and-exercise smoke, and v0.3 adds runtime ClearURLs fetching,
+schema-backed custom catalogs, and deterministic catalog composition. GitHub
+Action, MCP, AUR, Winget, and distro packages are deferred until user demand or
+cheap automation makes them worth the maintenance surface.
 
 ## Strategic bet
 
@@ -53,7 +50,7 @@ url-sanitize/
 │   ├── url-sanitize-wasm/       # optional future WASM path
 │   └── url-sanitize-py/         # optional future in-process Python bindings
 ├── packages/                    # TypeScript/JavaScript packages
-│   ├── core/  clearurls/  cli/  fetch/  action/  mcp/
+│   ├── core/  clearurls/  cli/  fetch/
 ├── python/                      # PyPI wrapper around native CLI
 └── sources/                     # upstream sync scripts
 ```
@@ -91,7 +88,7 @@ Engine decisions:
 **Deferred from day 1 (intentionally):**
 
 - `@url-sanitize/fetch` — runtime hot-refresh. Adds network surface; ship only after API stable.
-- `@url-sanitize/action` — GitHub Action. Distribution channel, not core value. Ships after CLI proves out.
+- `@url-sanitize/action` — downstream adoption channel, not internal sync or core value. Deferred until users ask for PR/docs hygiene automation.
 - Profiles (`safe`/`standard`/`aggressive`) — locks API too early. Start with explicit option flags, add profile shorthand once real-world combinations emerge.
 
 ## v0.2 — Distribution reach
@@ -106,7 +103,7 @@ Engine decisions:
 **Implemented:**
 
 - Package-manager smoke coverage: CI validates Homebrew formula syntax, installs and exercises the checked-in Homebrew formula on macOS, installs and exercises the checked-in Scoop manifest on Windows, release dry-runs Homebrew/Scoop metadata generation, public release smoke verifies npm, crates.io, PyPI, GitHub Release assets, Homebrew formula metadata, and Scoop manifest metadata, then installs and exercises the published Homebrew/Scoop packages.
-- Install docs: [`docs/install.md`](install.md) covers direct installers, pinned direct binary download, npm/npx, cargo, PyPI wrapper requirements, Homebrew, Scoop, GitHub Actions, GitLab CI, Dockerfile, and package-manager CI snippets.
+- README install sections cover direct installers, pinned direct binary download, npm/npx, cargo, PyPI wrapper requirements, Homebrew, Scoop, GitHub Actions, GitLab CI, Dockerfile, and package-manager CI snippets.
 - Wrapper smoke parity: reusable smoke helpers exercise `--version`, catalog hash format, `--json`, stdin, and default output for native binaries, installers, Homebrew, Scoop, the npm CLI, and the Python wrapper.
 
 **Deferred:**
@@ -118,24 +115,24 @@ Engine decisions:
 
 `url-sanitize` is a small utility. Adoption comes from being available exactly where a user already is. More rule sources help later; first, the binary needs doors into every common environment.
 
-## v0.3 — CI integration
-
-**Ships:**
-
-- `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs
-- Modes: `comment` (PR comment with cleaned URLs), `check` (fail CI), `fix` (commit patch)
-- Sample workflow showing docs-hygiene gate
-- `@url-sanitize/mcp` if agent demand is stronger than GitHub Action demand: exposes `sanitize_url` with pinned, explainable, structured output.
-
-## v0.4 — Runtime catalogs + custom rules
+## v0.3 — Runtime catalogs + custom rules
 
 **Ships:**
 
 - `@url-sanitize/fetch` — fetch + SHA256-verify upstream catalog at runtime. Supports `pinnedHash` option for SaaS / paranoid deployments where consumer hardcodes a known-good hash and refuses any other.
-- User-defined catalogs via plain TypeScript `SanitizerCatalog` literal
-- JSON Schema export for validating user-supplied catalogs
-- Custom allowlist / blocklist composition helpers
-- `mergeCatalogs(...)` utility
+- User-defined catalogs via plain TypeScript `SanitizerCatalog` literals and `defineCatalog()`.
+- JSON Schema exports for validating user-supplied catalogs, options, and results.
+- Custom catalog composition through plain data plus `mergeCatalogs(...)`
+- `mergeCatalogs(...)` utility with deterministic input-order preservation and no hidden dedupe.
+
+## Deferred adoption surfaces
+
+**Revisit when demand is concrete:**
+
+- `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs, with possible `comment`, `check`, and `fix` modes. This is for downstream repos; this repo already has internal ClearURLs catalog sync automation.
+- `@url-sanitize/mcp` — exposes `sanitize_url` with pinned, explainable, structured output for agent workflows.
+- AUR packaging.
+- Winget packaging.
 
 ## v1.0 — Stable release
 
@@ -146,7 +143,7 @@ Engine decisions:
 - Published benchmark numbers
 - `SECURITY.md` with responsible-disclosure policy
 - Fuzz-testing in CI — ReDoS guard, 10k random URLs/run, fails if any sanitize call exceeds 50ms
-- Signed/provenance-backed native releases where the distribution tooling supports it.
+- GitHub artifact-attestation-backed native releases.
 - Every package ecosystem wrapper proves it invokes the same version/hash of the Rust binary or passes the same conformance smoke subset.
 
 ## v2.0 — Multi-source expansion
@@ -202,7 +199,7 @@ Three reasons, ranked by weight:
 
 - `@url-sanitize/core` — **MIT** (clean-room TS algorithm port against the public ClearURLs rule spec)
 - `@url-sanitize/clearurls` — **MIT (code) + LGPL-3.0-only (bundled `data.json` derived from ClearURLs Rules repo)**
-- `@url-sanitize/cli`, `@url-sanitize/fetch`, `@url-sanitize/action` — **MIT**
+- `@url-sanitize/cli` and `@url-sanitize/fetch` — **MIT**
 
 Why the split unlocks adoption:
 
@@ -225,7 +222,7 @@ What we add:
 
 - Sync workflow verifies hash before writing files; mismatch = abort + retry
 - Cache-control issue: hash file has `max-age=600` (10min). Hash can be stale vs JSON. Sync script + workflow retry on mismatch instead of failing immediately.
-- v0.4: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value)
+- v0.3: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value)
 
 Stricter integrity (e.g. signing) would need upstream ClearURLs maintainers to opt in. Not our project's gap to fix.
 

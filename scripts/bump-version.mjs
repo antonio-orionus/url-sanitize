@@ -11,7 +11,8 @@ if (!version || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
 for (const path of [
   'packages/core/package.json',
   'packages/clearurls/package.json',
-  'packages/cli/package.json'
+  'packages/cli/package.json',
+  'packages/fetch/package.json'
 ]) {
   const json = JSON.parse(readFileSync(path, 'utf8'));
   json.version = version;

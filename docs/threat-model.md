@@ -18,17 +18,17 @@ Mismatch = abort + retry (cache-control timing on the hash file is 600s, so tran
 
 ## What you can do for stricter deployments
 
-For consumers who need stronger guarantees (e.g. security-sensitive SaaS, regulated environments), the planned v0.4 `@url-sanitize/fetch` package will expose a `pinnedHash` option. Planned API shape:
+For consumers who need stronger guarantees (e.g. security-sensitive SaaS, regulated environments), `@url-sanitize/fetch` exposes a `pinnedHash` option:
 
 ```ts
 import { fetchClearurlsCatalog } from '@url-sanitize/fetch';
 
-const catalog = await fetchClearurlsCatalog({
+const { catalog } = await fetchClearurlsCatalog({
   pinnedHash: process.env.CLEARURLS_RULES_HASH
 });
 ```
 
-`fetchClearurlsCatalog` will refuse to return any catalog whose SHA256 doesn't match `pinnedHash`. The tradeoff: rules can go stale silently if you don't rotate the pin.
+`fetchClearurlsCatalog` refuses to return any catalog whose SHA256 doesn't match `pinnedHash`. The tradeoff: rules can go stale silently if you don't rotate the pin.
 
 The pinned-bundle in `@url-sanitize/clearurls` is hash-checked at sync time, so for most users the bundled snapshot is already vetted up to the moment of npm publish. Hash pinning matters mainly for runtime hot-refresh scenarios.
 

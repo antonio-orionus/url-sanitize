@@ -26,7 +26,7 @@ printf '%s\n' "https://example.com/?utm_source=x" | url-sanitize -
 The npm CLI is pure TypeScript so it installs without native package setup. For
 the smallest standalone binary, use `cargo install url-sanitize` or the GitHub
 Release installer from the root README. For OS-specific native install commands,
-see the [install guide](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/install.md).
+see the [root README](https://github.com/antonio-orionus/url-sanitize#install).
 
 ## License
 

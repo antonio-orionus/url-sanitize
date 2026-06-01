@@ -25,12 +25,14 @@ mkdir -p "$TMP/npm-packages"
 pnpm --dir packages/core pack --pack-destination "$TMP/npm-packages"
 pnpm --dir packages/clearurls pack --pack-destination "$TMP/npm-packages"
 pnpm --dir packages/cli pack --pack-destination "$TMP/npm-packages"
+pnpm --dir packages/fetch pack --pack-destination "$TMP/npm-packages"
 
 core_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-core-*.tgz' -print -quit)"
 clearurls_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-clearurls-*.tgz' -print -quit)"
 cli_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-cli-*.tgz' -print -quit)"
+fetch_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-fetch-*.tgz' -print -quit)"
 
-if [[ -z "$core_tgz" || -z "$clearurls_tgz" || -z "$cli_tgz" ]]; then
+if [[ -z "$core_tgz" || -z "$clearurls_tgz" || -z "$cli_tgz" || -z "$fetch_tgz" ]]; then
   echo "missing one or more npm package tarballs" >&2
   exit 1
 fi
@@ -40,10 +42,13 @@ mkdir -p "$TMP/npm-app"
 (
   cd "$TMP/npm-app"
   npm init -y >/dev/null
-  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$cli_tgz"
+  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$cli_tgz" "$fetch_tgz"
 
   node --input-type=module <<'JS'
+import { createHash } from 'node:crypto';
 import { sanitize } from '@url-sanitize/clearurls';
+import { compileSanitizer } from '@url-sanitize/core';
+import { fetchClearurlsCatalog } from '@url-sanitize/fetch';
 
 const result = sanitize('https://example.com/article?utm_source=newsletter&id=123');
 if (result.kind !== 'cleaned') {
@@ -55,9 +60,38 @@ if (result.url !== 'https://example.com/article?id=123') {
 if (!result.strippedParams.includes('utm_source')) {
   throw new Error(`missing stripped utm_source param: ${JSON.stringify(result)}`);
 }
+
+const rulesUrl = 'https://rules.test/data.minify.json';
+const hashUrl = 'https://rules.test/rules.minify.hash';
+const rules = JSON.stringify({
+  providers: {
+    globalRules: {
+      urlPattern: '.*',
+      rules: ['utm_.+']
+    }
+  }
+});
+const hash = createHash('sha256').update(rules).digest('hex');
+const fetched = await fetchClearurlsCatalog({
+  rulesUrl,
+  hashUrl,
+  pinnedHash: hash,
+  fetch: async (url) => ({
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    text: async () => (String(url) === rulesUrl ? rules : hash)
+  })
+});
+const fetchedSanitize = compileSanitizer(fetched.catalog);
+const fetchedResult = fetchedSanitize('https://example.com/?utm_source=newsletter&id=123');
+if (fetchedResult.kind !== 'cleaned' || fetchedResult.url !== 'https://example.com/?id=123') {
+  throw new Error(`unexpected fetched catalog result: ${JSON.stringify(fetchedResult)}`);
+}
 JS
 
   "$ROOT/scripts/smoke-cli.sh" "./node_modules/.bin/url-sanitize" "$cli_version"
+  "./node_modules/.bin/url-sanitize" --version > "$TMP/npm-version.txt"
 )
 
 echo "==> Smoke Python wheel wrapper"
@@ -92,6 +126,14 @@ fi
 
 python_version_output="$(URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -m url_sanitize --version)"
 rust_version_output="$("$rust_bin" --version)"
+npm_version_output="$(cat "$TMP/npm-version.txt")"
+if [[ "$npm_version_output" != "$rust_version_output" ]]; then
+  echo "npm CLI did not report the native CLI version/catalog" >&2
+  echo "npm:  $npm_version_output" >&2
+  echo "rust: $rust_version_output" >&2
+  exit 1
+fi
+
 if [[ "$python_version_output" != "$rust_version_output" ]]; then
   echo "Python wrapper did not report the native CLI version/catalog" >&2
   echo "python: $python_version_output" >&2

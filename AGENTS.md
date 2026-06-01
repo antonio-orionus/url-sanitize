@@ -23,6 +23,7 @@ packages/
   core/        @url-sanitize/core        pure algorithm, zero deps, MIT
   clearurls/   @url-sanitize/clearurls   ClearURLs catalog + pre-compiled sanitize(), LGPL-3.0 data
   cli/         @url-sanitize/cli         pure TypeScript npm CLI, MIT
+  fetch/       @url-sanitize/fetch       runtime ClearURLs fetch + hash pinning, MIT
 crates/
   url-sanitize-core/                    Rust implementation
   url-sanitize/                         native CLI with embedded catalog
