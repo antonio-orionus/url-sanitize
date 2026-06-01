@@ -1,3 +1,5 @@
+require "json"
+
 class UrlSanitize < Formula
   desc "Remove tracking parameters and unwrap tracking redirects from URLs"
   homepage "https://github.com/antonio-orionus/url-sanitize"
@@ -43,8 +45,9 @@ class UrlSanitize < Formula
     assert_equal cleaned_url, pipe_output("#{bin}/url-sanitize -", "#{test_url}\n").strip
 
     json_output = pipe_output("#{bin}/url-sanitize --json -", "#{test_url}\n")
-    assert_match %("kind":"cleaned"), json_output
-    assert_match %("url":"#{cleaned_url}"), json_output
-    assert_match %("strippedParams":["utm_source"]), json_output
+    parsed = JSON.parse(json_output)
+    assert_equal "cleaned", parsed["kind"]
+    assert_equal cleaned_url, parsed["url"]
+    assert_includes parsed["strippedParams"], "utm_source"
   end
 end

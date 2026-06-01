@@ -173,11 +173,21 @@ jobs:
     needs: smoke-installers
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.packaging-config.outputs.configured }}
     env:
       PACKAGING_REPO_TOKEN: ${{ secrets.PACKAGING_REPO_TOKEN }}
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
     steps:
+      - id: packaging-config
+        run: |
+          if [ -n "$PACKAGING_REPO_TOKEN" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Skip if package-manager publishing is not configured
         if: env.PACKAGING_REPO_TOKEN == ''
         run: echo "PACKAGING_REPO_TOKEN is not configured; skipping Homebrew/Scoop publishing"
@@ -264,7 +274,7 @@ jobs:
 
   post-release-homebrew-smoke:
     needs: publish-package-managers
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') && needs.publish-package-managers.outputs.configured == 'true'
     runs-on: macos-14
     env:
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
@@ -279,7 +289,7 @@ jobs:
 
   post-release-scoop-smoke:
     needs: publish-package-managers
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') && needs.publish-package-managers.outputs.configured == 'true'
     runs-on: windows-latest
     env:
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
