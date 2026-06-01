@@ -6,6 +6,9 @@ TMP="$(mktemp -d)"
 PYTHON="${PYTHON:-python3}"
 trap 'rm -rf "$TMP"' EXIT
 
+test_url="https://example.com/article?utm_source=newsletter&id=123"
+expected_url="https://example.com/article?id=123"
+
 cd "$ROOT"
 
 echo "==> Build TypeScript packages"
@@ -13,6 +16,9 @@ pnpm build
 
 echo "==> Build Rust CLI"
 cargo build -p url-sanitize
+
+cli_version="$(node -p "require('./packages/cli/package.json').version")"
+crate_version="$(cargo metadata --no-deps --format-version=1 | node -e "let data=''; process.stdin.on('data', c => data += c); process.stdin.on('end', () => { const json = JSON.parse(data); console.log(json.packages.find((pkg) => pkg.name === 'url-sanitize')?.version); });")"
 
 echo "==> Pack npm packages"
 mkdir -p "$TMP/npm-packages"
@@ -51,21 +57,7 @@ if (!result.strippedParams.includes('utm_source')) {
 }
 JS
 
-  cli_output="$("./node_modules/.bin/url-sanitize" 'https://example.com/article?utm_source=newsletter&id=123')"
-  if [[ "$cli_output" != 'https://example.com/article?id=123' ]]; then
-    echo "unexpected npm CLI output: $cli_output" >&2
-    exit 1
-  fi
-
-  json_output="$("./node_modules/.bin/url-sanitize" --json 'https://example.com/article?utm_source=newsletter&id=123')"
-  JSON_OUTPUT="$json_output" node --input-type=module <<'JS'
-import process from 'node:process';
-
-const result = JSON.parse(process.env.JSON_OUTPUT ?? '');
-if (result.kind !== 'cleaned' || result.url !== 'https://example.com/article?id=123') {
-  throw new Error(`unexpected npm CLI JSON result: ${JSON.stringify(result)}`);
-}
-JS
+  "$ROOT/scripts/smoke-cli.sh" "./node_modules/.bin/url-sanitize" "$cli_version"
 )
 
 echo "==> Smoke Python wheel wrapper"
@@ -75,6 +67,8 @@ echo "==> Smoke Python wheel wrapper"
 "$TMP/venv/bin/python" -m pip install "$TMP"/python-dist/url_sanitize-*.whl
 
 rust_bin="$ROOT/target/debug/url-sanitize"
+"$ROOT/scripts/smoke-cli.sh" "$rust_bin" "$crate_version"
+
 URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" <<'PY'
 from url_sanitize import sanitize
 
@@ -89,10 +83,34 @@ PY
 
 python_output="$(
   URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -m url_sanitize \
-    'https://example.com/article?utm_source=newsletter&id=123'
+    "$test_url"
 )"
-if [[ "$python_output" != 'https://example.com/article?id=123' ]]; then
+if [[ "$python_output" != "$expected_url" ]]; then
   echo "unexpected Python module output: $python_output" >&2
+  exit 1
+fi
+
+python_version_output="$(URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -m url_sanitize --version)"
+rust_version_output="$("$rust_bin" --version)"
+if [[ "$python_version_output" != "$rust_version_output" ]]; then
+  echo "Python wrapper did not report the native CLI version/catalog" >&2
+  echo "python: $python_version_output" >&2
+  echo "rust:   $rust_version_output" >&2
+  exit 1
+fi
+
+python_json_output="$(URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -m url_sanitize --json "$test_url")"
+case "$python_json_output" in
+  *'"kind":"cleaned"'*'"url":"https://example.com/article?id=123"'*'"strippedParams":["utm_source"]'*) ;;
+  *)
+    echo "unexpected Python module JSON output: $python_json_output" >&2
+    exit 1
+    ;;
+esac
+
+python_stdin_output="$(printf '%s\n' "$test_url" | URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -m url_sanitize -)"
+if [[ "$python_stdin_output" != "$expected_url" ]]; then
+  echo "unexpected Python module stdin output: $python_stdin_output" >&2
   exit 1
 fi
 

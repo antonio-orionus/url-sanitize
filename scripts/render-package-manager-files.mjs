@@ -39,7 +39,9 @@ writeFileSync(
 );
 
 function renderHomebrew(version, assetNames, checksums) {
-  return `class UrlSanitize < Formula
+  return `require "json"
+
+class UrlSanitize < Formula
   desc "Remove tracking parameters and unwrap tracking redirects from URLs"
   homepage "https://github.com/antonio-orionus/url-sanitize"
   version "${version}"
@@ -74,8 +76,20 @@ function renderHomebrew(version, assetNames, checksums) {
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/url-sanitize --version")
-    assert_equal "https://example.com/", shell_output("#{bin}/url-sanitize https://example.com/?utm_source=x").strip
+    test_url = "https://example.com/article?utm_source=newsletter&id=123"
+    cleaned_url = "https://example.com/article?id=123"
+
+    version_output = shell_output("#{bin}/url-sanitize --version")
+    assert_match version.to_s, version_output
+    assert_match(/catalog [0-9a-f]{64}/, version_output)
+
+    assert_equal cleaned_url, pipe_output("#{bin}/url-sanitize -", "#{test_url}\\n").strip
+
+    json_output = pipe_output("#{bin}/url-sanitize --json -", "#{test_url}\\n")
+    parsed = JSON.parse(json_output)
+    assert_equal "cleaned", parsed["kind"]
+    assert_equal cleaned_url, parsed["url"]
+    assert_includes parsed["strippedParams"], "utm_source"
   end
 end
 `;

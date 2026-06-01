@@ -16,7 +16,7 @@ Public package state after the v0.1.4 distribution release:
 - The Rust CLI embeds a pinned ClearURLs-compatible catalog and supports structured, deterministic output.
 - Release automation uses a centralized platform matrix, verifies aligned npm/Cargo/PyPI versions, dry-runs archive/package-manager generation on PRs, auto-tags version bumps after `main` CI passes, publishes from `v*` tags, and runs public endpoint smoke inside `release.yml`.
 
-The next adoption bottleneck is still distribution reach, but the main package-manager path is now proven across Homebrew and Scoop. Remaining optional gaps are AUR/Winget coverage and broader package-manager smoke automation where the ecosystem runtime is available in CI.
+The next adoption bottleneck is still distribution reach, but the main package-manager path is now proven across Homebrew and Scoop. v0.2 now has CI/container install examples plus install-and-exercise smoke for the package-manager surfaces that GitHub-hosted runners can reasonably execute. AUR, Winget, and distro packages are deferred until user demand or cheap automation makes them worth the maintenance surface.
 
 ## Strategic bet
 
@@ -24,7 +24,7 @@ The next adoption bottleneck is still distribution reach, but the main package-m
 
 The adoption rule is blunt: meet people in their package manager, but run the same native core wherever possible.
 
-1. **Everywhere install** — crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, AUR, and CI/container environments should land on one native binary; npm stays pure TypeScript until native npm packages are worth the extra registry overhead.
+1. **Everywhere install** — crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, and CI/container environments should land on one native binary; npm stays pure TypeScript until native npm packages are worth the extra registry overhead. AUR, Winget, and distro packages stay demand-driven.
 2. **Agent-native output** — structured JSON, deterministic output, and explainable matches make this usable by agents without scraping terminal text.
 3. **Correctness + explainability** — never break a URL silently; report which param, redirect provider, or block rule fired.
 4. **Fresh rules with permissive engine licensing** — daily-synced ClearURLs-compatible data, MIT engine, no AGPL lock-in.
@@ -60,7 +60,7 @@ url-sanitize/
 
 Engine decisions:
 
-- The Rust `url-sanitize-core` crate is the canonical native core for the Rust CLI, PyPI package, Homebrew/Scoop/AUR packages, GitHub Release binaries, and CI/container wrappers.
+- The Rust `url-sanitize-core` crate is the canonical native core for the Rust CLI, PyPI package, Homebrew/Scoop packages, GitHub Release binaries, and CI/container wrappers. Future AUR/Winget/distro packages should use the same native core if demand justifies them.
 - The pure TypeScript engine remains first-class. JS users should not be forced into WASM or native binaries for ordinary library use.
 - The conformance corpus is the law. TypeScript, Rust, Python wrappers, WASM, and native launchers must agree on behavior or CI fails.
 - Language packages are adoption channels, not excuses to fork behavior. Prefer packaging or invoking the native binary over maintaining another sanitizer implementation.
@@ -101,9 +101,18 @@ Engine decisions:
 - Broader GitHub Release binary coverage where CI can build and smoke-test the target. v0.1.4 ships Linux x64/ARM64, macOS Apple Silicon/Intel, and Windows x64 archives.
 - Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets. v0.1.4 proved GitHub Release assets, installer smokes, automated Homebrew/Scoop metadata publication, and public endpoint smoke.
 - npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
-- Homebrew and Scoop packages shipped and are release-verified. AUR if cheap; Winget when Windows demand or automation makes it worthwhile.
-- CI/install docs for GitHub Actions, GitLab CI, Dockerfiles, direct binary download, npm, cargo, PyPI, brew, and scoop.
-- Packaging smoke tests proving each ecosystem wrapper invokes the same binary version/catalog hash and supports `--json`, stdin, and `--version`.
+- Homebrew and Scoop packages shipped and are release-verified.
+
+**Implemented:**
+
+- Package-manager smoke coverage: CI validates Homebrew formula syntax, installs and exercises the checked-in Homebrew formula on macOS, installs and exercises the checked-in Scoop manifest on Windows, release dry-runs Homebrew/Scoop metadata generation, public release smoke verifies npm, crates.io, PyPI, GitHub Release assets, Homebrew formula metadata, and Scoop manifest metadata, then installs and exercises the published Homebrew/Scoop packages.
+- Install docs: [`docs/install.md`](install.md) covers direct installers, pinned direct binary download, npm/npx, cargo, PyPI wrapper requirements, Homebrew, Scoop, GitHub Actions, GitLab CI, Dockerfile, and package-manager CI snippets.
+- Wrapper smoke parity: reusable smoke helpers exercise `--version`, catalog hash format, `--json`, stdin, and default output for native binaries, installers, Homebrew, Scoop, the npm CLI, and the Python wrapper.
+
+**Deferred:**
+
+- AUR packaging.
+- Winget packaging.
 
 **Why before more features:**
 

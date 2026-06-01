@@ -92,9 +92,7 @@ jobs:
       - name: Smoke native binary
         run: |
           set -euo pipefail
-          "dist/${{ matrix.target }}/${{ matrix.binary }}" --version
-          "dist/${{ matrix.target }}/${{ matrix.binary }}" --json "https://example.com/?utm_source=x"
-          printf '%s\n' "https://example.com/?utm_source=x" | "dist/${{ matrix.target }}/${{ matrix.binary }}" -
+          scripts/smoke-cli.sh "dist/${{ matrix.target }}/${{ matrix.binary }}"
         shell: bash
       - name: Build release archive
         run: |
@@ -141,6 +139,8 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v6
+
       - name: Smoke published Linux installer
         if: runner.os == 'Linux'
         env:
@@ -152,9 +152,7 @@ jobs:
             "https://github.com/antonio-orionus/url-sanitize/releases/download/${REF_NAME}/url-sanitize-installer.sh" \
             -o "$RUNNER_TEMP/url-sanitize-installer.sh"
           URL_SANITIZE_INSTALL_DIR="$install_dir" sh "$RUNNER_TEMP/url-sanitize-installer.sh"
-          "$install_dir/url-sanitize" --version
-          output="$("$install_dir/url-sanitize" "https://example.com/?utm_source=x")"
-          test "$output" = "https://example.com/"
+          scripts/smoke-cli.sh "$install_dir/url-sanitize" "${REF_NAME#v}"
 
       - name: Smoke published Windows installer
         if: runner.os == 'Windows'
@@ -169,21 +167,27 @@ jobs:
             -OutFile $Installer
           $env:URL_SANITIZE_INSTALL_DIR = $InstallDir
           & $Installer
-          & (Join-Path $InstallDir "url-sanitize.exe") --version
-          $Output = & (Join-Path $InstallDir "url-sanitize.exe") "https://example.com/?utm_source=x"
-          if ($Output -ne "https://example.com/") {
-            throw "unexpected sanitized URL: $Output"
-          }
+          ./scripts/smoke-cli.ps1 -Command (Join-Path $InstallDir "url-sanitize.exe") -ExpectedVersion ($env:REF_NAME -replace '^v', '')
 
   publish-package-managers:
     needs: smoke-installers
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.packaging-config.outputs.configured }}
     env:
       PACKAGING_REPO_TOKEN: ${{ secrets.PACKAGING_REPO_TOKEN }}
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
     steps:
+      - id: packaging-config
+        run: |
+          if [ -n "$PACKAGING_REPO_TOKEN" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Skip if package-manager publishing is not configured
         if: env.PACKAGING_REPO_TOKEN == ''
         run: echo "PACKAGING_REPO_TOKEN is not configured; skipping Homebrew/Scoop publishing"
@@ -267,6 +271,46 @@ jobs:
           node-version: '22'
       - name: Verify public release surfaces
         run: node scripts/verify-published-release.mjs "${GITHUB_REF_NAME}"
+
+  post-release-homebrew-smoke:
+    needs: publish-package-managers
+    if: startsWith(github.ref, 'refs/tags/') && needs.publish-package-managers.outputs.configured == 'true'
+    runs-on: macos-14
+    env:
+      HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install and smoke published Homebrew formula
+        run: |
+          set -euo pipefail
+          brew tap "$HOMEBREW_TAP_REPO"
+          brew install "$HOMEBREW_TAP_REPO/url-sanitize"
+          scripts/smoke-cli.sh "$(brew --prefix)/bin/url-sanitize" "${GITHUB_REF_NAME#v}"
+
+  post-release-scoop-smoke:
+    needs: publish-package-managers
+    if: startsWith(github.ref, 'refs/tags/') && needs.publish-package-managers.outputs.configured == 'true'
+    runs-on: windows-latest
+    env:
+      SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install and smoke published Scoop manifest
+        shell: pwsh
+        run: |
+          $env:SCOOP = Join-Path $env:RUNNER_TEMP "scoop"
+          $env:SCOOP_GLOBAL = Join-Path $env:RUNNER_TEMP "scoop-global"
+          [Environment]::SetEnvironmentVariable("SCOOP", $env:SCOOP, "User")
+          [Environment]::SetEnvironmentVariable("SCOOP_GLOBAL", $env:SCOOP_GLOBAL, "User")
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+          $env:Path = "$env:SCOOP\shims;$env:Path"
+          scoop bucket add url-sanitize "https://github.com/$env:SCOOP_BUCKET_REPO"
+          scoop install url-sanitize
+          ./scripts/smoke-cli.ps1 -Command "url-sanitize" -ExpectedVersion ($env:GITHUB_REF_NAME -replace '^v', '')
 
   publish-npm:
     needs: verify
