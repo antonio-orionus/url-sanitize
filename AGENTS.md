@@ -112,12 +112,14 @@ Result is a discriminated union: `{ kind: 'unchanged' } | { kind: 'cleaned', str
 4. Add `"files": ["dist"]`
 5. `pnpm install` to link workspace
 6. **Bootstrap the first publish manually — do this BEFORE the release CI runs for this package.** OIDC trusted publishing cannot create a name with zero published versions (see [Publishing](#publishing)). Once:
+
    ```bash
    pnpm build
    npm login                                                          # account with @url-sanitize scope access
    pnpm --filter "@url-sanitize/<name>" pack --pack-destination "$PWD/npm-packages"
    npm publish "$PWD"/npm-packages/url-sanitize-<name>-*.tgz --access public
    ```
+
    Then on npmjs.org open the package → **Settings → Trusted Publisher** and add the GitHub Actions publisher (repo `antonio-orionus/url-sanitize`, workflow `release.yml`) to match the existing packages. After that, every release publishes via OIDC automatically.
 
 ## Non-goals
