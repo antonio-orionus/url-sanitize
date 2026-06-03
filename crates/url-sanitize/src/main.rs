@@ -43,7 +43,7 @@ OPTIONS:
     --unwrap-redirects      Unwrap redirector URLs (default)
     --no-unwrap-redirects   Leave redirector URLs untouched
     --block-domains         Emit `blocked` for domain-blocked URLs
-    --version               Print version + catalog hash/date
+    --version               Print version + catalog identity and generated date
     -h, --help              Show this help
 
 EXIT CODES:

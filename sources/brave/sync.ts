@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const RULES_URL =
   'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json';
 const LICENSE = 'MPL-2.0';
+const FETCH_TIMEOUT_MS = 10_000;
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = resolve(here, '../../packages/brave/data');
@@ -27,7 +28,7 @@ async function readExistingHash(): Promise<string | null> {
 
 async function main(): Promise<void> {
   console.log(`fetching ${RULES_URL}`);
-  const response = await fetch(RULES_URL);
+  const response = await fetchWithTimeout(RULES_URL);
   if (!response.ok) throw new Error(`Fetch ${RULES_URL} failed: ${response.status}`);
   const text = await response.text();
   const parsed = JSON.parse(text) as unknown;
@@ -71,6 +72,17 @@ async function main(): Promise<void> {
   );
   console.log(`wrote ${dataDir}/data.json + metadata.json`);
   console.log(`hash: ${hash}`);
+}
+
+async function fetchWithTimeout(url: string): Promise<Response> {
+  try {
+    return await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+  } catch (err) {
+    if (err instanceof Error && (err.name === 'AbortError' || err.name === 'TimeoutError')) {
+      throw new Error(`Fetch ${url} timed out after ${FETCH_TIMEOUT_MS}ms`);
+    }
+    throw err;
+  }
 }
 
 main().catch((err: unknown) => {

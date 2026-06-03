@@ -59,6 +59,14 @@ function preprocessConditionals(text: string): string[] {
       activeStack.push(activeStack.at(-1) === true && evalCondition(condition));
       continue;
     }
+    if (line.startsWith('!#else')) {
+      if (activeStack.length > 1) {
+        const parentActive = activeStack.at(-2) === true;
+        const branchWasActive = activeStack.at(-1) === true;
+        activeStack[activeStack.length - 1] = parentActive && !branchWasActive;
+      }
+      continue;
+    }
     if (line.startsWith('!#endif')) {
       if (activeStack.length > 1) activeStack.pop();
       continue;

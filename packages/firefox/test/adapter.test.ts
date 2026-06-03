@@ -54,4 +54,35 @@ describe('firefoxToCatalog', () => {
       )
     ).toThrow(/Unsupported Firefox filter_expression/);
   });
+
+  it('applies standalone allow-list records as global exceptions', () => {
+    const catalog = firefoxToCatalog(
+      {
+        data: [
+          {
+            id: 'allow-record',
+            schema: 1,
+            last_modified: 1,
+            allowList: ['allowed.example'],
+            stripList: []
+          },
+          {
+            id: 'strip-record',
+            schema: 1,
+            last_modified: 2,
+            allowList: [],
+            stripList: ['wbraid']
+          }
+        ]
+      },
+      metadata
+    );
+    const sanitize = compileSanitizer(catalog);
+
+    expect(sanitize('https://allowed.example/?wbraid=1').kind).toBe('unchanged');
+    expect(sanitize('https://example.com/?wbraid=1&keep=1')).toMatchObject({
+      kind: 'cleaned',
+      url: 'https://example.com/?keep=1'
+    });
+  });
 });

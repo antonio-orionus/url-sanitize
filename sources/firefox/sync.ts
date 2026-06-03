@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const RULES_URL =
   'https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/query-stripping/records';
 const LICENSE = 'MPL-2.0';
+const FETCH_TIMEOUT_MS = 10_000;
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = resolve(here, '../../packages/firefox/data');
@@ -27,7 +28,7 @@ async function readExistingHash(): Promise<string | null> {
 
 async function main(): Promise<void> {
   console.log(`fetching ${RULES_URL}`);
-  const response = await fetch(RULES_URL);
+  const response = await fetchWithTimeout(RULES_URL);
   if (!response.ok) throw new Error(`Fetch ${RULES_URL} failed: ${response.status}`);
   const parsed = (await response.json()) as unknown;
   if (
@@ -69,6 +70,17 @@ async function main(): Promise<void> {
   );
   console.log(`wrote ${dataDir}/data.json + metadata.json`);
   console.log(`hash: ${hash}`);
+}
+
+async function fetchWithTimeout(url: string): Promise<Response> {
+  try {
+    return await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+  } catch (err) {
+    if (err instanceof Error && (err.name === 'AbortError' || err.name === 'TimeoutError')) {
+      throw new Error(`Fetch ${url} timed out after ${FETCH_TIMEOUT_MS}ms`);
+    }
+    throw err;
+  }
 }
 
 main().catch((err: unknown) => {

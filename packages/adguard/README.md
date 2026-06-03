@@ -3,7 +3,7 @@
 AdGuard URL Tracking Protection catalog and adapter for
 [`@url-sanitize/core`](../core).
 
-Ships a pinned snapshot of:
+Bundles data synced from the upstream source:
 
 ```text
 https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt

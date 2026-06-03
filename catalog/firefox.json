@@ -16,161 +16,207 @@
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "gclid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "dclid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "msclkid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "_openstat",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "yclid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "wickedid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "twclid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "_hsenc",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "__hssc",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "__hstc",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "__hsfp",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "hsctatracking",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "wbraid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "gbraid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
       "paramPattern": "ysclid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "mc_eid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "oly_anon_id",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "oly_enc_id",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "__s",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "vero_id",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "_hsenc",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "mkt_tok",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     },
     {
       "kind": "strip-param",
       "source": "firefox",
       "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
       "paramPattern": "fbclid",
-      "exceptions": []
+      "exceptions": [
+        "^https?:\\/\\/([^/?#]+\\.)?googleadservices\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      ]
     }
   ]
 }

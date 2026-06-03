@@ -146,10 +146,13 @@ describe('compileSanitizer', () => {
     }
   });
 
-  it('skips prepend-scheme rules when the captured target already has a scheme', () => {
+  it('keeps absolute redirect targets when prependScheme is configured', () => {
     const sanitize = compileSanitizer(miniCatalog);
     const result = sanitize('https://path.example/out/https://example.com/path');
-    expect(result.kind).toBe('unchanged');
+    expect(result.kind).toBe('redirected');
+    if (result.kind === 'redirected') {
+      expect(result.url).toBe('https://example.com/path');
+    }
   });
 
   it('unwraps redirect targets with templates', () => {

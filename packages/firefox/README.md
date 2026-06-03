@@ -17,6 +17,14 @@ npm install @url-sanitize/core @url-sanitize/firefox
 ## Usage
 
 ```ts
+import { sanitize } from '@url-sanitize/firefox';
+
+sanitize('https://example.com/?wbraid=x&id=123');
+```
+
+For manual compilation:
+
+```ts
 import { compileSanitizer } from '@url-sanitize/core';
 import { firefoxCatalog } from '@url-sanitize/firefox';
 

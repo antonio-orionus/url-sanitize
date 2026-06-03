@@ -36,4 +36,12 @@ describe('mergeSources', () => {
     expect(merged.rules).toHaveLength(1);
     expect(merged.rules[0]?.provider).toBe('first');
   });
+
+  it('supports empty source lists', () => {
+    const merged = mergeSources([]);
+
+    expect(merged.generatedAt).toBe('');
+    expect(merged.rules).toEqual([]);
+    expect(merged.sources).toEqual([]);
+  });
 });

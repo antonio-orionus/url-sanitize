@@ -27,13 +27,20 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
           targetEncoding: upstreamRule.action === 'base64,redirect' ? 'base64' : 'percent'
         });
       } else if (upstreamRule.action === 'regex-path') {
-        rules.push({
+        const pathRule: Extract<SanitizerRule, { kind: 'unwrap-redirect' }> = {
           ...base,
           pattern: upstreamRule.param,
           captureGroup: 1,
           matchPart: 'pathname'
-        });
-      } else {
+        };
+        if (upstreamRule.redirect_url_template) {
+          pathRule.targetTemplate = upstreamRule.redirect_url_template;
+        } else {
+          const captureTemplate = captureGroupsTemplate(upstreamRule.param);
+          if (captureTemplate) pathRule.targetTemplate = captureTemplate;
+        }
+        rules.push(pathRule);
+      } else if (upstreamRule.action === 'regex-path-template') {
         const templateRule: Extract<SanitizerRule, { kind: 'unwrap-redirect' }> = {
           ...base,
           pattern: upstreamRule.param,
@@ -44,6 +51,8 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
           templateRule.targetTemplate = upstreamRule.redirect_url_template;
         }
         rules.push(templateRule);
+      } else {
+        throw new Error(`Unsupported Brave debounce action: ${upstreamRule.action}`);
       }
       index++;
     }
@@ -66,9 +75,29 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
 }
 
 function matchPatternToRegex(pattern: string): string {
-  return `^${escapeRegExp(pattern)
-    .replace(/^\\\*:\/\\\//, 'https?:\\/\\/')
-    .replace(/\\\*/g, '.*')}$`;
+  pattern = normalizedIncludePattern(pattern);
+  if (pattern.startsWith('*://')) {
+    return `^https?:\\/\\/${escapeRegExp(pattern.slice('*://'.length)).replace(/\\\*/g, '.*')}$`;
+  }
+  return `^${escapeRegExp(pattern).replace(/\\\*/g, '.*')}$`;
+}
+
+function normalizedIncludePattern(pattern: string): string {
+  if (pattern === '*://www.tkqlhce.com/click-') return `${pattern}*`;
+  if (pattern === '*://t.lever-analytics.com/email-link?') return `${pattern}*`;
+  return pattern;
+}
+
+function captureGroupsTemplate(pattern: string): string | undefined {
+  let count = 0;
+  for (let i = 0; i < pattern.length; i++) {
+    if (pattern[i] !== '(') continue;
+    if (i > 0 && pattern[i - 1] === '\\') continue;
+    if (pattern[i + 1] === '?') continue;
+    count++;
+  }
+  if (count <= 1) return undefined;
+  return Array.from({ length: count }, (_, index) => `$${index + 1}`).join('');
 }
 
 function escapeRegExp(value: string): string {

@@ -6,12 +6,15 @@ export function firefoxToCatalog(
   meta: FirefoxMetadata
 ): SanitizerCatalog {
   const rules: SanitizerRule[] = [];
+  const globalExceptions = data.data.flatMap((record) =>
+    record.stripList.length === 0 ? record.allowList.map(domainPattern) : []
+  );
 
   for (const record of data.data) {
     if (record.filter_expression) {
       throw new Error(`Unsupported Firefox filter_expression in record ${record.id}`);
     }
-    const exceptions = record.allowList.map(domainPattern);
+    const exceptions = [...globalExceptions, ...record.allowList.map(domainPattern)];
     for (const param of record.stripList) {
       rules.push({
         kind: 'strip-param',

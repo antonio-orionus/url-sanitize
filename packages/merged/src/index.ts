@@ -36,7 +36,7 @@ export function mergeSources(
     version: `merged(${catalogs.map((catalog) => catalog.version).join(',')})`,
     generatedAt: catalogs
       .map((catalog) => catalog.generatedAt)
-      .reduce((latest, generatedAt) => (generatedAt > latest ? generatedAt : latest)),
+      .reduce((latest, generatedAt) => (generatedAt > latest ? generatedAt : latest), ''),
     sources: catalogs.flatMap((catalog) => catalog.sources.map((source) => ({ ...source }))),
     rules
   };

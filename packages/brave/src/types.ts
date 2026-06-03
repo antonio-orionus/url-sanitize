@@ -1,5 +1,12 @@
+export type BraveDebounceAction =
+  | 'redirect'
+  | 'base64,redirect'
+  | 'regex-path'
+  | 'regex-path-template'
+  | (string & {});
+
 export interface BraveDebounceRule {
-  action: 'redirect' | 'base64,redirect' | 'regex-path' | 'regex-path-template';
+  action: BraveDebounceAction;
   exclude: string[];
   include: string[];
   param: string;

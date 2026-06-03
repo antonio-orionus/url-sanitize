@@ -172,7 +172,7 @@ function targetWithPrependedScheme(
   if (!scheme) return target;
   try {
     new URL(target);
-    return null;
+    return target;
   } catch {
     return `${scheme}://${target.replace(/^\/+/, '')}`;
   }

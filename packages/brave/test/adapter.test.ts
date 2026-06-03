@@ -21,6 +21,12 @@ describe('braveToCatalog', () => {
           param: 'url'
         },
         {
+          include: ['*://t.lever-analytics.com/email-link?'],
+          exclude: [],
+          action: 'redirect',
+          param: 'dest'
+        },
+        {
           include: ['*://b64.example/*'],
           exclude: [],
           action: 'base64,redirect',
@@ -39,6 +45,13 @@ describe('braveToCatalog', () => {
           action: 'regex-path-template',
           param: '^/amp/s/([^/]+)/(.*)$',
           redirect_url_template: 'https://$1/$2'
+        },
+        {
+          include: ['*://multi.example/*'],
+          exclude: [],
+          prepend_scheme: 'https',
+          action: 'regex-path',
+          param: '^/([^/]+)/s(/.*)$'
         }
       ],
       metadata
@@ -46,6 +59,12 @@ describe('braveToCatalog', () => {
     const sanitize = compileSanitizer(catalog);
 
     expect(sanitize('https://go.example/?url=https%3A%2F%2Ftarget.example%2F')).toMatchObject({
+      kind: 'redirected',
+      url: 'https://target.example/'
+    });
+    expect(
+      sanitize('https://t.lever-analytics.com/email-link?dest=https%3A%2F%2Ftarget.example%2F')
+    ).toMatchObject({
       kind: 'redirected',
       url: 'https://target.example/'
     });
@@ -60,5 +79,28 @@ describe('braveToCatalog', () => {
       kind: 'redirected',
       url: 'https://target.example/a/b'
     });
+    expect(sanitize('https://multi.example/example.com/s/article')).toMatchObject({
+      kind: 'redirected',
+      url: 'https://example.com/article'
+    });
+    expect(sanitize('ftp://go.example/?url=https%3A%2F%2Ftarget.example%2F').kind).toBe(
+      'unchanged'
+    );
+  });
+
+  it('throws on unsupported actions', () => {
+    expect(() =>
+      braveToCatalog(
+        [
+          {
+            include: ['*://unknown.example/*'],
+            exclude: [],
+            action: 'future-action',
+            param: 'target'
+          }
+        ],
+        metadata
+      )
+    ).toThrow(/Unsupported Brave debounce action/);
   });
 });

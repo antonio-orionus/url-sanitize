@@ -77,7 +77,7 @@ fn target_with_prepended_scheme(
         return Some(target.to_string());
     };
     if Url::parse(target).is_ok() {
-        return None;
+        return Some(target.to_string());
     }
     Some(format!(
         "{}://{}",
