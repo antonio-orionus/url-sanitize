@@ -361,6 +361,10 @@ jobs:
 
           publish_pkg "@url-sanitize/core" "@url-sanitize/core"
           publish_pkg "@url-sanitize/clearurls" "@url-sanitize/clearurls"
+          publish_pkg "@url-sanitize/adguard" "@url-sanitize/adguard"
+          publish_pkg "@url-sanitize/brave" "@url-sanitize/brave"
+          publish_pkg "@url-sanitize/firefox" "@url-sanitize/firefox"
+          publish_pkg "@url-sanitize/merged" "@url-sanitize/merged"
           publish_pkg "@url-sanitize/cli" "@url-sanitize/cli"
           publish_pkg "@url-sanitize/fetch" "@url-sanitize/fetch"
 

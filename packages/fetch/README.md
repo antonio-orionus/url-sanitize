@@ -3,6 +3,9 @@
 Runtime ClearURLs catalog fetching with SHA256 verification and optional
 consumer-side hash pinning.
 
+This package intentionally fetches only ClearURLs at runtime. For the bundled
+default multi-source behavior, use `@url-sanitize/merged`.
+
 ## Install
 
 ```sh

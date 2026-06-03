@@ -2,7 +2,7 @@
 
 Sub-1MB native CLI to remove tracking parameters and unwrap tracking redirects
 from URLs. Agent-friendly: deterministic, structured (`--json`), no prompts,
-pinned ruleset baked in.
+pinned multi-source ruleset baked in.
 
 ```
 url-sanitize 'https://example.com/?utm_source=x'
@@ -19,4 +19,4 @@ See [the spec](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/sp
 for the full CLI contract, exit codes, and output schema.
 
 Built on [`url-sanitize-core`](https://crates.io/crates/url-sanitize-core) and
-the [ClearURLs](https://docs.clearurls.xyz/) ruleset (LGPL-3.0; see NOTICE).
+the merged ClearURLs, AdGuard, Brave, and Firefox catalog.

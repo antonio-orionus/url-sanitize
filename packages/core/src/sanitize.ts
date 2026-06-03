@@ -12,6 +12,7 @@ interface CompiledStripParam {
   provider: string;
   urlPattern: RegExp | null;
   paramPattern: RegExp;
+  valuePattern: RegExp | null;
   exceptions: RegExp[];
   isReferralMarketing: boolean;
 }
@@ -33,6 +34,10 @@ interface CompiledUnwrapRedirect {
   urlPattern: RegExp | null;
   pattern: RegExp;
   captureGroup: number;
+  matchPart: 'url' | 'pathname';
+  targetEncoding: 'percent' | 'base64';
+  prependScheme: 'http' | 'https' | undefined;
+  targetTemplate: string | undefined;
   exceptions: RegExp[];
 }
 
@@ -73,6 +78,8 @@ function compileRule(rule: SanitizerRule): CompiledRule | null {
     case 'strip-param': {
       const paramPattern = safeRegex(`^(?:${rule.paramPattern})$`, 'i');
       if (!paramPattern) return null;
+      const valuePattern = rule.valuePattern ? safeRegex(`^(?:${rule.valuePattern})$`, 'i') : null;
+      if (rule.valuePattern && !valuePattern) return null;
       const urlPattern = rule.urlPattern ? safeRegex(rule.urlPattern, 'i') : null;
       if (rule.urlPattern && !urlPattern) return null;
       return {
@@ -81,6 +88,7 @@ function compileRule(rule: SanitizerRule): CompiledRule | null {
         provider: rule.provider,
         urlPattern,
         paramPattern,
+        valuePattern,
         exceptions: compileExceptions(rule.exceptions),
         isReferralMarketing: rule.isReferralMarketing ?? false
       };
@@ -112,6 +120,10 @@ function compileRule(rule: SanitizerRule): CompiledRule | null {
         urlPattern,
         pattern,
         captureGroup: rule.captureGroup,
+        matchPart: rule.matchPart ?? 'url',
+        targetEncoding: rule.targetEncoding ?? 'percent',
+        prependScheme: rule.prependScheme,
+        targetTemplate: rule.targetTemplate,
         exceptions: compileExceptions(rule.exceptions)
       };
     }
@@ -134,6 +146,35 @@ function safeDecode(value: string): string {
     return decodeURIComponent(value);
   } catch {
     return value;
+  }
+}
+
+function safeBase64Decode(value: string): string | null {
+  try {
+    const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '=');
+    const binary = globalThis.atob(padded);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  } catch {
+    return null;
+  }
+}
+
+function templateTarget(template: string, match: RegExpExecArray): string {
+  return template.replace(/\$([1-9])/g, (_, index: string) => match[Number(index)] ?? '');
+}
+
+function targetWithPrependedScheme(
+  target: string,
+  scheme: 'http' | 'https' | undefined
+): string | null {
+  if (!scheme) return target;
+  try {
+    new URL(target);
+    return null;
+  } catch {
+    return `${scheme}://${target.replace(/^\/+/, '')}`;
   }
 }
 
@@ -196,10 +237,27 @@ export function compileSanitizer(
 
         case 'unwrap-redirect': {
           if (!unwrapRedirects) continue;
-          const m = rule.pattern.exec(current);
-          const captured = m?.[rule.captureGroup];
+          let matchInput = current;
+          if (rule.matchPart === 'pathname') {
+            try {
+              matchInput = new URL(current).pathname;
+            } catch {
+              continue;
+            }
+          }
+          const m = rule.pattern.exec(matchInput);
+          if (!m) continue;
+          const captured = rule.targetTemplate
+            ? templateTarget(rule.targetTemplate, m)
+            : m[rule.captureGroup];
           if (typeof captured === 'string' && captured.length > 0) {
-            const target = safeDecode(captured);
+            const decodedTarget =
+              rule.targetEncoding === 'base64'
+                ? safeBase64Decode(safeDecode(captured))
+                : safeDecode(captured);
+            if (!decodedTarget) continue;
+            const target = targetWithPrependedScheme(decodedTarget, rule.prependScheme);
+            if (!target) continue;
             try {
               const targetUrl = new URL(target);
               return {
@@ -236,8 +294,8 @@ export function compileSanitizer(
           } catch {
             continue;
           }
-          const search = stripFromQueryString(urlObj.search, rule.paramPattern);
-          const hash = stripFromQueryString(urlObj.hash, rule.paramPattern);
+          const search = stripFromQueryString(urlObj.search, rule.paramPattern, rule.valuePattern);
+          const hash = stripFromQueryString(urlObj.hash, rule.paramPattern, rule.valuePattern);
           const removed = [...search.removed, ...hash.removed];
           if (removed.length === 0) continue;
           urlObj.search = search.result;
@@ -268,7 +326,8 @@ export function compileSanitizer(
 
 function stripFromQueryString(
   searchOrHash: string,
-  paramPattern: RegExp
+  paramPattern: RegExp,
+  valuePattern: RegExp | null
 ): { result: string; removed: string[] } {
   if (!searchOrHash) return { result: searchOrHash, removed: [] };
   const prefix = searchOrHash.charAt(0);
@@ -280,7 +339,8 @@ function stripFromQueryString(
   for (const pair of pairs) {
     const eqIdx = pair.indexOf('=');
     const name = eqIdx === -1 ? pair : pair.slice(0, eqIdx);
-    if (paramPattern.test(name)) {
+    const value = eqIdx === -1 ? '' : pair.slice(eqIdx + 1);
+    if (paramPattern.test(name) && (!valuePattern || valuePattern.test(value))) {
       removed.push(name);
     } else {
       kept.push(pair);

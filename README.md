@@ -1,8 +1,8 @@
 # url-sanitize
 
-> Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs-compatible rules.
+> Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs, AdGuard, Brave, and Firefox rules.
 
-**Looking for CleanURLs / ClearURLs behavior as a library or CLI?** You're in the right place. `url-sanitize` removes tracking junk like `utm_*`, `fbclid`, and redirector wrappers while telling you exactly which rule changed the URL.
+**Looking for CleanURLs / ClearURLs behavior as a library or CLI?** You're in the right place. `url-sanitize` removes tracking junk like `utm_*`, `fbclid`, and redirector wrappers, now using a merged ClearURLs / AdGuard / Brave / Firefox catalog by default.
 
 Use it from npm, crates.io, native release binaries, Python, CI, workers, browsers, edge runtimes, Node.js, Bun, and Deno.
 
@@ -10,9 +10,9 @@ Use it from npm, crates.io, native release binaries, Python, CI, workers, browse
 
 - **One behavior contract across languages.** TypeScript and Rust implementations are checked against the same JSONL conformance corpus.
 - **Explainable privacy cleanup.** Results include the stripped params, redirect provider, or block rule instead of returning an opaque string.
-- **ClearURLs-compatible without AGPL lock-in.** Code, CLIs, and tooling are MIT; ClearURLs-derived rule data remains LGPL-3.0-only.
+- **Multi-source without AGPL lock-in.** Code, CLIs, and tooling are MIT; upstream rule data keeps its source license.
 - **Automation-friendly.** The Rust CLI is deterministic, prompt-free, supports `--json`, and embeds a pinned catalog.
-- **Fresh rules.** GitHub Actions syncs the upstream ClearURLs catalog daily and release workflows publish npm packages, crates, Python wheels, and native binaries.
+- **Fresh rules.** GitHub Actions syncs upstream ClearURLs, AdGuard, Brave, and Firefox catalogs; release workflows publish npm packages, crates, Python wheels, and native binaries.
 
 ## Install
 
@@ -39,7 +39,8 @@ irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url
 
 ```sh
 npm install -g @url-sanitize/cli
-npm install @url-sanitize/core @url-sanitize/clearurls
+npm install @url-sanitize/core @url-sanitize/merged
+npm install @url-sanitize/clearurls @url-sanitize/adguard @url-sanitize/brave @url-sanitize/firefox
 npm install @url-sanitize/fetch
 cargo install url-sanitize
 cargo add url-sanitize-core
@@ -83,7 +84,7 @@ renders published metadata from GitHub Release `SHA256SUMS`.
 For CI, prefer a pinned release instead of `latest`:
 
 ```sh
-version="v1.0.0"
+version="v2.0.0"
 target="x86_64-unknown-linux-gnu"
 asset="url-sanitize-${target}.tar.gz"
 
@@ -104,7 +105,7 @@ jobs:
       - name: Install url-sanitize
         run: |
           set -euo pipefail
-          version="v1.0.0"
+          version="v2.0.0"
           target="x86_64-unknown-linux-gnu"
           asset="url-sanitize-${target}.tar.gz"
 
@@ -132,7 +133,7 @@ url-sanitize:
   script:
     - |
       set -eu
-      version="v1.0.0"
+      version="v2.0.0"
       target="x86_64-unknown-linux-gnu"
       asset="url-sanitize-${target}.tar.gz"
 
@@ -151,7 +152,7 @@ Dockerfile:
 ```Dockerfile
 FROM ubuntu:24.04
 
-ARG URL_SANITIZE_VERSION=v1.0.0
+ARG URL_SANITIZE_VERSION=v2.0.0
 ARG URL_SANITIZE_TARGET=x86_64-unknown-linux-gnu
 
 RUN apt-get update \
@@ -172,7 +173,7 @@ RUN set -eux; \
 ## TypeScript Quick Start
 
 ```ts
-import { sanitize } from '@url-sanitize/clearurls';
+import { sanitize } from '@url-sanitize/merged';
 
 const result = sanitize('https://example.com/article?utm_source=newsletter&id=123');
 
@@ -190,9 +191,15 @@ console.log(result);
 
 ```ts
 import { compileSanitizer } from '@url-sanitize/core';
-import { clearurlsCatalog } from '@url-sanitize/clearurls';
+import { mergedCatalog } from '@url-sanitize/merged';
 
-const sanitize = compileSanitizer(clearurlsCatalog, { stripReferralMarketing: true });
+const sanitize = compileSanitizer(mergedCatalog, { stripReferralMarketing: true });
+```
+
+**ClearURLs-only behavior is still available:**
+
+```ts
+import { sanitize } from '@url-sanitize/clearurls';
 ```
 
 ## CLI Quick Start
@@ -210,7 +217,7 @@ url-sanitize --json "https://www.google.com/url?q=https%3A%2F%2Fexample.org"
 ```rust
 use url_sanitize_core::{Catalog, SanitizerOptions};
 
-let json = std::fs::read_to_string("catalog/clearurls.json")?;
+let json = std::fs::read_to_string("catalog/catalog.json")?;
 let catalog = Catalog::from_json(&json)?;
 let sanitizer = catalog.compile(SanitizerOptions::default());
 let result = sanitizer.sanitize("https://example.com/?utm_source=x");
@@ -224,17 +231,21 @@ println!("{}", serde_json::to_string(&result)?);
 | --- | --- | --- |
 | [`@url-sanitize/core`](packages/core) | Pure TypeScript sanitization engine. Zero runtime deps. | MIT |
 | [`@url-sanitize/clearurls`](packages/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
+| [`@url-sanitize/adguard`](packages/adguard) | AdGuard URL Tracking Protection catalog + adapter. | LGPL-3.0-only |
+| [`@url-sanitize/brave`](packages/brave) | Brave Debouncer catalog + adapter. | MPL-2.0 |
+| [`@url-sanitize/firefox`](packages/firefox) | Firefox Query Stripping catalog + adapter. | MPL-2.0 |
+| [`@url-sanitize/merged`](packages/merged) | Default merged multi-source catalog. | MIT metadata + upstream data licenses |
 | [`@url-sanitize/cli`](packages/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
 | [`@url-sanitize/fetch`](packages/fetch) | Runtime ClearURLs catalog fetch + SHA256 / pinned-hash verification. | MIT |
 | [`url-sanitize-core`](crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
-| [`url-sanitize`](crates/url-sanitize) | Native Rust CLI with embedded ClearURLs catalog. | MIT |
+| [`url-sanitize`](crates/url-sanitize) | Native Rust CLI with embedded merged catalog. | MIT |
 | [`url-sanitize`](python) | Python wrapper around the native CLI. | MIT |
 | `@url-sanitize/action` | Deferred GitHub Action for downstream PR / docs hygiene. | MIT |
 
 ## GitHub Automation
 
 - `ci.yml` verifies TypeScript build, typecheck, lint, tests, generated catalog freshness, generated conformance freshness, Rust fmt/clippy/tests/package checks, release binary size, npm/Python package smoke tests, installer smoke, and Homebrew/Scoop fixture smoke where runner support exists.
-- `sync-clearurls.yml` checks upstream ClearURLs daily and opens a version-bump PR when rules change.
+- `sync-sources` checks upstream rule sources daily and opens a version-bump PR when rules change.
 - `release-dry-run.yml` builds the release matrix on PRs, assembles archives, renders Homebrew/Scoop metadata, and validates installer/package-manager syntax before merge.
 - `auto-tag.yml` verifies release metadata, creates annotated release tags after package version bumps land on `main`, and explicitly dispatches `release.yml`.
 - `release.yml` publishes npm packages, Rust crates, PyPI package, native GitHub Release assets, Homebrew/Scoop metadata, installer smoke tests, package-manager install smoke, and public endpoint smoke from `v*` tags.
@@ -272,9 +283,9 @@ skips external package-manager publication.
 - **v0.1** — TypeScript engine, ClearURLs adapter, npm CLI, Rust engine, Rust CLI, shared conformance, daily sync workflow
 - **v0.2** — broader native archive coverage, installer refinements, Homebrew/Scoop, CI install examples
 - **v0.3** — runtime catalog fetching, custom user-defined catalogs, schema validation
-- **Deferred** — GitHub Action and MCP surfaces until downstream demand is concrete
 - **v1.0** — stable public API + result types + benchmarks + security policy
-- **v2.0** — multi-source: AdGuard URL Tracking, Brave Debouncer, Firefox query-strip
+- **v2.0** — multi-source packages for AdGuard URL Tracking, Brave Debouncer, Firefox query-strip, and a merged catalog
+- **Deferred** — GitHub Action, MCP, extra package managers, native npm packages, WASM, and in-process Python bindings
 
 ## Contributing
 
@@ -282,4 +293,4 @@ PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT for engine + CLI + tooling. LGPL-3.0-only for ClearURLs-derived data in `@url-sanitize/clearurls`. See [LICENSE](LICENSE) and [docs/license-model.md](docs/license-model.md).
+MIT for engine + CLI + tooling. Bundled upstream rule data keeps its source license: ClearURLs and AdGuard are LGPL-3.0-only; Brave and Firefox data are MPL-2.0. See [LICENSE](LICENSE) and [docs/license-model.md](docs/license-model.md).

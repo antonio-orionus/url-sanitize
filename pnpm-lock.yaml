@@ -17,12 +17,24 @@ importers:
       '@types/node':
         specifier: ^25.9.1
         version: 25.9.1
+      '@url-sanitize/adguard':
+        specifier: workspace:*
+        version: link:packages/adguard
+      '@url-sanitize/brave':
+        specifier: workspace:*
+        version: link:packages/brave
       '@url-sanitize/clearurls':
         specifier: workspace:*
         version: link:packages/clearurls
       '@url-sanitize/core':
         specifier: workspace:*
         version: link:packages/core
+      '@url-sanitize/firefox':
+        specifier: workspace:*
+        version: link:packages/firefox
+      '@url-sanitize/merged':
+        specifier: workspace:*
+        version: link:packages/merged
       ajv:
         specifier: 8.17.1
         version: 8.17.1
@@ -45,6 +57,18 @@ importers:
         specifier: ^4.1.7
         version: 4.1.7(@types/node@25.9.1)(vite@8.0.14(@types/node@25.9.1)(esbuild@0.27.7)(tsx@4.22.3))
 
+  packages/adguard:
+    dependencies:
+      '@url-sanitize/core':
+        specifier: workspace:*
+        version: link:../core
+
+  packages/brave:
+    dependencies:
+      '@url-sanitize/core':
+        specifier: workspace:*
+        version: link:../core
+
   packages/clearurls:
     dependencies:
       '@url-sanitize/core':
@@ -53,12 +77,12 @@ importers:
 
   packages/cli:
     dependencies:
-      '@url-sanitize/clearurls':
-        specifier: workspace:*
-        version: link:../clearurls
       '@url-sanitize/core':
         specifier: workspace:*
         version: link:../core
+      '@url-sanitize/merged':
+        specifier: workspace:*
+        version: link:../merged
 
   packages/core: {}
 
@@ -70,6 +94,30 @@ importers:
       '@url-sanitize/core':
         specifier: workspace:*
         version: link:../core
+
+  packages/firefox:
+    dependencies:
+      '@url-sanitize/core':
+        specifier: workspace:*
+        version: link:../core
+
+  packages/merged:
+    dependencies:
+      '@url-sanitize/adguard':
+        specifier: workspace:*
+        version: link:../adguard
+      '@url-sanitize/brave':
+        specifier: workspace:*
+        version: link:../brave
+      '@url-sanitize/clearurls':
+        specifier: workspace:*
+        version: link:../clearurls
+      '@url-sanitize/core':
+        specifier: workspace:*
+        version: link:../core
+      '@url-sanitize/firefox':
+        specifier: workspace:*
+        version: link:../firefox
 
 packages:
 

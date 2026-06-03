@@ -11,9 +11,9 @@
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { clearurlsCatalog } from '@url-sanitize/clearurls';
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
+import { mergedCatalog } from '@url-sanitize/merged';
 import { describe, expect, it } from 'vitest';
 
 type Expected =
@@ -47,7 +47,7 @@ function readJsonl<T>(path: string): T[] {
 }
 
 function sanitizerFor(opts: SanitizerOptions | undefined) {
-  return compileSanitizer(clearurlsCatalog, opts ?? {});
+  return compileSanitizer(mergedCatalog, opts ?? {});
 }
 
 function urlOf(r: SanitizeResult): string | null {

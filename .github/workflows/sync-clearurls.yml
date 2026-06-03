@@ -1,4 +1,4 @@
-name: sync-clearurls
+name: sync-sources
 
 on:
   schedule:
@@ -25,12 +25,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Fetch and verify upstream rules
-        run: pnpm sync:clearurls
+        run: pnpm sync:sources
 
       - name: Detect changes
         id: diff
         run: |
-          if git diff --quiet packages/clearurls/data; then
+          if git diff --quiet packages/clearurls/data packages/adguard/data packages/brave/data packages/firefox/data; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -52,12 +52,12 @@ jobs:
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           commit-message: 'release: v${{ steps.bump.outputs.new_version }}'
-          title: 'chore(clearurls): sync upstream rules → v${{ steps.bump.outputs.new_version }}'
+          title: 'chore(sources): sync upstream rules → v${{ steps.bump.outputs.new_version }}'
           body: |
-            Automated daily sync of ClearURLs rule catalog from
-            https://rules2.clearurls.xyz/data.minify.json.
-            SHA256 verified against rules.minify.hash.
-          branch: clearurls-sync
+            Automated daily sync of url-sanitize upstream rule catalogs:
+            ClearURLs, AdGuard URL Tracking Protection, Brave Debouncer, and
+            Firefox Query Stripping.
+          branch: source-sync
           delete-branch: true
 
       - name: Enable auto-merge

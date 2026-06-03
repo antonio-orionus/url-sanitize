@@ -1,0 +1,176 @@
+{
+  "version": "61578ba740b7",
+  "generatedAt": "2026-06-03T17:40:39.112Z",
+  "sources": [
+    {
+      "name": "firefox",
+      "version": "61578ba740b7",
+      "hash": "61578ba740b7bb0e9b5450eab725dd3b7be8995ba42633d9d46825745f9e0c7d",
+      "license": "MPL-2.0",
+      "upstream": "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/query-stripping/records"
+    }
+  ],
+  "rules": [
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "gclid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "dclid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "msclkid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "_openstat",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "yclid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "wickedid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "twclid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "_hsenc",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "__hssc",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "__hstc",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "__hsfp",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "hsctatracking",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "wbraid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "gbraid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-85078bad-f31e-4d93-bb8a-81088b25d6dd",
+      "paramPattern": "ysclid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "mc_eid",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "oly_anon_id",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "oly_enc_id",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "__s",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "vero_id",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "_hsenc",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "mkt_tok",
+      "exceptions": []
+    },
+    {
+      "kind": "strip-param",
+      "source": "firefox",
+      "provider": "firefox-76495cfc-fac9-4079-9b5f-9ff0784484de",
+      "paramPattern": "fbclid",
+      "exceptions": []
+    }
+  ]
+}

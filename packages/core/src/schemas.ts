@@ -1,5 +1,8 @@
 const ruleSourceValues = ['clearurls', 'adguard', 'brave', 'firefox', 'custom'] as const;
 const ruleKindValues = ['strip-param', 'raw-replace', 'unwrap-redirect', 'block-domain'] as const;
+const redirectMatchPartValues = ['url', 'pathname'] as const;
+const redirectTargetEncodingValues = ['percent', 'base64'] as const;
+const redirectPrependSchemeValues = ['http', 'https'] as const;
 
 const catalogSourceSchema = {
   type: 'object',
@@ -75,6 +78,7 @@ export const sanitizerCatalogJsonSchema = {
               ...ruleBaseProperties,
               kind: { const: 'strip-param' },
               paramPattern: { type: 'string' },
+              valuePattern: { type: 'string' },
               isReferralMarketing: { type: 'boolean' }
             }
           },
@@ -97,7 +101,11 @@ export const sanitizerCatalogJsonSchema = {
               ...ruleBaseProperties,
               kind: { const: 'unwrap-redirect' },
               pattern: { type: 'string' },
-              captureGroup: { type: 'integer', minimum: 0 }
+              captureGroup: { type: 'integer', minimum: 0 },
+              matchPart: { enum: redirectMatchPartValues },
+              targetEncoding: { enum: redirectTargetEncodingValues },
+              prependScheme: { enum: redirectPrependSchemeValues },
+              targetTemplate: { type: 'string' }
             }
           },
           {

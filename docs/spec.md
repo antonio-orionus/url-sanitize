@@ -112,8 +112,13 @@ Given an input string `S`:
         `{ kind: "blocked", original: S, via }` immediately. (Terminal.)
 
       - **`unwrap-redirect`**: if `unwrapRedirects` is false, skip.
-        Run `rule.pattern` against `current`; take capture group
-        `rule.captureGroup`. Percent-decode it. Try to parse as URL.
+        Run `rule.pattern` against `current` by default, or against the URL
+        pathname when `matchPart: "pathname"` is set. Take capture group
+        `rule.captureGroup`, or substitute `$1..$9` into `targetTemplate` when
+        set. Percent-decode it, or percent-decode then base64-decode when
+        `targetEncoding: "base64"` is set. If `prependScheme` is set, prepend
+        that scheme only when the target is not already a valid absolute URL.
+        Try to parse as URL.
         - If valid URL: return `{ kind: "redirected", original: S, url: parsed.toString(), via }` immediately. (Terminal.)
         - If invalid or empty: skip and continue iteration.
 
@@ -125,7 +130,8 @@ Given an input string `S`:
         `stripReferralMarketing`, skip. Re-parse `current` as URL. Walk both
         the query string (`?...`) and the fragment-as-query (`#...`), splitting
         on `&`. For each `name[=value]` pair: if `paramPattern` matches the
-        name (anchored, case-insensitive: `^(?:<pattern>)$`), drop the pair and
+        name (anchored, case-insensitive: `^(?:<pattern>)$`) and
+        `valuePattern` is absent or matches the raw value, drop the pair and
         append the name to `strippedParams`. Reassemble. If anything was
         removed, update `current` and record a `matchedRules` entry. Order of
         kept pairs is preserved.
@@ -159,6 +165,7 @@ Flags used (per kind):
 | Kind              | Flags       |
 | ----------------- | ----------- |
 | `strip-param`     | `i` (param name match is case-insensitive, anchored as `^(?:P)$`) |
+| `valuePattern`    | `i` (param value match is case-insensitive, anchored as `^(?:P)$`) |
 | `raw-replace`     | `gi`        |
 | `unwrap-redirect` | `i`         |
 | `urlPattern`      | `i`         |
@@ -264,13 +271,13 @@ treat "URL was modified" as a non-zero condition — agents pipe URLs through it
 
 ```ts
 import { compileSanitizer } from '@url-sanitize/core';
-import { clearurlsCatalog, sanitize } from '@url-sanitize/clearurls';
+import { mergedCatalog, sanitize } from '@url-sanitize/merged';
 
 // pre-compiled default
 sanitize('https://example.com/?utm_source=x');
 
 // custom options
-const custom = compileSanitizer(clearurlsCatalog, { stripReferralMarketing: true });
+const custom = compileSanitizer(mergedCatalog, { stripReferralMarketing: true });
 custom('...');
 ```
 
@@ -279,7 +286,7 @@ custom('...');
 ```rust
 use url_sanitize_core::{Catalog, SanitizerOptions};
 
-let json = std::fs::read_to_string("catalog/clearurls.json")?;
+let json = std::fs::read_to_string("catalog/catalog.json")?;
 let catalog = Catalog::from_json(&json)?;
 let sanitizer = catalog.compile(SanitizerOptions::default());
 let result = sanitizer.sanitize("https://example.com/?utm_source=x");
@@ -292,8 +299,10 @@ serializes to identical JSON via `serde`.
 
 ## 8. Versioning
 
-All packages (`@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`,
-`@url-sanitize/fetch`, `url-sanitize-core` crate, `url-sanitize` crate, and the
-Python package in `pyproject.toml`) version-bump together. The public API is
+All packages (`@url-sanitize/core`, `@url-sanitize/clearurls`,
+`@url-sanitize/adguard`, `@url-sanitize/brave`, `@url-sanitize/firefox`,
+`@url-sanitize/merged`, `@url-sanitize/cli`, `@url-sanitize/fetch`,
+`url-sanitize-core` crate, `url-sanitize` crate, and the Python package in
+`pyproject.toml`) version-bump together. The public API is
 governed by **semver of the result schema and CLI contract**, not by any single
 language binding. Breaking the schema is a major bump everywhere.

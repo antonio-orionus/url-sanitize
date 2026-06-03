@@ -1,7 +1,10 @@
 use regex_lite::Regex;
 
 use crate::sanitize::sanitize_with;
-use crate::types::{RuleKind, RuleSource, SanitizeResult, SanitizerOptions, SanitizerRule};
+use crate::types::{
+    RedirectMatchPart, RedirectPrependScheme, RedirectTargetEncoding, RuleKind, RuleSource,
+    SanitizeResult, SanitizerOptions, SanitizerRule,
+};
 
 #[derive(Debug)]
 pub struct CompileError(pub String);
@@ -26,6 +29,7 @@ pub(crate) struct CompiledRule {
 pub(crate) enum CompiledBody {
     StripParam {
         param_pattern: Regex,
+        value_pattern: Option<Regex>,
         is_referral_marketing: bool,
     },
     RawReplace {
@@ -35,6 +39,10 @@ pub(crate) enum CompiledBody {
     UnwrapRedirect {
         pattern: Regex,
         capture_group: usize,
+        match_part: RedirectMatchPart,
+        target_encoding: RedirectTargetEncoding,
+        prepend_scheme: Option<RedirectPrependScheme>,
+        target_template: Option<String>,
     },
     BlockDomain,
 }
@@ -61,10 +69,15 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
             provider,
             url_pattern,
             param_pattern,
+            value_pattern,
             exceptions,
             is_referral_marketing,
         } => {
             let pp = try_re_ci(&format!("^(?:{})$", param_pattern))?;
+            let vp = match value_pattern.as_deref() {
+                Some(p) => Some(try_re_ci(&format!("^(?:{})$", p))?),
+                None => None,
+            };
             let urlp = match url_pattern.as_deref() {
                 Some(p) => Some(try_re_ci(p)?),
                 None => None,
@@ -77,6 +90,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 exceptions: compile_exceptions(exceptions),
                 body: CompiledBody::StripParam {
                     param_pattern: pp,
+                    value_pattern: vp,
                     is_referral_marketing: *is_referral_marketing,
                 },
             })
@@ -112,6 +126,10 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
             url_pattern,
             pattern,
             capture_group,
+            match_part,
+            target_encoding,
+            prepend_scheme,
+            target_template,
             exceptions,
         } => {
             let p = try_re_ci(pattern)?;
@@ -128,6 +146,10 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 body: CompiledBody::UnwrapRedirect {
                     pattern: p,
                     capture_group: *capture_group as usize,
+                    match_part: *match_part,
+                    target_encoding: *target_encoding,
+                    prepend_scheme: *prepend_scheme,
+                    target_template: target_template.clone(),
                 },
             })
         }

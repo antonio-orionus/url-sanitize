@@ -24,15 +24,23 @@ echo "==> Pack npm packages"
 mkdir -p "$TMP/npm-packages"
 pnpm --dir packages/core pack --pack-destination "$TMP/npm-packages"
 pnpm --dir packages/clearurls pack --pack-destination "$TMP/npm-packages"
+pnpm --dir packages/adguard pack --pack-destination "$TMP/npm-packages"
+pnpm --dir packages/brave pack --pack-destination "$TMP/npm-packages"
+pnpm --dir packages/firefox pack --pack-destination "$TMP/npm-packages"
+pnpm --dir packages/merged pack --pack-destination "$TMP/npm-packages"
 pnpm --dir packages/cli pack --pack-destination "$TMP/npm-packages"
 pnpm --dir packages/fetch pack --pack-destination "$TMP/npm-packages"
 
 core_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-core-*.tgz' -print -quit)"
 clearurls_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-clearurls-*.tgz' -print -quit)"
+adguard_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-adguard-*.tgz' -print -quit)"
+brave_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-brave-*.tgz' -print -quit)"
+firefox_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-firefox-*.tgz' -print -quit)"
+merged_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-merged-*.tgz' -print -quit)"
 cli_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-cli-*.tgz' -print -quit)"
 fetch_tgz="$(find "$TMP/npm-packages" -name 'url-sanitize-fetch-*.tgz' -print -quit)"
 
-if [[ -z "$core_tgz" || -z "$clearurls_tgz" || -z "$cli_tgz" || -z "$fetch_tgz" ]]; then
+if [[ -z "$core_tgz" || -z "$clearurls_tgz" || -z "$adguard_tgz" || -z "$brave_tgz" || -z "$firefox_tgz" || -z "$merged_tgz" || -z "$cli_tgz" || -z "$fetch_tgz" ]]; then
   echo "missing one or more npm package tarballs" >&2
   exit 1
 fi
@@ -42,13 +50,13 @@ mkdir -p "$TMP/npm-app"
 (
   cd "$TMP/npm-app"
   npm init -y >/dev/null
-  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$cli_tgz" "$fetch_tgz"
+  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$adguard_tgz" "$brave_tgz" "$firefox_tgz" "$merged_tgz" "$cli_tgz" "$fetch_tgz"
 
   node --input-type=module <<'JS'
 import { createHash } from 'node:crypto';
-import { sanitize } from '@url-sanitize/clearurls';
 import { compileSanitizer } from '@url-sanitize/core';
 import { fetchClearurlsCatalog } from '@url-sanitize/fetch';
+import { sanitize } from '@url-sanitize/merged';
 
 const result = sanitize('https://example.com/article?utm_source=newsletter&id=123');
 if (result.kind !== 'cleaned') {

@@ -3,6 +3,12 @@
 version = 3
 
 [[package]]
+name = "base64"
+version = "0.22.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
+
+[[package]]
 name = "displaydoc"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -289,7 +295,7 @@ dependencies = [
 
 [[package]]
 name = "url-sanitize"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -298,8 +304,9 @@ dependencies = [
 
 [[package]]
 name = "url-sanitize-core"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
+ "base64",
  "percent-encoding",
  "regex-lite",
  "serde",

@@ -1,0 +1,5 @@
+This package bundles AdGuard URL Tracking Protection filter data from:
+
+https://github.com/AdguardTeam/FiltersRegistry
+
+The bundled data is licensed LGPL-3.0-only by its upstream maintainers.

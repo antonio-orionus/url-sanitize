@@ -1,0 +1,56 @@
+{
+  "name": "@url-sanitize/firefox",
+  "version": "2.0.0",
+  "description": "Firefox Query Stripping catalog adapter for @url-sanitize/core.",
+  "license": "MPL-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./adapter": {
+      "types": "./dist/adapter.d.ts",
+      "import": "./dist/adapter.js"
+    },
+    "./raw": {
+      "types": "./dist/raw.d.ts",
+      "import": "./dist/raw.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    }
+  },
+  "files": [
+    "dist",
+    "data",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/raw.ts src/adapter.ts src/types.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts src/raw.ts src/adapter.ts src/types.ts --format esm --dts --watch"
+  },
+  "dependencies": {
+    "@url-sanitize/core": "workspace:*"
+  },
+  "keywords": [
+    "firefox",
+    "query-stripping",
+    "url",
+    "tracking",
+    "privacy"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antonio-orionus/url-sanitize.git",
+    "directory": "packages/firefox"
+  },
+  "sideEffects": false
+}

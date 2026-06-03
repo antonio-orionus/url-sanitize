@@ -4,7 +4,7 @@ use std::sync::OnceLock;
 
 use url_sanitize_core::{Catalog, SanitizeResult, Sanitizer, SanitizerOptions};
 
-const EMBEDDED_CATALOG_JSON: &str = include_str!("../catalog/clearurls.json");
+const EMBEDDED_CATALOG_JSON: &str = include_str!("../catalog/catalog.json");
 const CRATE_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 static CATALOG: OnceLock<Catalog> = OnceLock::new();
@@ -28,7 +28,7 @@ fn print_help(w: &mut dyn Write) {
         w,
         "url-sanitize {} (catalog {} {})
 
-Strip tracking parameters from URLs.
+Strip tracking parameters from URLs with the merged multi-source catalog.
 
 USAGE:
     url-sanitize [OPTIONS] [URL]...
@@ -53,7 +53,7 @@ EXIT CODES:
 
 Full spec: https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.md",
         CRATE_VERSION,
-        catalog().catalog_hash().unwrap_or("unknown"),
+        catalog().catalog_identity(),
         catalog().generated_at()
     );
 }
@@ -168,7 +168,7 @@ fn run() -> ExitCode {
         println!(
             "url-sanitize {} (catalog {} {})",
             CRATE_VERSION,
-            catalog().catalog_hash().unwrap_or("unknown"),
+            catalog().catalog_identity(),
             catalog().generated_at()
         );
         return ExitCode::SUCCESS;
