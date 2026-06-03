@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/fetch",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Runtime ClearURLs catalog fetching with SHA256 and optional pinned-hash verification.",
   "license": "MIT",
   "type": "module",

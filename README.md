@@ -84,7 +84,7 @@ renders published metadata from GitHub Release `SHA256SUMS`.
 For CI, prefer a pinned release instead of `latest`:
 
 ```sh
-version="v2.0.0"
+version="v2.0.1"
 target="x86_64-unknown-linux-gnu"
 asset="url-sanitize-${target}.tar.gz"
 
@@ -105,7 +105,7 @@ jobs:
       - name: Install url-sanitize
         run: |
           set -euo pipefail
-          version="v2.0.0"
+          version="v2.0.1"
           target="x86_64-unknown-linux-gnu"
           asset="url-sanitize-${target}.tar.gz"
 
@@ -133,7 +133,7 @@ url-sanitize:
   script:
     - |
       set -eu
-      version="v2.0.0"
+      version="v2.0.1"
       target="x86_64-unknown-linux-gnu"
       asset="url-sanitize-${target}.tar.gz"
 
@@ -152,7 +152,7 @@ Dockerfile:
 ```Dockerfile
 FROM ubuntu:24.04
 
-ARG URL_SANITIZE_VERSION=v2.0.0
+ARG URL_SANITIZE_VERSION=v2.0.1
 ARG URL_SANITIZE_TARGET=x86_64-unknown-linux-gnu
 
 RUN apt-get update \
