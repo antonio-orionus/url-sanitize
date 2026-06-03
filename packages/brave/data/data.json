@@ -14,7 +14,7 @@
       "*://llo.to/e/*",
       "*://g-o-media.digidip.net/visit?*",
       "*://www.dpbolvw.net/click-*",
-      "*://www.tkqlhce.com/click-",
+      "*://www.tkqlhce.com/click-*",
       "*://backerkit.com/ahoy/messages/*/click?*",
       "*://www.sopasti.com/anime.php?*",
       "*://flake.creditcable.info/*",
@@ -189,7 +189,7 @@
   },
   {
     "include": [
-      "*://t.lever-analytics.com/email-link?",
+      "*://t.lever-analytics.com/email-link?*",
       "*://cat.criteo.com/beacon?*"
     ],
     "exclude": [],
@@ -422,7 +422,8 @@
     "exclude": [],
     "prepend_scheme": "https",
     "action": "regex-path",
-    "param": "^/([^/]+)/s(/.*)$"
+    "param": "^/([^/]+)/s(/.*)$",
+    "redirect_url_template": "$1$2"
   },
   {
     "include": [

@@ -1,11 +1,11 @@
 {
-  "version": "5d01c76f8d27",
+  "version": "babcc24be00b",
   "generatedAt": "2026-06-03T17:40:39.060Z",
   "sources": [
     {
       "name": "brave",
-      "version": "5d01c76f8d27",
-      "hash": "5d01c76f8d279314e2b337ac429949c7d70a1e3432d28f481fe04fc0a2d36dbb",
+      "version": "babcc24be00b",
+      "hash": "babcc24be00bc6586c7b859be2f03447d9eb9ecef4c15c6aeab0294e99341ef7",
       "license": "MPL-2.0",
       "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json"
     }

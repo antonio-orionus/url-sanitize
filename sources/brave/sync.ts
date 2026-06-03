@@ -46,7 +46,8 @@ async function main(): Promise<void> {
     }
   }
 
-  const normalized = `${JSON.stringify(parsed, null, 2)}\n`;
+  const normalizedData = normalizeBraveData(parsed);
+  const normalized = `${JSON.stringify(normalizedData, null, 2)}\n`;
   const hash = createHash('sha256').update(normalized).digest('hex');
   const existingHash = await readExistingHash();
   if (existingHash === hash) {
@@ -72,6 +73,30 @@ async function main(): Promise<void> {
   );
   console.log(`wrote ${dataDir}/data.json + metadata.json`);
   console.log(`hash: ${hash}`);
+}
+
+function normalizeBraveData(parsed: unknown[]): unknown[] {
+  return parsed.map((rule) => {
+    if (typeof rule !== 'object' || rule === null) return rule;
+    const normalized: Record<string, unknown> = { ...(rule as Record<string, unknown>) };
+    if (Array.isArray(normalized.include)) {
+      normalized.include = normalized.include.map((pattern) => {
+        if (pattern === '*://www.tkqlhce.com/click-') return '*://www.tkqlhce.com/click-*';
+        if (pattern === '*://t.lever-analytics.com/email-link?') {
+          return '*://t.lever-analytics.com/email-link?*';
+        }
+        return pattern;
+      });
+    }
+    if (
+      normalized.action === 'regex-path' &&
+      normalized.param === '^/([^/]+)/s(/.*)$' &&
+      !normalized.redirect_url_template
+    ) {
+      normalized.redirect_url_template = '$1$2';
+    }
+    return normalized;
+  });
 }
 
 async function fetchWithTimeout(url: string): Promise<Response> {
