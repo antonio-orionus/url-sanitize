@@ -81,7 +81,7 @@ class UrlSanitize < Formula
 
     version_output = shell_output("#{bin}/url-sanitize --version")
     assert_match version.to_s, version_output
-    assert_match(/catalog [0-9a-f]{64}/, version_output)
+    assert_match(/catalog [0-9a-f]{64}(?::[0-9a-f]{64})*/, version_output)
 
     assert_equal cleaned_url, pipe_output("#{bin}/url-sanitize -", "#{test_url}\\n").strip
 

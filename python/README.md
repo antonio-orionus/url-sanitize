@@ -1,6 +1,7 @@
 # url-sanitize
 
-Python wrapper for the native `url-sanitize` CLI.
+Python wrapper for the native `url-sanitize` CLI, which uses the merged
+ClearURLs, AdGuard, Brave, and Firefox catalog by default.
 
 ```sh
 pip install url-sanitize

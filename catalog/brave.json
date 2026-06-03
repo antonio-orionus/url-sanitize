@@ -1,0 +1,1910 @@
+{
+  "version": "babcc24be00b",
+  "generatedAt": "2026-06-03T17:40:39.060Z",
+  "sources": [
+    {
+      "name": "brave",
+      "version": "babcc24be00b",
+      "hash": "babcc24be00bc6586c7b859be2f03447d9eb9ecef4c15c6aeab0294e99341ef7",
+      "license": "MPL-2.0",
+      "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json"
+    }
+  ],
+  "rules": [
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-0",
+      "urlPattern": "^https?:\\/\\/lcmspubcontact\\.lc\\.ca\\.gov/PublicLCMS/LinkTracking\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-1",
+      "urlPattern": "^https?:\\/\\/cc\\.zdnet\\.com/v1/otc/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-2",
+      "urlPattern": "^https?:\\/\\/cc\\.cnet\\.com/v1/otc/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-3",
+      "urlPattern": "^https?:\\/\\/cc\\.mashable\\.com/v1/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-4",
+      "urlPattern": "^https?:\\/\\/howl\\.me/link/\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-5",
+      "urlPattern": "^https?:\\/\\/www\\.pntrac\\.com/t/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-6",
+      "urlPattern": "^https?:\\/\\/track\\.flexlinks\\.com/a\\.ashx\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-7",
+      "urlPattern": "^https?:\\/\\/www\\.wordseed\\.com/go/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-8",
+      "urlPattern": "^https?:\\/\\/visit\\.ws/visit/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-9",
+      "urlPattern": "^https?:\\/\\/laylo\\.co/e/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-10",
+      "urlPattern": "^https?:\\/\\/llo\\.to/e/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-11",
+      "urlPattern": "^https?:\\/\\/g-o-media\\.digidip\\.net/visit\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-12",
+      "urlPattern": "^https?:\\/\\/www\\.dpbolvw\\.net/click-.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-13",
+      "urlPattern": "^https?:\\/\\/www\\.tkqlhce\\.com/click-.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-14",
+      "urlPattern": "^https?:\\/\\/backerkit\\.com/ahoy/messages/.*/click\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-15",
+      "urlPattern": "^https?:\\/\\/www\\.sopasti\\.com/anime\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-16",
+      "urlPattern": "^https?:\\/\\/flake\\.creditcable\\.info/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-17",
+      "urlPattern": "^https?:\\/\\/www\\.forocoches\\.com/link\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-18",
+      "urlPattern": "^https?:\\/\\/mcpedl\\.com/leaving/\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-19",
+      "urlPattern": "^https?:\\/\\/track\\.effiliation\\.com/servlet/effi\\.redir.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-20",
+      "urlPattern": "^https?:\\/\\/go\\.skimresources\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-21",
+      "urlPattern": "^https?:\\/\\/shop-links\\.co/link.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-22",
+      "urlPattern": "^https?:\\/\\/www\\.jdoqocy\\.com/click-.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-23",
+      "urlPattern": "^https?:\\/\\/www\\.kqzyfj\\.com/click-.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-24",
+      "urlPattern": "^https?:\\/\\/www\\.pjtra\\.com/t/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-25",
+      "urlPattern": "^https?:\\/\\/.*\\.narrativ\\.com/api/v0/client_redirect/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-26",
+      "urlPattern": "^https?:\\/\\/c\\.pepperjamnetwork\\.com/click.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-27",
+      "urlPattern": "^https?:\\/\\/.*\\.avantlink\\.com/click\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-28",
+      "urlPattern": "^https?:\\/\\/.*\\.pjatr\\.com/t/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-29",
+      "urlPattern": "^https?:\\/\\/www\\.pntrs\\.com/t/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-30",
+      "urlPattern": "^https?:\\/\\/.*\\.nordstrom\\.com/Linkshare\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-31",
+      "urlPattern": "^https?:\\/\\/pj\\.nutribullet\\.com/t/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-32",
+      "urlPattern": "^https?:\\/\\/www\\.gopjn\\.com/t/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-33",
+      "urlPattern": "^https?:\\/\\/pvn\\.mediamarkt\\.de/trck/eclick/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-34",
+      "urlPattern": "^https?:\\/\\/pvn\\.saturn\\.de/trck/eclick/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-35",
+      "urlPattern": "^https?:\\/\\/api\\.bam-x\\.com/api/v1/clickmate/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-36",
+      "urlPattern": "^https?:\\/\\/go\\.redirectingat\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-37",
+      "urlPattern": "^https?:\\/\\/x\\.chip\\.de/linktrack/button/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-38",
+      "urlPattern": "^https?:\\/\\/.*\\.mailchimp\\.com/mctx/clicks\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-39",
+      "urlPattern": "^https?:\\/\\/.*\\.tradedoubler\\.com/click\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-40",
+      "urlPattern": "^https?:\\/\\/cc\\.techbargains\\.com/v1/otc/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-41",
+      "urlPattern": "^https?:\\/\\/www\\.anrdoezrs\\.net/click-.*$",
+      "exceptions": [],
+      "pattern": "[?&]url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-42",
+      "urlPattern": "^https?:\\/\\/t\\.cfjump\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]Url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-43",
+      "urlPattern": "^https?:\\/\\/trk\\.pmsrv\\.co/v2/trk\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]rurl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-44",
+      "urlPattern": "^https?:\\/\\/trk\\.pm-srv\\.co/v2/trk\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]rurl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-45",
+      "urlPattern": "^https?:\\/\\/app\\.hive\\.co/email/elt/.*$",
+      "exceptions": [],
+      "pattern": "[?&]next=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-46",
+      "urlPattern": "^https?:\\/\\/redir\\.tradedoubler\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]_td_deeplink=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-47",
+      "urlPattern": "^https?:\\/\\/clicks\\.trx-hub\\.com/xid/.*$",
+      "exceptions": [],
+      "pattern": "[?&]q=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-48",
+      "urlPattern": "^https?:\\/\\/www\\.zenaps\\.com/rclick\\.php.*$",
+      "exceptions": [],
+      "pattern": "[?&]pr=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-49",
+      "urlPattern": "^https?:\\/\\/www\\.clixgalore\\.com/Lead\\.aspx.*$",
+      "exceptions": [],
+      "pattern": "[?&]AffDirectURL=([^&]+)",
+      "captureGroup": 1,
+      "prependScheme": "http",
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-50",
+      "urlPattern": "^https?:\\/\\/www\\.clixgalore\\.com/Lead\\.aspx.*$",
+      "exceptions": [],
+      "pattern": "[?&]LP=([^&]+)",
+      "captureGroup": 1,
+      "prependScheme": "http",
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-51",
+      "urlPattern": "^https?:\\/\\/rd\\.bizrate\\.com/rd2\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]t=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-52",
+      "urlPattern": "^https?:\\/\\/rd\\.connexity\\.net/rd\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]t=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-53",
+      "urlPattern": "^https?:\\/\\/rd\\.bizrate\\.com/rd\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]t=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-54",
+      "urlPattern": "^https?:\\/\\/ad\\.atdmt\\.com/s/go;.*$",
+      "exceptions": [],
+      "pattern": "[?&]h=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-55",
+      "urlPattern": "^https?:\\/\\/.*\\.demdex\\.net/.*$",
+      "exceptions": [],
+      "pattern": "[?&]d_rd=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-56",
+      "urlPattern": "^https?:\\/\\/www\\.awin1\\.com/cread\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]ued=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-57",
+      "urlPattern": "^https?:\\/\\/www\\.awin1\\.com/cread\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]p=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-58",
+      "urlPattern": "^https?:\\/\\/www\\.awin1\\.com/awclick\\.php\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]p=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-59",
+      "urlPattern": "^https?:\\/\\/search\\.app/\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]link=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-60",
+      "urlPattern": "^https?:\\/\\/.*\\.getprice\\.com\\.au/prodhits\\.aspx\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]link=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-61",
+      "urlPattern": "^https?:\\/\\/www\\.shareasale\\.com/r\\.cfm\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]urllink=([^&]+)",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-62",
+      "urlPattern": "^https?:\\/\\/shareasale\\.com/r\\.cfm\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]urllink=([^&]+)",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-63",
+      "urlPattern": "^https?:\\/\\/www\\.shareasale-analytics\\.com/r\\.cfm\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]urllink=([^&]+)",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-64",
+      "urlPattern": "^https?:\\/\\/shareasale-analytics\\.com/r\\.cfm\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]urllink=([^&]+)",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-65",
+      "urlPattern": "^https?:\\/\\/click\\.icptrack\\.com/icp/relay\\.php.*$",
+      "exceptions": [],
+      "pattern": "[?&]destination=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-66",
+      "urlPattern": "^https?:\\/\\/t\\.lever-analytics\\.com/email-link\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]dest=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-67",
+      "urlPattern": "^https?:\\/\\/cat\\.criteo\\.com/beacon\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]dest=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-68",
+      "urlPattern": "^https?:\\/\\/c212\\.net/c/link/\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-69",
+      "urlPattern": "^https?:\\/\\/.*\\.c9ftyd\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-70",
+      "urlPattern": "^https?:\\/\\/.*\\.iyhh\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-71",
+      "urlPattern": "^https?:\\/\\/.*\\.glg9ob\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-72",
+      "urlPattern": "^https?:\\/\\/.*\\.evyy\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-73",
+      "urlPattern": "^https?:\\/\\/.*\\.uikc\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-74",
+      "urlPattern": "^https?:\\/\\/.*\\.ztk5\\.net/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-75",
+      "urlPattern": "^https?:\\/\\/.*\\.rg35\\.net/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-76",
+      "urlPattern": "^https?:\\/\\/sherlock\\.scribblelive\\.com/r\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-77",
+      "urlPattern": "^https?:\\/\\/.*\\.engage\\.squarespace-mail\\.com/r\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-78",
+      "urlPattern": "^https?:\\/\\/engage\\.squarespace-mail\\.com/r\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-79",
+      "urlPattern": "^https?:\\/\\/goto\\.target\\.com/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-80",
+      "urlPattern": "^https?:\\/\\/goto\\.walmart\\.com/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-81",
+      "urlPattern": "^https?:\\/\\/.*\\.sjv\\.io/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-82",
+      "urlPattern": "^https?:\\/\\/.*\\.8ocm68\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-83",
+      "urlPattern": "^https?:\\/\\/.*\\.xovt\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-84",
+      "urlPattern": "^https?:\\/\\/.*\\.i114863\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-85",
+      "urlPattern": "^https?:\\/\\/.*\\.58dp\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-86",
+      "urlPattern": "^https?:\\/\\/.*\\.pxf\\.io/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-87",
+      "urlPattern": "^https?:\\/\\/.*\\.7tiv\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-88",
+      "urlPattern": "^https?:\\/\\/.*\\.5ad6\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-89",
+      "urlPattern": "^https?:\\/\\/.*\\.q77h\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-90",
+      "urlPattern": "^https?:\\/\\/.*\\.3uu8\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-91",
+      "urlPattern": "^https?:\\/\\/.*\\.uxsi\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-92",
+      "urlPattern": "^https?:\\/\\/.*\\.njih\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-93",
+      "urlPattern": "^https?:\\/\\/.*\\.pdy5\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-94",
+      "urlPattern": "^https?:\\/\\/.*\\.igs4ds\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-95",
+      "urlPattern": "^https?:\\/\\/.*\\.mvvx\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-96",
+      "urlPattern": "^https?:\\/\\/.*\\.xwrk\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-97",
+      "urlPattern": "^https?:\\/\\/.*\\.fziv\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-98",
+      "urlPattern": "^https?:\\/\\/.*\\.lvuv\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-99",
+      "urlPattern": "^https?:\\/\\/.*\\.xibx\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-100",
+      "urlPattern": "^https?:\\/\\/.*\\.attfm2\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-101",
+      "urlPattern": "^https?:\\/\\/.*\\.tkjf\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-102",
+      "urlPattern": "^https?:\\/\\/deeplink-bh\\.datafeedfile\\.com/sl/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-103",
+      "urlPattern": "^https?:\\/\\/deeplink-bh\\.datafeedfile\\.com/sl\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-104",
+      "urlPattern": "^https?:\\/\\/.*\\.a9yw\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-105",
+      "urlPattern": "^https?:\\/\\/.*\\.pfm4\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-106",
+      "urlPattern": "^https?:\\/\\/.*\\.i254217\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-107",
+      "urlPattern": "^https?:\\/\\/.*\\.i182465\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-108",
+      "urlPattern": "^https?:\\/\\/.*\\.vthnbx\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-109",
+      "urlPattern": "^https?:\\/\\/.*\\.ryvx\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-110",
+      "urlPattern": "^https?:\\/\\/.*\\.7eer\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-111",
+      "urlPattern": "^https?:\\/\\/microsoft\\.msafflnk\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-112",
+      "urlPattern": "^https?:\\/\\/.*\\.i312864\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-113",
+      "urlPattern": "^https?:\\/\\/.*\\.tmfhgn\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-114",
+      "urlPattern": "^https?:\\/\\/.*\\.obak77\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-115",
+      "urlPattern": "^https?:\\/\\/.*\\.yvzx\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-116",
+      "urlPattern": "^https?:\\/\\/goto\\.carters\\.com/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-117",
+      "urlPattern": "^https?:\\/\\/.*\\.ioym\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-118",
+      "urlPattern": "^https?:\\/\\/.*\\.ntaf\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-119",
+      "urlPattern": "^https?:\\/\\/.*\\.zlwlj8\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-120",
+      "urlPattern": "^https?:\\/\\/.*\\.uvwgb9\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-121",
+      "urlPattern": "^https?:\\/\\/.*\\.3anx\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-122",
+      "urlPattern": "^https?:\\/\\/.*\\.rrmo\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-123",
+      "urlPattern": "^https?:\\/\\/.*\\.i308314\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-124",
+      "urlPattern": "^https?:\\/\\/.*\\.uqhv\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-125",
+      "urlPattern": "^https?:\\/\\/.*\\.vzew\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-126",
+      "urlPattern": "^https?:\\/\\/.*\\.qflm\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-127",
+      "urlPattern": "^https?:\\/\\/.*\\.rfvk\\.net/c/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-128",
+      "urlPattern": "^https?:\\/\\/redirect\\.viglink\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-129",
+      "urlPattern": "^https?:\\/\\/.*\\.am3t9s\\.net/.*$",
+      "exceptions": [],
+      "pattern": "[?&]u=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-130",
+      "urlPattern": "^https?:\\/\\/ck\\.jp\\.ap\\.valuecommerce\\.com/servlet/referral\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]vc_url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-131",
+      "urlPattern": "^https?:\\/\\/atrrd\\.valuecommerce\\.com/resolve/.*$",
+      "exceptions": [],
+      "pattern": "[?&]vc_url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-132",
+      "urlPattern": "^https?:\\/\\/.*\\.valuecommerce\\.ne\\.jp/cgi-bin/.*$",
+      "exceptions": [],
+      "pattern": "[?&]vc_url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-133",
+      "urlPattern": "^https?:\\/\\/target\\.georiot\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]GR_URL=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-134",
+      "urlPattern": "^https?:\\/\\/click\\.linksynergy\\.com/deeplink.*$",
+      "exceptions": [],
+      "pattern": "[?&]murl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-135",
+      "urlPattern": "^https?:\\/\\/.*\\.ouo\\.today/.*$",
+      "exceptions": [],
+      "pattern": "[?&]cr=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-136",
+      "urlPattern": "^https?:\\/\\/www\\.ojrq\\.net/p/.*$",
+      "exceptions": [],
+      "pattern": "[?&]return=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-137",
+      "urlPattern": "^https?:\\/\\/d\\.agkn\\.com/pixel/.*$",
+      "exceptions": [],
+      "pattern": "[?&]l1=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-138",
+      "urlPattern": "^https?:\\/\\/t\\.mailpgn\\.com/l/.*$",
+      "exceptions": [],
+      "pattern": "[?&]fl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-139",
+      "urlPattern": "^https?:\\/\\/jsv3\\.recruitics\\.com/redirect\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]rx_url=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-140",
+      "urlPattern": "^https?:\\/\\/app\\.adjust\\.com/.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirect=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-141",
+      "urlPattern": "^https?:\\/\\/pvn\\.mediamarkt\\.de/trck/eclick/.*$",
+      "exceptions": [],
+      "pattern": "[?&]url64fb=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-142",
+      "urlPattern": "^https?:\\/\\/www\\.googleadservices\\.com/pagead/aclk\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]adurl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-143",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.acemlna\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-144",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.acemlnb\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-145",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.acemlnc\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-146",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.acemlnd\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-147",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-148",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk1\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-149",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk2\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-150",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk3\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-151",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk4\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-152",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk5\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-153",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk6\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-154",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk7\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-155",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk8\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-156",
+      "urlPattern": "^https?:\\/\\/.*\\.lt\\.emlnk9\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-157",
+      "urlPattern": "^https?:\\/\\/.*\\.bluelena\\.io/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-158",
+      "urlPattern": "^https?:\\/\\/.*\\.golfbacksolutions\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-159",
+      "urlPattern": "^https?:\\/\\/.*\\.prospect2\\.com/Prod/link-tracker\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]redirectUrl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-160",
+      "urlPattern": "^https?:\\/\\/.*\\.page\\.link/\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]ofl=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-161",
+      "urlPattern": "^https?:\\/\\/.*\\.cdn\\.ampproject\\.org/c/s/.*$",
+      "exceptions": [],
+      "pattern": "^/c/s/(.*)$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-162",
+      "urlPattern": "^https?:\\/\\/click\\.redditmail\\.com/.*$",
+      "exceptions": [],
+      "pattern": "^/CL0/([^/]+)/.*$",
+      "captureGroup": 1,
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-163",
+      "urlPattern": "^https?:\\/\\/.*\\.streak-link\\.com/.*$",
+      "exceptions": [],
+      "pattern": "^/[^/]+/(.*)$",
+      "captureGroup": 1,
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-164",
+      "urlPattern": "^https?:\\/\\/streaklinks\\.com/.*$",
+      "exceptions": [],
+      "pattern": "^/[^/]+/(.*)$",
+      "captureGroup": 1,
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-165",
+      "urlPattern": "^https?:\\/\\/.*\\.turbopages\\.org/.*/s/.*$",
+      "exceptions": [],
+      "pattern": "^/([^/]+)/s(/.*)$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname",
+      "targetTemplate": "$1$2"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-166",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/2s/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]t?sm?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-167",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/2sm/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]t?sm?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-168",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/2ts/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]t?sm?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-169",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/3s/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]t?sm?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-170",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/3ts/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]t?sm?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-171",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/2/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]m?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "http",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-172",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/2m/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]m?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "http",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-173",
+      "urlPattern": "^https?:\\/\\/click\\.pstmrk\\.it/3/.*$",
+      "exceptions": [],
+      "pattern": "^/[23]m?/([^/]+)/.*$",
+      "captureGroup": 1,
+      "prependScheme": "http",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-174",
+      "urlPattern": "^https?:\\/\\/.*\\.awstrack\\.me/L0/.*$",
+      "exceptions": [],
+      "pattern": "^/L0/([^/]+)/.*$",
+      "captureGroup": 1,
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-175",
+      "urlPattern": "^https?:\\/\\/shopping\\.yahoo\\.com/rdlw\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]gcReferrer=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-176",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com/amp/s/.*$",
+      "exceptions": [],
+      "pattern": "^/amp/s/(.*)$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-177",
+      "urlPattern": "^https://buy\\.geni\\.us/Proxy\\.ashx\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]GR_URL=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-178",
+      "urlPattern": "^https://dev-pages\\.brave\\.software/navigation-tracking/error\\.html\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]brave_testing=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-179",
+      "urlPattern": "^https://dev-pages\\.bravesoftware\\.com/navigation-tracking/error\\.html\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]brave_testing=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "percent"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-180",
+      "urlPattern": "^https://dev-pages\\.brave\\.software/navigation-tracking/error\\.html\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]brave_testing_base64=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-181",
+      "urlPattern": "^https://dev-pages\\.bravesoftware\\.com/navigation-tracking/error\\.html\\?.*$",
+      "exceptions": [],
+      "pattern": "[?&]brave_testing_base64=([^&]+)",
+      "captureGroup": 1,
+      "targetEncoding": "base64"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-182",
+      "urlPattern": "^https://dev-pages\\.brave\\.software/navigation-tracking/regex-multiple-capture-groups/.*$",
+      "exceptions": [],
+      "pattern": "^/navigation-tracking/regex-multiple-capture-groups/(.*)/test/(.*);.html$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname",
+      "targetTemplate": "$1$2"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-183",
+      "urlPattern": "^https://dev-pages\\.bravesoftware\\.com/navigation-tracking/regex-multiple-capture-groups/.*$",
+      "exceptions": [],
+      "pattern": "^/navigation-tracking/regex-multiple-capture-groups/(.*)/test/(.*);.html$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname",
+      "targetTemplate": "$1$2"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-184",
+      "urlPattern": "^https://dev-pages\\.brave\\.software/navigation-tracking/.*$",
+      "exceptions": [],
+      "pattern": "^/navigation-tracking/(.*);.html$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-185",
+      "urlPattern": "^https://dev-pages\\.bravesoftware\\.com/navigation-tracking/.*$",
+      "exceptions": [],
+      "pattern": "^/navigation-tracking/(.*);.html$",
+      "captureGroup": 1,
+      "prependScheme": "https",
+      "matchPart": "pathname"
+    },
+    {
+      "kind": "unwrap-redirect",
+      "source": "brave",
+      "provider": "brave-debounce-186",
+      "urlPattern": "^https?:\\/\\/y2u\\.be/.*$",
+      "exceptions": [],
+      "pattern": "^/([^/]+)$",
+      "captureGroup": 1,
+      "matchPart": "pathname",
+      "targetTemplate": "https://www.youtube.com/watch?v=$1"
+    }
+  ]
+}

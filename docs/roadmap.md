@@ -8,12 +8,15 @@ For current install commands, package surfaces, release channels, and automation
 status, use the [README](../README.md). This document keeps the milestone plan
 and rationale so there is one public discovery surface and one planning record.
 
-v0.1, v0.2, and v0.3 are complete. The main package-manager path is proven
-across Homebrew and Scoop, v0.2 has CI/container install examples plus
-install-and-exercise smoke, and v0.3 adds runtime ClearURLs fetching,
-schema-backed custom catalogs, and deterministic catalog composition. GitHub
-Action, MCP, AUR, Winget, and distro packages are deferred until user demand or
-cheap automation makes them worth the maintenance surface.
+v0.1, v0.2, v0.3, and v1.0 are complete. The main package-manager path is
+proven across Homebrew and Scoop, v0.2 has CI/container install examples plus
+install-and-exercise smoke, v0.3 adds runtime ClearURLs fetching,
+schema-backed custom catalogs, and deterministic catalog composition, and v1.0
+stabilizes the public API, benchmarks, security policy, and release contract.
+
+The next active goal is v2.0 multi-source expansion: AdGuard, Brave, Firefox,
+and a merged catalog package. Other adoption surfaces and distribution
+expansions are deferred and tracked at the bottom of this document.
 
 ## Strategic bet
 
@@ -25,7 +28,7 @@ The adoption rule is blunt: meet people in their package manager, but run the sa
 2. **Agent-native output** — structured JSON, deterministic output, and explainable matches make this usable by agents without scraping terminal text.
 3. **Correctness + explainability** — never break a URL silently; report which param, redirect provider, or block rule fired.
 4. **Fresh rules with permissive engine licensing** — daily-synced ClearURLs-compatible data, MIT engine, no AGPL lock-in.
-5. **Multi-source later** — AdGuard/Brave/Firefox sources matter, but only after the install story is strong enough for users to notice.
+5. **Multi-source next** — AdGuard/Brave/Firefox sources are the next product bet now that the ClearURLs path and distribution baseline are established.
 
 The moat is execution and reach, not secrecy. The engine is small glue around public rule lists; the project wins by being the most correct, most current, most installable, and most automation-friendly option.
 
@@ -51,6 +54,7 @@ url-sanitize/
 │   └── url-sanitize-py/         # optional future in-process Python bindings
 ├── packages/                    # TypeScript/JavaScript packages
 │   ├── core/  clearurls/  cli/  fetch/
+│   ├── adguard/  brave/  firefox/  merged/
 ├── python/                      # PyPI wrapper around native CLI
 └── sources/                     # upstream sync scripts
 ```
@@ -68,7 +72,7 @@ Engine decisions:
 - **Deterministic by default.** Pinned rules are the default for non-interactive use; live updates are opt-in. `--version` and structured output must surface catalog identity.
 - **Licensing is legal, not marketing.** Verify each upstream list before bundling; keep NOTICE and [`docs/license-model.md`](license-model.md) rigorous.
 - **No registry squatting.** Reserve names only when the milestone actually publishes them.
-- **Demand sets priority.** Ship what humans, CI, and agents actually invoke before speculative wrappers.
+- **Demand sets priority.** Defer new wrappers and package-manager surfaces until they beat the current CLI/library path on real usefulness.
 
 ## v0.1 — ClearURLs-compatible core + Rust CLI
 
@@ -125,15 +129,6 @@ Engine decisions:
 - Custom catalog composition through plain data plus `mergeCatalogs(...)`
 - `mergeCatalogs(...)` utility with deterministic input-order preservation and no hidden dedupe.
 
-## Deferred adoption surfaces
-
-**Revisit when demand is concrete:**
-
-- `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs, with possible `comment`, `check`, and `fix` modes. This is for downstream repos; this repo already has internal ClearURLs catalog sync automation.
-- `@url-sanitize/mcp` — exposes `sanitize_url` with pinned, explainable, structured output for agent workflows.
-- AUR packaging.
-- Winget packaging.
-
 ## v1.0 — Stable release
 
 **Ships:**
@@ -148,22 +143,34 @@ Engine decisions:
 
 ## v2.0 — Multi-source expansion
 
-**Trigger conditions (don't ship speculatively):**
-
-Trigger v2.0 work ONLY when at least one of:
-
-- ≥3 unique users file issues asking for non-ClearURLs source coverage
-- A paying sponsor appears
-- A downstream consumer needs source-merging in production
-
-**Ships if triggered:**
+**Next active goal.**
 
 - `@url-sanitize/adguard` — AdGuard URL Tracking Protection filter parsed → `SanitizerCatalog`
 - `@url-sanitize/brave` — Brave Debouncer + query-strip list
 - `@url-sanitize/firefox` — Firefox query-stripping list (TOML-sourced)
 - `@url-sanitize/merged` — union of all 4, dedup, conflict resolution, source priority config
 
-**If never triggered**, v2.0 doesn't happen. ClearURLs-only is a complete product.
+**Implementation shape:**
+
+- Keep every source as plain catalog data plus a small adapter package.
+- Preserve `@url-sanitize/core` as the shared engine; do not fork sanitizer behavior by source.
+- Extend conformance with source-specific fixtures before shipping merged behavior.
+- Keep source provenance and license metadata explicit in each package and in merged output.
+- Make `@url-sanitize/merged` deterministic: stable source priority, stable output order, and documented conflict handling.
+
+## Deferred surfaces
+
+These are intentionally below v2.0. Revisit only when user demand or maintenance
+leverage is concrete.
+
+- `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs, with possible `comment`, `check`, and `fix` modes. This is for downstream repos; this repo already has internal ClearURLs catalog sync automation.
+- `@url-sanitize/mcp` — exposes `sanitize_url` with pinned, explainable, structured output for agent workflows.
+- AUR packaging.
+- Winget packaging.
+- Distro packages.
+- Native npm optional packages.
+- `url-sanitize-wasm`.
+- In-process Python bindings.
 
 ---
 

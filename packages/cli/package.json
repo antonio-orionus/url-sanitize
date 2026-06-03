@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/cli",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Command-line tool to remove tracking parameters and unwrap tracking redirects from URLs.",
   "license": "MIT",
   "type": "module",
@@ -15,8 +15,8 @@
     "dev": "tsup src/bin.ts --format esm --watch"
   },
   "dependencies": {
-    "@url-sanitize/clearurls": "workspace:*",
-    "@url-sanitize/core": "workspace:*"
+    "@url-sanitize/core": "workspace:*",
+    "@url-sanitize/merged": "workspace:*"
   },
   "keywords": [
     "cli",

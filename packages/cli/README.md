@@ -1,6 +1,9 @@
 # @url-sanitize/cli
 
-Command-line tool for removing tracking parameters and unwrapping tracking redirects from URLs.
+Command-line tool for removing tracking parameters and unwrapping tracking redirects from URLs with the merged multi-source catalog.
+
+The default catalog combines ClearURLs, AdGuard URL Tracking Protection, Brave
+Debouncer, and Firefox Query Stripping rules.
 
 ## Install
 

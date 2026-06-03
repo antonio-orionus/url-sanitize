@@ -13,6 +13,7 @@ keywords = ["url", "sanitize", "clearurls", "tracking", "privacy"]
 categories = ["web-programming", "command-line-utilities"]
 
 [dependencies]
+base64 = { workspace = true }
 regex-lite = { workspace = true }
 url = { workspace = true }
 serde = { workspace = true }

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { clearurlsCatalog, clearurlsMetadata } from '@url-sanitize/clearurls';
 import { compileSanitizer, type SanitizeResult, type SanitizerOptions } from '@url-sanitize/core';
+import { mergedCatalog, mergedMetadata } from '@url-sanitize/merged';
 
 const args = process.argv.slice(2);
 
@@ -24,7 +24,7 @@ function runTypeScriptCli(rawArgs: string[]): void {
 
   if (rawArgs.includes('--version')) {
     process.stdout.write(
-      `url-sanitize ${packageVersion()} (catalog ${clearurlsMetadata.hash} ${clearurlsMetadata.fetchedAt})\n`
+      `url-sanitize ${packageVersion()} (catalog ${catalogHash()} ${mergedMetadata.generatedAt})\n`
     );
     process.exit(0);
   }
@@ -36,7 +36,7 @@ function runTypeScriptCli(rawArgs: string[]): void {
     process.exit(1);
   }
 
-  const sanitize = compileSanitizer(clearurlsCatalog, parsed.options);
+  const sanitize = compileSanitizer(mergedCatalog, parsed.options);
   let anyBlocked = false;
 
   for (const url of parsed.urls) {
@@ -165,12 +165,20 @@ function packageVersion(): string {
   return pkg.version ?? '0.0.0';
 }
 
+function catalogHash(): string {
+  const hashes = mergedCatalog.sources
+    .map((source) => source.hash)
+    .filter(Boolean)
+    .join(':');
+  return hashes || mergedCatalog.version;
+}
+
 function printHelp(stream: NodeJS.WritableStream): void {
   stream.write(
     [
-      `url-sanitize ${packageVersion()} (catalog ${clearurlsMetadata.hash} ${clearurlsMetadata.fetchedAt})`,
+      `url-sanitize ${packageVersion()} (catalog ${catalogHash()} ${mergedMetadata.generatedAt})`,
       '',
-      'Strip tracking parameters from URLs.',
+      'Strip tracking parameters from URLs with the merged multi-source catalog.',
       '',
       'USAGE:',
       '    url-sanitize [OPTIONS] [URL]...',

@@ -1,0 +1,5 @@
+This package bundles Firefox Query Stripping records from Mozilla Remote Settings:
+
+https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/query-stripping/records
+
+The bundled data is licensed MPL-2.0 by its upstream maintainers.

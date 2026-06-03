@@ -1,5 +1,6 @@
 node_modules/
 dist/
+npm-packages/
 *.tsbuildinfo
 .turbo/
 coverage/
@@ -21,3 +22,21 @@ __pycache__/
 target/
 Cargo.lock.bak
 **/*.rs.bk
+
+# Source-adjacent TypeScript emits from accidental non-noEmit tsc runs
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.ts.map
+packages/*/test/**/*.js
+packages/*/test/**/*.js.map
+packages/*/test/**/*.d.ts
+packages/*/test/**/*.d.ts.map
+sources/**/*.js
+sources/**/*.js.map
+sources/**/*.d.ts
+sources/**/*.d.ts.map
+vitest.config.js
+vitest.config.js.map
+vitest.config.d.ts
+vitest.config.d.ts.map

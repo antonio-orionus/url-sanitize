@@ -1,0 +1,5 @@
+This package bundles Brave Debouncer data from:
+
+https://github.com/brave/adblock-lists
+
+The bundled data is licensed MPL-2.0 by its upstream maintainers.

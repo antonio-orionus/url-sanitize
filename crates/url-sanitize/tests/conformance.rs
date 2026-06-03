@@ -10,7 +10,7 @@ use std::path::PathBuf;
 
 use url_sanitize_core::{Catalog, SanitizeResult, SanitizerOptions};
 
-const CATALOG_JSON: &str = include_str!("../../../catalog/clearurls.json");
+const CATALOG_JSON: &str = include_str!("../../../catalog/catalog.json");
 
 #[derive(Debug, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]

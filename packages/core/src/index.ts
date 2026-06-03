@@ -9,6 +9,9 @@ export {
 } from './schemas.js';
 export type {
   MatchedRule,
+  RedirectMatchPart,
+  RedirectPrependScheme,
+  RedirectTargetEncoding,
   RuleSource,
   SanitizeResult,
   SanitizerCatalog,

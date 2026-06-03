@@ -9,14 +9,14 @@ test_url="https://example.com/article?utm_source=newsletter&id=123"
 expected_url="https://example.com/article?id=123"
 
 version_output="$("$bin" --version)"
-if [[ ! "$version_output" =~ ^url-sanitize[[:space:]]+([^[:space:]]+)[[:space:]]+\(catalog[[:space:]]+([0-9a-fA-F]{64})([[:space:]]+([^\)]+))?\)$ ]]; then
+if [[ ! "$version_output" =~ ^url-sanitize[[:space:]]+([^[:space:]]+)[[:space:]]+\(catalog[[:space:]]+([0-9a-fA-F]{64}(:[0-9a-fA-F]{64})*)([[:space:]]+([^\)]+))?\)$ ]]; then
   echo "unexpected --version output: $version_output" >&2
   exit 1
 fi
 
 actual_version="${BASH_REMATCH[1]}"
 actual_catalog_hash="${BASH_REMATCH[2]}"
-actual_catalog_date="${BASH_REMATCH[4]:-}"
+actual_catalog_date="${BASH_REMATCH[5]:-}"
 
 if [[ -n "$expected_version" && "$actual_version" != "$expected_version" ]]; then
   echo "unexpected version: expected $expected_version, got $actual_version" >&2

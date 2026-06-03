@@ -11,6 +11,10 @@ if (!version || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
 for (const path of [
   'packages/core/package.json',
   'packages/clearurls/package.json',
+  'packages/adguard/package.json',
+  'packages/brave/package.json',
+  'packages/firefox/package.json',
+  'packages/merged/package.json',
   'packages/cli/package.json',
   'packages/fetch/package.json'
 ]) {

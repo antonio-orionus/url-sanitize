@@ -30,3 +30,9 @@
 {"id":"non-http-scheme","note":"ftp URL — most rules don't fire","input":"ftp://files.example.com/x"}
 {"id":"weird-port","note":"explicit port preserved","input":"https://example.com:8443/?utm_source=x"}
 {"id":"trailing-slash","note":"bare host gets trailing slash normalized","input":"https://example.com"}
+{"id":"adguard-strip-loclid","note":"AdGuard URL Tracking Protection strips LOGLY click tracking","input":"https://example.com/?loclid=abc123&keep=1"}
+{"id":"adguard-strip-tgclid","note":"AdGuard URL Tracking Protection strips Telegram Ads click tracking","input":"https://example.com/?tgclid=abc123&keep=1"}
+{"id":"brave-base64-redirect","note":"Brave Debouncer base64 redirect","input":"https://x.ouo.today/?cr=aHR0cHM6Ly9leGFtcGxlLmNvbS9iNjQ="}
+{"id":"brave-amp-path-redirect","note":"Brave Debouncer regex-path with prepend scheme","input":"https://www-example-com.cdn.ampproject.org/c/s/www.example.com/article"}
+{"id":"brave-template-redirect","note":"Brave Debouncer regex-path-template","input":"https://y2u.be/dQw4w9WgXcQ"}
+{"id":"strip-wbraid","note":"Merged catalog strips wbraid","input":"https://example.com/?wbraid=abc&keep=1"}

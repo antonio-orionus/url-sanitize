@@ -1,5 +1,9 @@
 export type RuleSource = 'clearurls' | 'adguard' | 'brave' | 'firefox' | 'custom';
 
+export type RedirectMatchPart = 'url' | 'pathname';
+export type RedirectTargetEncoding = 'percent' | 'base64';
+export type RedirectPrependScheme = 'http' | 'https';
+
 export type SanitizerRule =
   | {
       kind: 'strip-param';
@@ -7,6 +11,7 @@ export type SanitizerRule =
       provider: string;
       urlPattern?: string;
       paramPattern: string;
+      valuePattern?: string;
       exceptions?: string[];
       isReferralMarketing?: boolean;
     }
@@ -26,6 +31,10 @@ export type SanitizerRule =
       urlPattern?: string;
       pattern: string;
       captureGroup: number;
+      matchPart?: RedirectMatchPart;
+      targetEncoding?: RedirectTargetEncoding;
+      prependScheme?: RedirectPrependScheme;
+      targetTemplate?: string;
       exceptions?: string[];
     }
   | {

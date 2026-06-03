@@ -1,0 +1,7 @@
+{
+  "version": "61578ba740b7",
+  "hash": "61578ba740b7bb0e9b5450eab725dd3b7be8995ba42633d9d46825745f9e0c7d",
+  "fetchedAt": "2026-06-03T17:40:39.112Z",
+  "upstream": "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/query-stripping/records",
+  "license": "MPL-2.0"
+}

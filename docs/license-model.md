@@ -8,7 +8,11 @@
 | --- | --- | --- |
 | `@url-sanitize/core` | **MIT** | Clean-room algorithm port. No code derived from ClearURLs Addon. |
 | `@url-sanitize/clearurls` | **MIT (code) + LGPL-3.0-only (data)** | Adapter code is fresh; bundled `data.json` is derived from ClearURLs Rules repo, which is LGPL-3.0. |
-| `@url-sanitize/cli` | **MIT** | Wraps `core` + `clearurls`. CLI tool itself is fresh code. |
+| `@url-sanitize/adguard` | **LGPL-3.0-only** | Bundled URL Tracking Protection filter is from AdGuard Filters / FiltersRegistry, licensed LGPL-3.0-only. |
+| `@url-sanitize/brave` | **MPL-2.0** | Bundled Brave Debouncer list is from `brave/adblock-lists`, licensed MPL-2.0. |
+| `@url-sanitize/firefox` | **MPL-2.0** | Bundled Firefox Query Stripping records are Mozilla Remote Settings data for Firefox anti-tracking behavior. |
+| `@url-sanitize/merged` | **MIT (code) + upstream data licenses** | Merges ClearURLs, AdGuard, Brave, and Firefox catalogs without changing their source licenses. |
+| `@url-sanitize/cli` | **MIT** | Wraps `core` + `merged`. CLI tool itself is fresh code. |
 | `@url-sanitize/fetch` | **MIT** | Network + hash-verify utilities. Fresh code. |
 | `@url-sanitize/action` | **MIT** | Deferred downstream Action wrapping CLI if demand appears. Fresh code. |
 
@@ -17,8 +21,8 @@
 ### "I want to use this in a closed-source / commercial SaaS"
 
 - Use `@url-sanitize/core` directly — MIT, no copyleft.
-- Use `@url-sanitize/clearurls` if LGPL-3.0 on the bundled data file is acceptable. LGPL on a data file (not linked code) is generally fine for non-derivative use, but consult your legal team if unsure.
-- Or: write your own catalog (plain TypeScript literal of `SanitizerCatalog`) and skip `@url-sanitize/clearurls` entirely. No LGPL surface.
+- Use `@url-sanitize/clearurls`, `@url-sanitize/adguard`, `@url-sanitize/brave`, `@url-sanitize/firefox`, or `@url-sanitize/merged` only if their bundled data licenses are acceptable. LGPL/MPL on data files is generally fine for non-derivative use, but consult your legal team if unsure.
+- Or: write your own catalog (plain TypeScript literal of `SanitizerCatalog`) and skip bundled source packages entirely. No upstream data-license surface.
 
 ### "I'm building an open-source project"
 

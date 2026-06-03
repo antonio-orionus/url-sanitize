@@ -7,6 +7,8 @@ unwrap known tracking redirectors.
 Ships a snapshot of the ClearURLs ruleset, daily-synced from upstream
 `https://rules2.clearurls.xyz/data.minify.json` with SHA256 verification.
 
+For the default v2 multi-source behavior, use [`@url-sanitize/merged`](../merged).
+
 ## Install
 
 ```sh

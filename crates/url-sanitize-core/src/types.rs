@@ -19,6 +19,38 @@ pub enum RuleKind {
     BlockDomain,
 }
 
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum RedirectMatchPart {
+    #[default]
+    Url,
+    Pathname,
+}
+
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum RedirectTargetEncoding {
+    #[default]
+    Percent,
+    Base64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum RedirectPrependScheme {
+    Http,
+    Https,
+}
+
+impl RedirectPrependScheme {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Http => "http",
+            Self::Https => "https",
+        }
+    }
+}
+
 #[derive(Debug, Clone, Deserialize)]
 #[serde(tag = "kind", rename_all = "kebab-case")]
 pub enum SanitizerRule {
@@ -29,6 +61,8 @@ pub enum SanitizerRule {
         url_pattern: Option<String>,
         #[serde(rename = "paramPattern")]
         param_pattern: String,
+        #[serde(default, rename = "valuePattern")]
+        value_pattern: Option<String>,
         #[serde(default)]
         exceptions: Vec<String>,
         #[serde(default, rename = "isReferralMarketing")]
@@ -52,6 +86,14 @@ pub enum SanitizerRule {
         pattern: String,
         #[serde(rename = "captureGroup")]
         capture_group: u32,
+        #[serde(default, rename = "matchPart")]
+        match_part: RedirectMatchPart,
+        #[serde(default, rename = "targetEncoding")]
+        target_encoding: RedirectTargetEncoding,
+        #[serde(default, rename = "prependScheme")]
+        prepend_scheme: Option<RedirectPrependScheme>,
+        #[serde(default, rename = "targetTemplate")]
+        target_template: Option<String>,
         #[serde(default)]
         exceptions: Vec<String>,
     },

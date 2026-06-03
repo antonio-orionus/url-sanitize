@@ -26,6 +26,26 @@ await checkJson(
   (json) => json.version === version
 );
 await checkJson(
+  `https://registry.npmjs.org/@url-sanitize%2fadguard/${version}`,
+  'npm @url-sanitize/adguard',
+  (json) => json.version === version
+);
+await checkJson(
+  `https://registry.npmjs.org/@url-sanitize%2fbrave/${version}`,
+  'npm @url-sanitize/brave',
+  (json) => json.version === version
+);
+await checkJson(
+  `https://registry.npmjs.org/@url-sanitize%2ffirefox/${version}`,
+  'npm @url-sanitize/firefox',
+  (json) => json.version === version
+);
+await checkJson(
+  `https://registry.npmjs.org/@url-sanitize%2fmerged/${version}`,
+  'npm @url-sanitize/merged',
+  (json) => json.version === version
+);
+await checkJson(
   `https://registry.npmjs.org/@url-sanitize%2fcli/${version}`,
   'npm @url-sanitize/cli',
   (json) => json.version === version

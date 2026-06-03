@@ -15,9 +15,9 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { clearurlsCatalog, clearurlsMetadata } from '@url-sanitize/clearurls';
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
+import { mergedCatalog, mergedMetadata } from '@url-sanitize/merged';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -67,7 +67,7 @@ function resultToExpected(r: SanitizeResult): Expected {
 }
 
 function sanitizerFor(opts: SanitizerOptions | undefined) {
-  return compileSanitizer(clearurlsCatalog, opts ?? {});
+  return compileSanitizer(mergedCatalog, opts ?? {});
 }
 
 async function parseSeedVectors(): Promise<SeedVector[]> {
@@ -131,12 +131,11 @@ async function main(): Promise<void> {
 
   // manifest with catalog provenance
   const manifest = {
-    generatedAt: clearurlsMetadata.fetchedAt,
+    generatedAt: mergedMetadata.generatedAt,
     catalog: {
-      hash: clearurlsMetadata.hash,
-      version: clearurlsMetadata.version,
-      fetchedAt: clearurlsMetadata.fetchedAt,
-      upstream: clearurlsMetadata.upstream
+      version: mergedMetadata.version,
+      generatedAt: mergedMetadata.generatedAt,
+      sources: mergedMetadata.sources
     },
     counts: {
       vectors: vectorLines.length,
@@ -150,7 +149,7 @@ async function main(): Promise<void> {
   await writeFile(manifestOut, `${JSON.stringify(manifest, null, 2)}\n`);
 
   console.log(`wrote ${vectorLines.length} vectors, ${corpusLines.length} corpus entries`);
-  console.log(`catalog hash: ${clearurlsMetadata.hash}`);
+  console.log(`catalog version: ${mergedMetadata.version}`);
 }
 
 function sha256(s: string): string {

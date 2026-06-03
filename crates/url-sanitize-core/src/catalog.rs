@@ -53,6 +53,19 @@ impl Catalog {
         self.sources.first().and_then(|s| s.hash.as_deref())
     }
 
+    pub fn catalog_identity(&self) -> String {
+        let hashes: Vec<&str> = self
+            .sources
+            .iter()
+            .filter_map(|s| s.hash.as_deref())
+            .collect();
+        if hashes.is_empty() {
+            self.version.clone()
+        } else {
+            hashes.join(":")
+        }
+    }
+
     pub fn generated_at(&self) -> &str {
         &self.generated_at
     }

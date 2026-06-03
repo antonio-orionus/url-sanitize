@@ -10,7 +10,7 @@ $TestUrl = "https://example.com/article?utm_source=newsletter&id=123"
 $ExpectedUrl = "https://example.com/article?id=123"
 
 $VersionOutput = (& $Command --version) -join "`n"
-if ($VersionOutput -notmatch '^url-sanitize\s+(\S+)\s+\(catalog\s+([0-9a-fA-F]{64})(?:\s+([^\)]+))?\)$') {
+if ($VersionOutput -notmatch '^url-sanitize\s+(\S+)\s+\(catalog\s+([0-9a-fA-F]{64}(?::[0-9a-fA-F]{64})*)(?:\s+([^\)]+))?\)$') {
   throw "unexpected --version output: $VersionOutput"
 }
 

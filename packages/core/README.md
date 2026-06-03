@@ -5,16 +5,16 @@ Pure TypeScript implementation for removing tracking parameters and unwrapping t
 ## Install
 
 ```sh
-npm install @url-sanitize/core @url-sanitize/clearurls
+npm install @url-sanitize/core @url-sanitize/merged
 ```
 
 ## Usage
 
 ```ts
 import { compileSanitizer } from '@url-sanitize/core';
-import { clearurlsCatalog } from '@url-sanitize/clearurls';
+import { mergedCatalog } from '@url-sanitize/merged';
 
-const sanitize = compileSanitizer(clearurlsCatalog, {
+const sanitize = compileSanitizer(mergedCatalog, {
   stripReferralMarketing: false,
   unwrapRedirects: true,
   domainBlocking: false
@@ -38,7 +38,7 @@ type SanitizeResult =
 
 - Zero runtime dependencies.
 - Pure function; no I/O.
-- Catalog-agnostic: any source (ClearURLs, AdGuard, custom) that produces a `SanitizerCatalog` works.
+- Catalog-agnostic: any source (ClearURLs, AdGuard, Brave, Firefox, custom) that produces a `SanitizerCatalog` works.
 - Factory pattern (`compileSanitizer(catalog)`) — no module-level cache, no singletons.
 - Discriminated union return type — exhaustive `switch (result.kind)`.
 
