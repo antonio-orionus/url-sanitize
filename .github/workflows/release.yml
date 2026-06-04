@@ -20,14 +20,14 @@ jobs:
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - id: matrix
         run: node scripts/release-platforms.mjs --gha-matrix >> "$GITHUB_OUTPUT"
 
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -73,7 +73,7 @@ jobs:
       matrix: ${{ fromJson(needs.platform-matrix.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
@@ -118,7 +118,7 @@ jobs:
       id-token: write
       attestations: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: actions/download-artifact@v8
         with:
           pattern: release-*
@@ -149,7 +149,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
       - name: Smoke published Linux installer
         if: runner.os == 'Linux'
@@ -202,7 +202,7 @@ jobs:
         if: env.PACKAGING_REPO_TOKEN == ''
         run: echo "PACKAGING_REPO_TOKEN is not configured; skipping Homebrew/Scoop publishing"
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         if: env.PACKAGING_REPO_TOKEN != ''
         with:
           path: source
@@ -220,14 +220,14 @@ jobs:
             --sums "$RUNNER_TEMP/SHA256SUMS" \
             --out "$RUNNER_TEMP/package-managers"
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         if: env.PACKAGING_REPO_TOKEN != ''
         with:
           repository: ${{ env.HOMEBREW_TAP_REPO }}
           token: ${{ env.PACKAGING_REPO_TOKEN }}
           path: homebrew-tap
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         if: env.PACKAGING_REPO_TOKEN != ''
         with:
           repository: ${{ env.SCOOP_BUCKET_REPO }}
@@ -275,7 +275,7 @@ jobs:
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -293,7 +293,7 @@ jobs:
     env:
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - name: Install and smoke published Homebrew formula
         run: |
           set -euo pipefail
@@ -308,7 +308,7 @@ jobs:
     env:
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - name: Install and smoke published Scoop manifest
         shell: pwsh
         run: |
@@ -331,7 +331,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -373,7 +373,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - uses: rust-lang/crates-io-auth-action@v1
@@ -410,7 +410,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: pypi
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
