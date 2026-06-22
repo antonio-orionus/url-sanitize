@@ -30,10 +30,10 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.5.0",
     "@changesets/cli": "^2.31.0",
     "ajv": "8.20.0",
-    "@types/node": "^25.9.1",
+    "@types/node": "^25.9.3",
     "@url-sanitize/adguard": "workspace:*",
     "@url-sanitize/brave": "workspace:*",
     "@url-sanitize/clearurls": "workspace:*",
@@ -45,7 +45,7 @@
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   },
   "license": "MIT",
   "author": "Antonio Orionus",
