@@ -128,7 +128,7 @@ jobs:
           cache: 'pnpm'
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: '3.9'
       - run: pnpm install --frozen-lockfile
