@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -132,10 +132,10 @@ jobs:
           (cd release-assets && sha256sum * > SHA256SUMS)
       # actions/attest@v4 pinned on 2026-06-01.
       - name: Attest release assets
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763
         with:
           subject-path: release-assets/*
-      - uses: softprops/action-gh-release@v3
+      - uses: softprops/action-gh-release@v3.0.1
         with:
           files: release-assets/*
           generate_release_notes: true
@@ -276,7 +276,7 @@ jobs:
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: '22'
       - name: Verify public release surfaces
@@ -333,7 +333,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: '22.14'
           cache: 'pnpm'
