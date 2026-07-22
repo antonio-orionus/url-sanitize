@@ -132,7 +132,7 @@ jobs:
           (cd release-assets && sha256sum * > SHA256SUMS)
       # actions/attest@v4 pinned on 2026-06-01.
       - name: Attest release assets
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6
         with:
           subject-path: release-assets/*
       - uses: softprops/action-gh-release@v3
