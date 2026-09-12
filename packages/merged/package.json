@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/merged",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Merged ClearURLs, AdGuard, Brave, and Firefox catalog for @url-sanitize/core.",
   "license": "MIT",
   "type": "module",
