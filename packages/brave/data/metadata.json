@@ -1,7 +1,7 @@
 {
-  "version": "babcc24be00b",
-  "hash": "babcc24be00bc6586c7b859be2f03447d9eb9ecef4c15c6aeab0294e99341ef7",
-  "fetchedAt": "2026-06-03T17:40:39.060Z",
+  "version": "83f004bb4573",
+  "hash": "83f004bb4573a5656465ed17d0e27bdfd983e44459725a5c956ac1710518a891",
+  "fetchedAt": "2026-09-12T08:40:53.832Z",
   "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json",
   "license": "MPL-2.0"
 }
