@@ -1,7 +1,7 @@
 {
-  "version": "68845cb183b7",
-  "hash": "68845cb183b735384b9770b23e80f7198f04c9b42aec6b7813f3c543ef960ae9",
-  "fetchedAt": "2026-06-11T08:56:23.582Z",
+  "version": "0a9a1f70e7d6",
+  "hash": "0a9a1f70e7d6d7122cec0a4ed7e985a117f4196ab531694bf4e157a842df6ee2",
+  "fetchedAt": "2026-09-19T08:50:54.568Z",
   "upstream": "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
   "license": "LGPL-3.0-only"
 }
