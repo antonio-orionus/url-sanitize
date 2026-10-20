@@ -46,11 +46,25 @@ jobs:
           echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
         id: bump
 
+      # The PR and its auto-merge use SYNC_TOKEN, not GITHUB_TOKEN. Checks on a
+      # PR pushed with GITHUB_TOKEN wait for manual approval, and a merge made
+      # with it starts no ci run on main, so auto-tag never releases.
+      - name: Require SYNC_TOKEN
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::SYNC_TOKEN secret is not set; see AGENTS.md > Daily sync."
+            exit 1
+          fi
+
       - name: Open PR
         if: steps.diff.outputs.changed == 'true'
         id: cpr
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
+          token: ${{ secrets.SYNC_TOKEN }}
           commit-message: 'release: v${{ steps.bump.outputs.new_version }}'
           title: 'chore(sources): sync upstream rules → v${{ steps.bump.outputs.new_version }}'
           body: |
@@ -63,5 +77,5 @@ jobs:
       - name: Enable auto-merge
         if: steps.diff.outputs.changed == 'true' && steps.cpr.outputs.pull-request-number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"
