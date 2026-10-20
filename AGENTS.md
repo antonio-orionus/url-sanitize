@@ -102,7 +102,9 @@ Result is a discriminated union: `{ kind: 'unchanged' } | { kind: 'cleaned', str
 
 ## Daily sync
 
-`.github/workflows/sync-clearurls.yml` runs at 04:17 UTC, opens a PR on change, auto-merges via squash. No manual action needed.
+`.github/workflows/sync-clearurls.yml` runs at 04:17 UTC, opens a PR on change, auto-merges via squash. Once main CI passes, `auto-tag.yml` tags and releases. No manual action needed.
+
+It opens the PR and enables auto-merge with the `SYNC_TOKEN` secret, a fine-grained personal access token scoped to this repository with **Contents** and **Pull requests** read/write. `GITHUB_TOKEN` does not work here: the PR's checks then wait for manual approval, and the merge it makes starts no `ci` run on `main`, so nothing is tagged. If `SYNC_TOKEN` expires, the sync fails at "Require SYNC_TOKEN" or at "Open PR"; replace the secret and re-run the workflow.
 
 ## Adding a new package
 
