@@ -46,6 +46,17 @@ jobs:
           echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
         id: bump
 
+      # CI rejects a sync whose generated files lag the new rule data and
+      # version: the merged catalogs, the Rust crate's embedded catalog, the
+      # conformance corpus, and the workspace entries in Cargo.lock.
+      - name: Regenerate catalogs, conformance corpus and Cargo.lock
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          pnpm build
+          pnpm build:catalog
+          pnpm build:conformance
+          cargo update --workspace
+
       # The PR and its auto-merge use SYNC_TOKEN, not GITHUB_TOKEN. Checks on a
       # PR pushed with GITHUB_TOKEN wait for manual approval, and a merge made
       # with it starts no ci run on main, so auto-tag never releases.
