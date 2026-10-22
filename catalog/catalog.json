@@ -1,6 +1,6 @@
 {
-  "version": "merged(df97eb5c1aee,f2f4f64a9d0a,83f004bb4573,61578ba740b7)",
-  "generatedAt": "2026-10-20T08:08:43.844Z",
+  "version": "merged(df97eb5c1aee,a2cb7927b9bd,83f004bb4573,61578ba740b7)",
+  "generatedAt": "2026-10-22T09:28:02.188Z",
   "sources": [
     {
       "name": "clearurls",
@@ -11,8 +11,8 @@
     },
     {
       "name": "adguard",
-      "version": "f2f4f64a9d0a",
-      "hash": "f2f4f64a9d0a314e2da854165484e5b82c559e9ca5b031b4199e56cd637e1449",
+      "version": "a2cb7927b9bd",
+      "hash": "a2cb7927b9bd9902616f8e6d647e0f91ef69009ad58b5ab88f908757dd6937af",
       "license": "LGPL-3.0-only",
       "upstream": "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt"
     },
@@ -29814,6 +29814,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2424",
+      "paramPattern": "ref",
+      "exceptions": [],
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?business\\.x\\.com(?::[0-9]+)?(?:[/?#]|$)"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2425",
       "paramPattern": "refsrc",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?twitter\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?x\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29821,7 +29829,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2425",
+      "provider": "adguard-2426",
       "paramPattern": "ref_src",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?twitter\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?x\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29829,7 +29837,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2426",
+      "provider": "adguard-2427",
       "paramPattern": "ref_url",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?twitter\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?x\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29837,7 +29845,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2427",
+      "provider": "adguard-2428",
       "paramPattern": "cxt",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?twitter\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?x\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29845,7 +29853,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2428",
+      "provider": "adguard-2429",
       "paramPattern": "s",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?twitter\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?x\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29853,7 +29861,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2429",
+      "provider": "adguard-2430",
       "paramPattern": "t",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?twitter\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?x\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29861,7 +29869,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2430",
+      "provider": "adguard-2431",
       "paramPattern": "tg",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?zerkalo\\.io(?::[0-9]+)?(?:[/?#]|$)"
@@ -29869,7 +29877,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2431",
+      "provider": "adguard-2432",
       "paramPattern": "vk",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?zerkalo\\.io(?::[0-9]+)?(?:[/?#]|$)"
@@ -29877,7 +29885,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2432",
+      "provider": "adguard-2433",
       "paramPattern": "mcorgid|mid|ts",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?nbcdfw\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29885,7 +29893,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2433",
+      "provider": "adguard-2434",
       "paramPattern": "utm_subaff",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?trendyol\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29893,7 +29901,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2434",
+      "provider": "adguard-2435",
       "paramPattern": "ats",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?realitykings\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29901,7 +29909,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2435",
+      "provider": "adguard-2436",
       "paramPattern": "client",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marktjagd\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -29909,7 +29917,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2436",
+      "provider": "adguard-2437",
       "paramPattern": "siteID",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?coursera\\.org(?::[0-9]+)?(?:[/?#]|$)"
@@ -29917,7 +29925,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2437",
+      "provider": "adguard-2438",
       "paramPattern": "trflg",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?mag2\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -29925,7 +29933,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2438",
+      "provider": "adguard-2439",
       "paramPattern": "ito",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?dailymail\\.co\\.uk(?::[0-9]+)?(?:[/?#]|$)"
@@ -29933,7 +29941,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2439",
+      "provider": "adguard-2440",
       "paramPattern": "pl",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?mioga\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -29941,7 +29949,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2440",
+      "provider": "adguard-2441",
       "paramPattern": "idealoid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?mioga\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -29949,16 +29957,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2441",
-      "paramPattern": "sPartner",
-      "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?ejoker\\.de(?::[0-9]+)?(?:[/?#]|$)"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2442",
-      "paramPattern": "idealoid",
+      "paramPattern": "sPartner",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?ejoker\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -29966,9 +29966,9 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2443",
-      "paramPattern": "p",
+      "paramPattern": "idealoid",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?gmx\\.\\*/logoutlounge(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?ejoker\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -29976,15 +29976,15 @@
       "provider": "adguard-2444",
       "paramPattern": "p",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?web\\.de/logoutlounge(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?gmx\\.\\*/logoutlounge(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2445",
-      "paramPattern": "mc",
+      "paramPattern": "p",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?gmx\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?web\\.de/logoutlounge(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -29992,21 +29992,21 @@
       "provider": "adguard-2446",
       "paramPattern": "mc",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?web\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?gmx\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2447",
-      "paramPattern": "partnerId",
+      "paramPattern": "mc",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?lotto\\.gmx\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?web\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2448",
-      "paramPattern": "advertisementId",
+      "paramPattern": "partnerId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?lotto\\.gmx\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -30014,6 +30014,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2449",
+      "paramPattern": "advertisementId",
+      "exceptions": [],
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?lotto\\.gmx\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2450",
       "paramPattern": "partnerId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?lotto\\.web\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30021,7 +30029,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2450",
+      "provider": "adguard-2451",
       "paramPattern": "advertisementId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?lotto\\.web\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30029,7 +30037,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2451",
+      "provider": "adguard-2452",
       "paramPattern": "origin",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?shopping\\.gmx\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
@@ -30037,7 +30045,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2452",
+      "provider": "adguard-2453",
       "paramPattern": "origin",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?shopping\\.web\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30045,7 +30053,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2453",
+      "provider": "adguard-2454",
       "paramPattern": "^dc_trk_",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?ad\\.doubleclick\\.net/ddm/trackclk/(?::[0-9]+)?(?:[/?#]|$)"
@@ -30053,7 +30061,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2454",
+      "provider": "adguard-2455",
       "paramPattern": "kampan",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?alza\\.de/\\*\\.htm(?::[0-9]+)?(?:[/?#]|$)"
@@ -30061,7 +30069,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2455",
+      "provider": "adguard-2456",
       "paramPattern": "referer",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?cosse\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30069,7 +30077,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2456",
+      "provider": "adguard-2457",
       "paramPattern": "offerKey",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?idealo\\.de/\\*\\.html(?::[0-9]+)?(?:[/?#]|$)"
@@ -30077,7 +30085,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2457",
+      "provider": "adguard-2458",
       "paramPattern": "offerListId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?idealo\\.de/\\*\\.html(?::[0-9]+)?(?:[/?#]|$)"
@@ -30085,7 +30093,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2458",
+      "provider": "adguard-2459",
       "paramPattern": "smc2",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30093,7 +30101,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2459",
+      "provider": "adguard-2460",
       "paramPattern": "smc5",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30101,7 +30109,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2460",
+      "provider": "adguard-2461",
       "paramPattern": "trackid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?media01\\.eu/set\\.aspx(?::[0-9]+)?(?:[/?#]|$)"
@@ -30109,7 +30117,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2461",
+      "provider": "adguard-2462",
       "paramPattern": "refID",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?netgames\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30117,7 +30125,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2462",
+      "provider": "adguard-2463",
       "paramPattern": "partner",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.alternate\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30125,7 +30133,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2463",
+      "provider": "adguard-2464",
       "paramPattern": "pcscpId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.galaxus\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30133,7 +30141,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2464",
+      "provider": "adguard-2465",
       "paramPattern": "amc",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30141,7 +30149,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2465",
+      "provider": "adguard-2466",
       "paramPattern": "msktc",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.lidl\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30149,7 +30157,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2466",
+      "provider": "adguard-2467",
       "paramPattern": "bid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.pricezilla\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30157,7 +30165,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2467",
+      "provider": "adguard-2468",
       "paramPattern": "campaign",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?boomstore\\.de/\\*\\.html(?::[0-9]+)?(?:[/?#]|$)"
@@ -30165,7 +30173,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2468",
+      "provider": "adguard-2469",
       "paramPattern": "campaign",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.alternate\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30173,7 +30181,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2469",
+      "provider": "adguard-2470",
       "paramPattern": "sPartner",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?cosse\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30181,7 +30189,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2470",
+      "provider": "adguard-2471",
       "paramPattern": "sPartner",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.technikdirekt\\.de(?::[0-9]+)?(?:[/?#]|$)"
@@ -30189,18 +30197,10 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2471",
+      "provider": "adguard-2472",
       "paramPattern": "sPartner",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
-      "provider": "adguard-2472",
-      "paramPattern": "idealoid",
-      "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?galaxus\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30208,7 +30208,7 @@
       "provider": "adguard-2473",
       "paramPattern": "idealoid",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.technikdirekt\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?galaxus\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30216,7 +30216,7 @@
       "provider": "adguard-2474",
       "paramPattern": "idealoid",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?netgames\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.technikdirekt\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30224,7 +30224,7 @@
       "provider": "adguard-2475",
       "paramPattern": "idealoid",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.alternate\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?netgames\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30232,7 +30232,7 @@
       "provider": "adguard-2476",
       "paramPattern": "idealoid",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.electronic4you\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.alternate\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30240,13 +30240,13 @@
       "provider": "adguard-2477",
       "paramPattern": "idealoid",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.electronic4you\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2478",
-      "paramPattern": "etcc_cmp",
+      "paramPattern": "idealoid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -30256,15 +30256,15 @@
       "provider": "adguard-2479",
       "paramPattern": "etcc_cmp",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2480",
-      "paramPattern": "etcc_med",
+      "paramPattern": "etcc_cmp",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30272,15 +30272,15 @@
       "provider": "adguard-2481",
       "paramPattern": "etcc_med",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2482",
-      "paramPattern": "etcc_produkt",
+      "paramPattern": "etcc_med",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30288,12 +30288,20 @@
       "provider": "adguard-2483",
       "paramPattern": "etcc_produkt",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.hitseller\\.de(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2484",
+      "paramPattern": "etcc_produkt",
+      "exceptions": [],
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?marketing\\.net\\.idealo-partner\\.com(?::[0-9]+)?(?:[/?#]|$)"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2485",
       "paramPattern": "(ppref|ref|pid)",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?visit\\.digidip\\.net(?::[0-9]+)?(?:[/?#]|$)"
@@ -30301,7 +30309,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2485",
+      "provider": "adguard-2486",
       "paramPattern": "^subid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?ad\\.admitad\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30309,7 +30317,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2486",
+      "provider": "adguard-2487",
       "paramPattern": "(_requestid|reff)",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?mvideo\\.ru(?::[0-9]+)?(?:[/?#]|$)"
@@ -30317,7 +30325,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2487",
+      "provider": "adguard-2488",
       "paramPattern": "ref",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?websearch\\.rakuten\\.co\\.jp/Web\\?(?::[0-9]+)?(?:[/?#]|$)"
@@ -30325,7 +30333,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2488",
+      "provider": "adguard-2489",
       "paramPattern": "trflg",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?rakuten\\.co\\.jp(?::[0-9]+)?(?:[/?#]|$)"
@@ -30333,7 +30341,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2489",
+      "provider": "adguard-2490",
       "paramPattern": "fr",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?search\\.yahoo\\.co\\.jp(?::[0-9]+)?(?:[/?#]|$)"
@@ -30341,7 +30349,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2490",
+      "provider": "adguard-2491",
       "paramPattern": "_refId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30349,7 +30357,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2491",
+      "provider": "adguard-2492",
       "paramPattern": "^affExtParam",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30357,7 +30365,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2492",
+      "provider": "adguard-2493",
       "paramPattern": "affid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30365,7 +30373,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2493",
+      "provider": "adguard-2494",
       "paramPattern": "cid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30373,7 +30381,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2494",
+      "provider": "adguard-2495",
       "paramPattern": "iid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30381,7 +30389,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2495",
+      "provider": "adguard-2496",
       "paramPattern": "lid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30389,7 +30397,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2496",
+      "provider": "adguard-2497",
       "paramPattern": "^otracker",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30397,7 +30405,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2497",
+      "provider": "adguard-2498",
       "paramPattern": "pageUID",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30405,7 +30413,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2498",
+      "provider": "adguard-2499",
       "paramPattern": "pwsvid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30413,7 +30421,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2499",
+      "provider": "adguard-2500",
       "paramPattern": "ssid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30421,7 +30429,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2500",
+      "provider": "adguard-2501",
       "paramPattern": "store",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?flipkart\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30429,7 +30437,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2501",
+      "provider": "adguard-2502",
       "paramPattern": "spm",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?daraz\\.\\*(?::[0-9]+)?(?:[/?#]|$)",
@@ -30438,7 +30446,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2502",
+      "provider": "adguard-2503",
       "paramPattern": "trackid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30446,7 +30454,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2503",
+      "provider": "adguard-2504",
       "paramPattern": "track_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30454,7 +30462,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2504",
+      "provider": "adguard-2505",
       "paramPattern": "caid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30462,7 +30470,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2505",
+      "provider": "adguard-2506",
       "paramPattern": "resource_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30470,7 +30478,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2506",
+      "provider": "adguard-2507",
       "paramPattern": "source_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30478,7 +30486,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2507",
+      "provider": "adguard-2508",
       "paramPattern": "request_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30486,7 +30494,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2508",
+      "provider": "adguard-2509",
       "paramPattern": "creative_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30494,7 +30502,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2509",
+      "provider": "adguard-2510",
       "paramPattern": "linked_creative_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30502,7 +30510,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2510",
+      "provider": "adguard-2511",
       "paramPattern": "native_mode",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30510,7 +30518,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2511",
+      "provider": "adguard-2512",
       "paramPattern": "mid",
       "exceptions": [],
       "urlPattern": "://www\\.bilibili\\.com/video/"
@@ -30518,7 +30526,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2512",
+      "provider": "adguard-2513",
       "paramPattern": "from_spmid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30526,7 +30534,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2513",
+      "provider": "adguard-2514",
       "paramPattern": "msource",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30534,7 +30542,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2514",
+      "provider": "adguard-2515",
       "paramPattern": "csource",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30542,7 +30550,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2515",
+      "provider": "adguard-2516",
       "paramPattern": "source",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?www\\.bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30550,7 +30558,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2516",
+      "provider": "adguard-2517",
       "paramPattern": "share_from",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30558,7 +30566,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2517",
+      "provider": "adguard-2518",
       "paramPattern": "spmid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30566,7 +30574,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2518",
+      "provider": "adguard-2519",
       "paramPattern": "plat_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30574,7 +30582,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2519",
+      "provider": "adguard-2520",
       "paramPattern": "buvid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30582,7 +30590,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2520",
+      "provider": "adguard-2521",
       "paramPattern": "up_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30590,7 +30598,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2521",
+      "provider": "adguard-2522",
       "paramPattern": "seid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30598,7 +30606,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2522",
+      "provider": "adguard-2523",
       "paramPattern": "share_source",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30606,7 +30614,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2523",
+      "provider": "adguard-2524",
       "paramPattern": "spm_id_from",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30614,7 +30622,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2524",
+      "provider": "adguard-2525",
       "paramPattern": "from_spm_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30622,7 +30630,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2525",
+      "provider": "adguard-2526",
       "paramPattern": "share_medium",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30630,7 +30638,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2526",
+      "provider": "adguard-2527",
       "paramPattern": "share_plat",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30638,7 +30646,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2527",
+      "provider": "adguard-2528",
       "paramPattern": "share_session_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30646,7 +30654,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2528",
+      "provider": "adguard-2529",
       "paramPattern": "share_tag",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30654,7 +30662,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2529",
+      "provider": "adguard-2530",
       "paramPattern": "timestamp",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30662,7 +30670,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2530",
+      "provider": "adguard-2531",
       "paramPattern": "unique_k",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30670,7 +30678,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2531",
+      "provider": "adguard-2532",
       "paramPattern": "from_source",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?search\\.bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30678,7 +30686,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2532",
+      "provider": "adguard-2533",
       "paramPattern": "vd_source",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?bilibili\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30686,7 +30694,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2533",
+      "provider": "adguard-2534",
       "paramPattern": "weibo_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?weibo\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
@@ -30694,7 +30702,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2534",
+      "provider": "adguard-2535",
       "paramPattern": "dt_dapp",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?weibo\\.\\*(?::[0-9]+)?(?:[/?#]|$)"
@@ -30702,7 +30710,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2535",
+      "provider": "adguard-2536",
       "paramPattern": "r_area",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30710,7 +30718,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2536",
+      "provider": "adguard-2537",
       "paramPattern": "recArea",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30718,7 +30726,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2537",
+      "provider": "adguard-2538",
       "paramPattern": "block",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30726,7 +30734,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2538",
+      "provider": "adguard-2539",
       "paramPattern": "eventId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30734,7 +30742,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2539",
+      "provider": "adguard-2540",
       "paramPattern": "event_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30742,7 +30750,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2540",
+      "provider": "adguard-2541",
       "paramPattern": "vfrm",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30750,7 +30758,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2541",
+      "provider": "adguard-2542",
       "paramPattern": "vfrmblk",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30758,7 +30766,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2542",
+      "provider": "adguard-2543",
       "paramPattern": "vfrmrst",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?iqiyi\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30766,7 +30774,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2543",
+      "provider": "adguard-2544",
       "paramPattern": "_f",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?sohu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30774,7 +30782,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2544",
+      "provider": "adguard-2545",
       "paramPattern": "_trans_",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?sohu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30782,16 +30790,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2545",
-      "paramPattern": "scm",
-      "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?sohu\\.com(?::[0-9]+)?(?:[/?#]|$)"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2546",
-      "paramPattern": "spm",
+      "paramPattern": "scm",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?sohu\\.com(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -30799,6 +30799,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2547",
+      "paramPattern": "spm",
+      "exceptions": [],
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?sohu\\.com(?::[0-9]+)?(?:[/?#]|$)"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2548",
       "paramPattern": "ptag",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?v\\.youku\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30806,7 +30814,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2548",
+      "provider": "adguard-2549",
       "paramPattern": "scm",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?v\\.youku\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30814,7 +30822,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2549",
+      "provider": "adguard-2550",
       "paramPattern": "spm",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?v\\.youku\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30822,7 +30830,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2550",
+      "provider": "adguard-2551",
       "paramPattern": "td",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?theregister\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30830,7 +30838,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2551",
+      "provider": "adguard-2552",
       "paramPattern": "app_platform",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?xiaohongshu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30838,7 +30846,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2552",
+      "provider": "adguard-2553",
       "paramPattern": "app_version",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?xiaohongshu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30846,7 +30854,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2553",
+      "provider": "adguard-2554",
       "paramPattern": "share_channel",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?xiaohongshu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30854,7 +30862,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2554",
+      "provider": "adguard-2555",
       "paramPattern": "share_id",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?xiaohongshu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30862,7 +30870,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2555",
+      "provider": "adguard-2556",
       "paramPattern": "xhsshare",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?xiaohongshu\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30870,7 +30878,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2556",
+      "provider": "adguard-2557",
       "paramPattern": "origin",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?deezer\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30878,7 +30886,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2557",
+      "provider": "adguard-2558",
       "paramPattern": "deferredFl",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?deezer\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30886,7 +30894,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2558",
+      "provider": "adguard-2559",
       "paramPattern": "ref",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?gamesplanet\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30894,7 +30902,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2559",
+      "provider": "adguard-2560",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|eneba\\.com.*"
@@ -30902,16 +30910,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2560",
-      "paramPattern": "utm_medium",
-      "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?hobbygames\\.ru(?::[0-9]+)?(?:[/?#]|$)"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2561",
-      "paramPattern": "utm_campaign",
+      "paramPattern": "utm_medium",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?hobbygames\\.ru(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -30919,7 +30919,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2562",
-      "paramPattern": "utm_source",
+      "paramPattern": "utm_campaign",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?hobbygames\\.ru(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -30927,9 +30927,9 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2563",
-      "paramPattern": "analytics_trace_id",
+      "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@/authentication/login\\?analytics_trace_id="
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?hobbygames\\.ru(?::[0-9]+)?(?:[/?#]|$)"
     },
     {
       "kind": "strip-param",
@@ -30937,12 +30937,20 @@
       "provider": "adguard-2564",
       "paramPattern": "analytics_trace_id",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|shopify\\.com/authentication/"
+      "urlPattern": "@@/authentication/login\\?analytics_trace_id="
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2565",
+      "paramPattern": "analytics_trace_id",
+      "exceptions": [],
+      "urlPattern": "@@\\|\\|shopify\\.com/authentication/"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2566",
       "paramPattern": "elqCampaignId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?s1740541080\\.t\\.eloqua\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?app\\.econnect\\.utexas\\.edu(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?clk\\.texaslonghorns\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30950,7 +30958,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2566",
+      "provider": "adguard-2567",
       "paramPattern": "elqTrackId",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?s1740541080\\.t\\.eloqua\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?app\\.econnect\\.utexas\\.edu(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?clk\\.texaslonghorns\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30958,7 +30966,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2567",
+      "provider": "adguard-2568",
       "paramPattern": "elq",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?s1740541080\\.t\\.eloqua\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?app\\.econnect\\.utexas\\.edu(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?clk\\.texaslonghorns\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30966,7 +30974,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2568",
+      "provider": "adguard-2569",
       "paramPattern": "elqaid",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?s1740541080\\.t\\.eloqua\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?app\\.econnect\\.utexas\\.edu(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?clk\\.texaslonghorns\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30974,7 +30982,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2569",
+      "provider": "adguard-2570",
       "paramPattern": "elqat",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?s1740541080\\.t\\.eloqua\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?app\\.econnect\\.utexas\\.edu(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?clk\\.texaslonghorns\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30982,7 +30990,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2570",
+      "provider": "adguard-2571",
       "paramPattern": "elqak",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?s1740541080\\.t\\.eloqua\\.com(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?app\\.econnect\\.utexas\\.edu(?::[0-9]+)?(?:[/?#]|$)|^https?:\\/\\/([^/?#]+\\.)?clk\\.texaslonghorns\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -30990,7 +30998,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2571",
+      "provider": "adguard-2572",
       "paramPattern": "cuid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|iforms\\.americanexpress\\.com.*"
@@ -30998,7 +31006,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2572",
+      "provider": "adguard-2573",
       "paramPattern": "utm_campaign",
       "exceptions": [],
       "urlPattern": "@@\\|\\|canadacompanyregistry\\.com.*"
@@ -31006,7 +31014,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2573",
+      "provider": "adguard-2574",
       "paramPattern": "utm_campaign",
       "exceptions": [],
       "urlPattern": "@@\\|\\|usprobioticguide\\.com.*"
@@ -31014,7 +31022,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2574",
+      "provider": "adguard-2575",
       "paramPattern": "utm_term",
       "exceptions": [],
       "urlPattern": "@@\\|\\|metabase\\.com.*"
@@ -31022,7 +31030,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2575",
+      "provider": "adguard-2576",
       "paramPattern": "adj_t",
       "exceptions": [],
       "urlPattern": "@@\\|\\|adj\\.st.*"
@@ -31030,7 +31038,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2576",
+      "provider": "adguard-2577",
       "paramPattern": "adj_t",
       "exceptions": [],
       "urlPattern": "@@\\|\\|yandex\\.go\\.link.*"
@@ -31038,7 +31046,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2577",
+      "provider": "adguard-2578",
       "paramPattern": "cuid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|em\\.dynamicyield\\.com.*"
@@ -31046,7 +31054,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2578",
+      "provider": "adguard-2579",
       "paramPattern": "a8",
       "exceptions": [],
       "urlPattern": "@@\\|\\|a8cv\\.amiami\\.jp/click/"
@@ -31054,7 +31062,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2579",
+      "provider": "adguard-2580",
       "paramPattern": "utm_medium",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?meishi\\.meituan\\.com(?::[0-9]+)?(?:[/?#]|$)"
@@ -31062,7 +31070,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2581",
+      "provider": "adguard-2582",
       "paramPattern": "irclickid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|tix\\.axs\\.com.*"
@@ -31070,7 +31078,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2582",
+      "provider": "adguard-2583",
       "paramPattern": "srsltid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|google\\..*/url\\?.*%26srsltid%3D"
@@ -31078,7 +31086,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2583",
+      "provider": "adguard-2584",
       "paramPattern": "__rr",
       "exceptions": [],
       "urlPattern": "@@\\|\\|ozon\\.ru/my/points"
@@ -31086,16 +31094,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2584",
-      "paramPattern": "utm_campaign",
-      "exceptions": [],
-      "urlPattern": "@@\\|\\|rd\\.bizrate\\.com.*"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2585",
-      "paramPattern": "utm_medium",
+      "paramPattern": "utm_campaign",
       "exceptions": [],
       "urlPattern": "@@\\|\\|rd\\.bizrate\\.com.*"
     },
@@ -31103,6 +31103,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2586",
+      "paramPattern": "utm_medium",
+      "exceptions": [],
+      "urlPattern": "@@\\|\\|rd\\.bizrate\\.com.*"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2587",
       "paramPattern": "utm_content",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?reddit\\.app\\.link(?::[0-9]+)?(?:[/?#]|$)"
@@ -31110,7 +31118,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2587",
+      "provider": "adguard-2588",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|video-shoper\\.ru.*"
@@ -31118,16 +31126,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2588",
-      "paramPattern": "utm_campaign",
-      "exceptions": [],
-      "urlPattern": "@@\\|\\|glavnoe\\.life.*"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2589",
-      "paramPattern": "utm_content",
+      "paramPattern": "utm_campaign",
       "exceptions": [],
       "urlPattern": "@@\\|\\|glavnoe\\.life.*"
     },
@@ -31135,7 +31135,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2590",
-      "paramPattern": "utm_medium",
+      "paramPattern": "utm_content",
       "exceptions": [],
       "urlPattern": "@@\\|\\|glavnoe\\.life.*"
     },
@@ -31143,7 +31143,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2591",
-      "paramPattern": "utm_referrer",
+      "paramPattern": "utm_medium",
       "exceptions": [],
       "urlPattern": "@@\\|\\|glavnoe\\.life.*"
     },
@@ -31151,7 +31151,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2592",
-      "paramPattern": "utm_source",
+      "paramPattern": "utm_referrer",
       "exceptions": [],
       "urlPattern": "@@\\|\\|glavnoe\\.life.*"
     },
@@ -31159,7 +31159,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2593",
-      "paramPattern": "utm_term",
+      "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|glavnoe\\.life.*"
     },
@@ -31167,6 +31167,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2594",
+      "paramPattern": "utm_term",
+      "exceptions": [],
+      "urlPattern": "@@\\|\\|glavnoe\\.life.*"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2595",
       "paramPattern": "vc_lpp",
       "exceptions": [],
       "urlPattern": "@@\\|\\|booklive\\.jp/vcentry/landing\\?"
@@ -31174,7 +31182,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2595",
+      "provider": "adguard-2596",
       "paramPattern": "utm_campaign",
       "exceptions": [],
       "urlPattern": "@@\\|\\|google\\..*/maps.*"
@@ -31182,7 +31190,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2596",
+      "provider": "adguard-2597",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|uploadnow\\..*/share"
@@ -31190,7 +31198,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2597",
+      "provider": "adguard-2598",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|3dnews\\.ru/.*\\?utm_source=.*"
@@ -31198,7 +31206,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2598",
+      "provider": "adguard-2599",
       "paramPattern": "utm_content",
       "exceptions": [],
       "urlPattern": "@@\\|\\|gaugau\\.futabanet\\.jp.*"
@@ -31206,7 +31214,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2599",
+      "provider": "adguard-2600",
       "paramPattern": "erid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|lifehacker\\.ru.*"
@@ -31214,7 +31222,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2600",
+      "provider": "adguard-2601",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|transfernow\\.net/.*/.*\\?utm_source="
@@ -31222,7 +31230,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2601",
+      "provider": "adguard-2602",
       "paramPattern": "cmpid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|cleviationly\\.com/adServe/aff\\?cmpid=.*mydealz.*&dlink="
@@ -31230,7 +31238,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2602",
+      "provider": "adguard-2603",
       "paramPattern": "cuid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|mootoon\\.co\\.kr.*"
@@ -31238,7 +31246,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2603",
+      "provider": "adguard-2604",
       "paramPattern": "erid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|forbes\\.ru.*"
@@ -31246,7 +31254,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2604",
+      "provider": "adguard-2605",
       "paramPattern": "oly_enc_id",
       "exceptions": [],
       "urlPattern": "@@\\|\\|greenbuildingadvisor\\.com.*"
@@ -31254,7 +31262,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2605",
+      "provider": "adguard-2606",
       "paramPattern": "_ga",
       "exceptions": [],
       "urlPattern": "@@\\|\\|login\\.aliexpress\\..*/sync_cookie_write\\.htm\\?.*&_ga="
@@ -31262,7 +31270,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2606",
+      "provider": "adguard-2607",
       "paramPattern": "erid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|kommersant\\.ru.*"
@@ -31270,16 +31278,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2607",
-      "paramPattern": "utm_content",
-      "exceptions": [],
-      "urlPattern": "@@\\|\\|redirects\\.tradedoubler\\.com.*"
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2608",
-      "paramPattern": "utm_campaign",
+      "paramPattern": "utm_content",
       "exceptions": [],
       "urlPattern": "@@\\|\\|redirects\\.tradedoubler\\.com.*"
     },
@@ -31287,6 +31287,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2609",
+      "paramPattern": "utm_campaign",
+      "exceptions": [],
+      "urlPattern": "@@\\|\\|redirects\\.tradedoubler\\.com.*"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2610",
       "paramPattern": "tduid",
       "exceptions": [],
       "urlPattern": "@@\\|\\|tradedoubler\\.com.*"
@@ -31294,7 +31302,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2610",
+      "provider": "adguard-2611",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|carrefourpl\\.snrpage\\.com.*"
@@ -31302,7 +31310,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2611",
+      "provider": "adguard-2612",
       "paramPattern": "aff_short_key",
       "exceptions": [],
       "urlPattern": "@@\\|\\|s\\.click\\.aliexpress\\.com/deep_link\\.htm\\?aff_short_key="
@@ -31310,7 +31318,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2612",
+      "provider": "adguard-2613",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|transfernow\\.net/.*/dltransfer"
@@ -31318,7 +31326,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2613",
+      "provider": "adguard-2614",
       "paramPattern": "utm_medium",
       "exceptions": [],
       "urlPattern": "@@\\|\\|mmcref\\.pl/\\?"
@@ -31326,7 +31334,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2614",
+      "provider": "adguard-2615",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|lanacion\\.com\\.ar/.*module"
@@ -31334,16 +31342,8 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2615",
-      "paramPattern": "utm_source",
-      "exceptions": [],
-      "urlPattern": "@@\\|\\|t\\.send\\.vt\\.edu/r/\\?id="
-    },
-    {
-      "kind": "strip-param",
-      "source": "adguard",
       "provider": "adguard-2616",
-      "paramPattern": "utm_medium",
+      "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|t\\.send\\.vt\\.edu/r/\\?id="
     },
@@ -31351,7 +31351,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2617",
-      "paramPattern": "utm_campaign",
+      "paramPattern": "utm_medium",
       "exceptions": [],
       "urlPattern": "@@\\|\\|t\\.send\\.vt\\.edu/r/\\?id="
     },
@@ -31359,9 +31359,9 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2618",
-      "paramPattern": "utm_source",
+      "paramPattern": "utm_campaign",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|ofeminin\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|t\\.send\\.vt\\.edu/r/\\?id="
     },
     {
       "kind": "strip-param",
@@ -31369,7 +31369,7 @@
       "provider": "adguard-2619",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|auto-swiat\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|ofeminin\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31377,7 +31377,7 @@
       "provider": "adguard-2620",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|komputerswiat\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|auto-swiat\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31385,7 +31385,7 @@
       "provider": "adguard-2621",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|noizz\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|komputerswiat\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31393,7 +31393,7 @@
       "provider": "adguard-2622",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|plejada\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|noizz\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31401,7 +31401,7 @@
       "provider": "adguard-2623",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|medonet\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|plejada\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31409,7 +31409,7 @@
       "provider": "adguard-2624",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|businessinsider\\.com\\.pl/.*&srcc=ucs"
+      "urlPattern": "@@\\|\\|medonet\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31417,7 +31417,7 @@
       "provider": "adguard-2625",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "@@\\|\\|sendgb\\.com/.*/\\?utm_source="
+      "urlPattern": "@@\\|\\|businessinsider\\.com\\.pl/.*&srcc=ucs"
     },
     {
       "kind": "strip-param",
@@ -31425,13 +31425,13 @@
       "provider": "adguard-2626",
       "paramPattern": "utm_source",
       "exceptions": [],
-      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?app\\.plex\\.tv(?::[0-9]+)?(?:[/?#]|$)"
+      "urlPattern": "@@\\|\\|sendgb\\.com/.*/\\?utm_source="
     },
     {
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2627",
-      "paramPattern": "utm_content",
+      "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?app\\.plex\\.tv(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -31439,7 +31439,7 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2628",
-      "paramPattern": "utm_medium",
+      "paramPattern": "utm_content",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?app\\.plex\\.tv(?::[0-9]+)?(?:[/?#]|$)"
     },
@@ -31447,6 +31447,14 @@
       "kind": "strip-param",
       "source": "adguard",
       "provider": "adguard-2629",
+      "paramPattern": "utm_medium",
+      "exceptions": [],
+      "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?app\\.plex\\.tv(?::[0-9]+)?(?:[/?#]|$)"
+    },
+    {
+      "kind": "strip-param",
+      "source": "adguard",
+      "provider": "adguard-2630",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "^https?:\\/\\/([^/?#]+\\.)?watch\\.plex\\.tv(?::[0-9]+)?(?:[/?#]|$)"
@@ -31454,7 +31462,7 @@
     {
       "kind": "strip-param",
       "source": "adguard",
-      "provider": "adguard-2630",
+      "provider": "adguard-2631",
       "paramPattern": "utm_source",
       "exceptions": [],
       "urlPattern": "@@\\|\\|insurancexblog\\.blogspot\\.com/\\?utm_source="
