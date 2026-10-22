@@ -111,8 +111,10 @@ jobs:
           ls -lh target/release/url-sanitize
           size=$(stat -c%s target/release/url-sanitize)
           echo "release binary size: $size bytes"
-          # M1 soft cap: 1.5 MB. M3 target: < 1 MB.
-          test "$size" -lt 1572864 || (echo "binary exceeded 1.5 MB soft cap" && exit 1)
+          # Soft cap: 2 MiB. The embedded catalog dominates the size and grows
+          # with every upstream sync (1.5 MB was exceeded at v2.0.3).
+          # M3 target: < 1 MB, which needs a compressed embedded catalog.
+          test "$size" -lt 2097152 || (echo "binary exceeded 2 MiB soft cap" && exit 1)
 
   smoke:
     name: Package smoke tests

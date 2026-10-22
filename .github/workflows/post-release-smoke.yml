@@ -53,8 +53,12 @@ jobs:
       - name: Install and smoke published Homebrew formula
         run: |
           set -euo pipefail
-          brew tap "$HOMEBREW_TAP_REPO"
-          brew install "$HOMEBREW_TAP_REPO/url-sanitize"
+          # Install by the canonical owner/name tap, as the README does. Homebrew
+          # trusts a fully qualified install only under that name; the repo-style
+          # owner/homebrew-name is refused as an untrusted tap.
+          tap="${HOMEBREW_TAP_REPO%%/*}/${HOMEBREW_TAP_REPO#*/homebrew-}"
+          brew tap "$tap"
+          brew install "$tap/url-sanitize"
           scripts/smoke-cli.sh "$(brew --prefix)/bin/url-sanitize" "${VERSION#v}"
 
   scoop-smoke:
