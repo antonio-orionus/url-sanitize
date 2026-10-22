@@ -30,7 +30,7 @@
     "prepare": "node scripts/prepare-hooks.mjs && vp config --no-agent"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
+    "@changesets/cli": "^3.0.3",
     "ajv": "8.20.0",
     "@types/node": "^25.9.1",
     "@url-sanitize/adguard": "workspace:*",
