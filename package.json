@@ -40,7 +40,7 @@
     "@url-sanitize/firefox": "workspace:*",
     "@url-sanitize/merged": "workspace:*",
     "tsx": "^4.23.15",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:"
   },
