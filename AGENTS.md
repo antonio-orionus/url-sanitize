@@ -39,10 +39,10 @@ docs/          threat model, license model, roadmap, compat notes
 ```bash
 pnpm install                  # install all workspace deps
 pnpm sync:clearurls           # fetch + SHA256-verify upstream rules → packages/clearurls/data/
-pnpm build                    # tsup build all packages (must run before typecheck)
-pnpm test                     # vitest run
-pnpm lint                     # biome check . (also enforces import order)
-pnpm format                   # biome format --write .
+pnpm build                    # vp pack all packages (must run before typecheck)
+pnpm test                     # vp test run
+pnpm lint                     # vp check: format, lint and type check (also sorts imports)
+pnpm format                   # vp check --fix
 pnpm typecheck                # tsc --noEmit across all packages
 cargo fmt --all --check       # Rust formatting check
 cargo clippy --workspace --all-targets -- -D warnings
@@ -55,10 +55,11 @@ Pre-push hook runs: `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `c
 
 ## Key conventions
 
-- **Linter/formatter**: Biome — not ESLint/Prettier. Run `pnpm lint` to check, `pnpm format` to fix.
-- **Build**: tsup (ESM only, `.d.ts` emitted). `dist/` is gitignored, included in npm via `"files"`.
-- **Test runner**: vitest. Single test file: `bunx vitest run packages/core/test/sanitize.test.ts`
-- **Imports**: must be alphabetically ordered (Biome enforces). Use `.js` extensions in source imports.
+- **Toolchain**: Vite+ (`vp`), configured in the root `vite.config.ts`: Oxfmt formats, Oxlint lints with type checking, Vitest runs tests (import from `vite-plus/test`). Not Biome, ESLint or Prettier. Run `pnpm lint` to check, `pnpm format` to fix.
+- **Build**: `vp pack` (tsdown; ESM only, `.d.ts` emitted), configured in each package's `vite.config.ts`. `dist/` is gitignored, included in npm via `"files"`.
+- **Test runner**: `vp test`. Single test file: `pnpm exec vp test run packages/core/test/sanitize.test.ts`
+- **Imports**: sorted by the formatter. Use `.js` extensions in source imports.
+- **Hooks**: `.vite-hooks/` (pre-commit runs `vp staged`, pre-push runs `scripts/pre-push.sh`); `pnpm install` enables them through `vp config`.
 - **Versions**: npm packages, Rust workspace, and PyPI wrapper version-bump together on every release.
 - **Roadmap**: `docs/roadmap.md` is canonical. Do not recreate `PLAN.md`.
 - **npm native packages**: intentionally not used in v0.2. They create one package/trusted-publisher setup per platform. Keep npm CLI pure TypeScript unless this tradeoff is explicitly reopened.
@@ -110,7 +111,7 @@ It opens the PR and enables auto-merge with the `SYNC_TOKEN` secret, a fine-grai
 
 1. Create `packages/<name>/` with `package.json` (`"name": "@url-sanitize/<name>"`, `"publishConfig": { "access": "public" }`)
 2. Add `tsconfig.json` extending `../../tsconfig.base.json`
-3. Add `"build"` script using tsup
+3. Add `"build": "vp pack"` and a `vite.config.ts` with a `pack` block (copy one from another package)
 4. Add `"files": ["dist"]`
 5. `pnpm install` to link workspace
 6. **Bootstrap the first publish manually — do this BEFORE the release CI runs for this package.** OIDC trusted publishing cannot create a name with zero published versions (see [Publishing](#publishing)). Once:

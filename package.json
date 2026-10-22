@@ -6,17 +6,17 @@
   "type": "module",
   "packageManager": "pnpm@11.5.0",
   "engines": {
-    "node": ">=22.13"
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
   },
   "scripts": {
     "build": "pnpm -r --filter './packages/*' run build",
-    "test": "vitest run",
+    "test": "vp test run",
     "smoke": "bash scripts/smoke.sh",
     "verify:release": "node scripts/verify-release.mjs",
-    "test:watch": "vitest",
+    "test:watch": "vp test watch",
     "typecheck": "pnpm -r --filter './packages/*' exec tsc --noEmit",
-    "lint": "biome check .",
-    "format": "biome format --write .",
+    "lint": "vp check",
+    "format": "vp check --fix",
     "sync:clearurls": "tsx sources/clearurls/sync.ts",
     "sync:adguard": "tsx sources/adguard/sync.ts",
     "sync:brave": "tsx sources/brave/sync.ts",
@@ -27,10 +27,9 @@
     "benchmark": "tsx scripts/benchmark.ts",
     "changeset": "changeset",
     "release": "pnpm build && changeset publish",
-    "prepare": "husky"
+    "prepare": "vp config --no-agent"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
     "@changesets/cli": "^2.31.0",
     "ajv": "8.20.0",
     "@types/node": "^25.9.1",
@@ -40,12 +39,10 @@
     "@url-sanitize/core": "workspace:*",
     "@url-sanitize/firefox": "workspace:*",
     "@url-sanitize/merged": "workspace:*",
-    "husky": "^9.1.7",
-    "tsup": "^8.5.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16",
-    "vitest": "^4.1.8"
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
   },
   "license": "MIT",
   "author": "Antonio Orionus",

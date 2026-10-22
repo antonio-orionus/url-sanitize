@@ -11,10 +11,11 @@
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
 import { mergedCatalog } from '@url-sanitize/merged';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 type Expected =
   | { kind: 'unchanged'; url: string }

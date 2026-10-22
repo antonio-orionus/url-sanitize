@@ -1,5 +1,6 @@
 import type { Sanitizer, SanitizerCatalog } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
+
 import { firefoxToCatalog } from './adapter.js';
 import { firefoxMetadata, firefoxRawData } from './raw.js';
 

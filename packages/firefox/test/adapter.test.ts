@@ -1,5 +1,6 @@
 import { compileSanitizer } from '@url-sanitize/core';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
+
 import { firefoxToCatalog } from '../src/index.js';
 
 const metadata = {

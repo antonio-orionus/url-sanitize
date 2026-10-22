@@ -1,5 +1,6 @@
 import type { Sanitizer, SanitizerCatalog } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
+
 import { braveToCatalog } from './adapter.js';
 import { braveMetadata, braveRawData } from './raw.js';
 

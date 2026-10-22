@@ -1,4 +1,5 @@
 import type { SanitizerCatalog, SanitizerRule } from '@url-sanitize/core';
+
 import type { AdguardData, AdguardMetadata } from './types.js';
 
 interface ParsedRule {
