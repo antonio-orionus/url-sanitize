@@ -40,7 +40,7 @@ async function main(): Promise<void> {
   }
   for (const record of (parsed as { data: Array<Record<string, unknown>> }).data) {
     if (record.filter_expression) {
-      throw new Error(`Unsupported Firefox filter_expression in record ${record.id}`);
+      throw new Error(`Unsupported Firefox filter_expression in record ${String(record.id)}`);
     }
   }
 

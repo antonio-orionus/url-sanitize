@@ -1,6 +1,7 @@
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
+
 import type { SanitizeResult, SanitizerCatalog } from '../src/index.js';
 import {
   compileSanitizer,

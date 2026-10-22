@@ -1,4 +1,5 @@
 import type { SanitizerCatalog, SanitizerRule } from '@url-sanitize/core';
+
 import type { FirefoxMetadata, FirefoxQueryStrippingData } from './types.js';
 
 export function firefoxToCatalog(

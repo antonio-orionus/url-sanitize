@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+
 import { compileSanitizer, type SanitizeResult, type SanitizerOptions } from '@url-sanitize/core';
 import { mergedCatalog, mergedMetadata } from '@url-sanitize/merged';
 

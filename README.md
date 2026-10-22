@@ -296,14 +296,14 @@ Publishing to Homebrew tap and Scoop bucket repositories requires a `PACKAGING_R
 
 ## Development
 
-Requires Node.js ≥ 22 and pnpm. Rust toolchain required for crate targets (MSRV 1.75).
+Requires Node.js 22.18+ or 24.11+ and pnpm. Rust toolchain required for crate targets (MSRV 1.75).
 
 ```sh
 git clone https://github.com/antonio-orionus/url-sanitize.git
 cd url-sanitize
 pnpm install
-pnpm build       # tsup build all packages
-pnpm test        # vitest
+pnpm build       # vp pack all packages
+pnpm test        # vp test
 pnpm typecheck
 pnpm lint
 cargo test --workspace

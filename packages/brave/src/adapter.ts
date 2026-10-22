@@ -1,4 +1,5 @@
 import type { SanitizerCatalog, SanitizerRule } from '@url-sanitize/core';
+
 import type { BraveDebounceData, BraveMetadata } from './types.js';
 
 export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): SanitizerCatalog {

@@ -1,9 +1,10 @@
 import { performance } from 'node:perf_hooks';
+
 import { clearurlsCatalog, clearurlsMetadata } from '@url-sanitize/clearurls';
 import { compileSanitizer } from '@url-sanitize/core';
 
 const iterations = 50_000;
-const urls = [
+const urls: [string, ...string[]] = [
   'https://example.com/article?utm_source=newsletter&utm_medium=email&id=123',
   'https://www.google.com/url?q=https%3A%2F%2Fexample.org%2Ftarget&sa=t',
   'https://www.amazon.com/dp/B000000?tag=affiliate-20&psc=1',

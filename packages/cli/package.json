@@ -11,8 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/bin.ts --format esm --clean",
-    "dev": "tsup src/bin.ts --format esm --watch"
+    "build": "vp pack",
+    "dev": "vp pack --watch"
   },
   "dependencies": {
     "@url-sanitize/core": "workspace:*",

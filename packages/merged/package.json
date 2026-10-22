@@ -18,8 +18,8 @@
     "NOTICE"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
-    "dev": "tsup src/index.ts --format esm --dts --watch"
+    "build": "vp pack",
+    "dev": "vp pack --watch"
   },
   "dependencies": {
     "@url-sanitize/adguard": "workspace:*",

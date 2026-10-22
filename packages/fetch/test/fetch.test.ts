@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
+
 import { compileSanitizer } from '@url-sanitize/core';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
+
 import { fetchClearurlsCatalog } from '../src/index.js';
 
 const rulesUrl = 'https://rules.test/data.minify.json';
@@ -59,8 +61,8 @@ describe('fetchClearurlsCatalog', () => {
       rulesUrl,
       hashUrl,
       fetch: async (url) => {
-        seen.push(String(url));
-        return textResponse(String(url) === rulesUrl ? rulesText : rulesHash);
+        seen.push(requestUrl(url));
+        return textResponse(requestUrl(url) === rulesUrl ? rulesText : rulesHash);
       }
     });
 
@@ -75,7 +77,7 @@ describe('fetchClearurlsCatalog', () => {
       url: Parameters<typeof globalThis.fetch>[0]
     ): Promise<Response> {
       seenThisValues.push(this);
-      return textResponse(String(url) === rulesUrl ? rulesText : rulesHash);
+      return textResponse(requestUrl(url) === rulesUrl ? rulesText : rulesHash);
     } as typeof globalThis.fetch;
 
     try {
@@ -167,7 +169,7 @@ function fakeFetch(
   statuses: Record<string, number> = {}
 ): typeof globalThis.fetch {
   return async (url) => {
-    const key = String(url);
+    const key = requestUrl(url);
     const status = statuses[key] ?? 200;
     if (status !== 200) return textResponse('', status);
     const body = bodies[key];
@@ -187,4 +189,9 @@ function textResponse(body: string, status = 200): Response {
 
 function sha256(text: string): string {
   return createHash('sha256').update(text).digest('hex');
+}
+
+function requestUrl(input: Parameters<typeof globalThis.fetch>[0]): string {
+  if (typeof input === 'string') return input;
+  return input instanceof URL ? input.href : input.url;
 }

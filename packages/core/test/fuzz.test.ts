@@ -1,6 +1,8 @@
 import { performance } from 'node:perf_hooks';
+
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
+
 import { compileSanitizer } from '../src/index.js';
 
 const CASES = 10_000;
