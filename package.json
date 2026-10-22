@@ -27,7 +27,7 @@
     "benchmark": "tsx scripts/benchmark.ts",
     "changeset": "changeset",
     "release": "pnpm build && changeset publish",
-    "prepare": "vp config --no-agent"
+    "prepare": "node scripts/prepare-hooks.mjs && vp config --no-agent"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",

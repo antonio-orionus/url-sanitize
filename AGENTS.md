@@ -59,7 +59,7 @@ Pre-push hook runs: `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `c
 - **Build**: `vp pack` (tsdown; ESM only, `.d.ts` emitted), configured in each package's `vite.config.ts`. `dist/` is gitignored, included in npm via `"files"`.
 - **Test runner**: `vp test`. Single test file: `pnpm exec vp test run packages/core/test/sanitize.test.ts`
 - **Imports**: sorted by the formatter. Use `.js` extensions in source imports.
-- **Hooks**: `.vite-hooks/` (pre-commit runs `vp staged`, pre-push runs `scripts/pre-push.sh`); `pnpm install` enables them through `vp config`.
+- **Hooks**: `.vite-hooks/` (pre-commit runs `vp staged`, pre-push runs `scripts/pre-push.sh`); `pnpm install` enables them through `vp config`, after `scripts/prepare-hooks.mjs` drops the husky `core.hooksPath` that older clones still carry.
 - **Versions**: npm packages, Rust workspace, and PyPI wrapper version-bump together on every release.
 - **Roadmap**: `docs/roadmap.md` is canonical. Do not recreate `PLAN.md`.
 - **npm native packages**: intentionally not used in v0.2. They create one package/trusted-publisher setup per platform. Keep npm CLI pure TypeScript unless this tradeoff is explicitly reopened.
