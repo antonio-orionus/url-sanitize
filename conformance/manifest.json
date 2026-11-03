@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-02T12:35:26.789Z",
+  "generatedAt": "2026-11-03T12:01:07.660Z",
   "catalog": {
-    "version": "merged(df97eb5c1aee,77377dd17fa0,83f004bb4573,61578ba740b7)",
-    "generatedAt": "2026-11-02T12:35:26.789Z",
+    "version": "merged(df97eb5c1aee,7046fc94d08c,83f004bb4573,61578ba740b7)",
+    "generatedAt": "2026-11-03T12:01:07.660Z",
     "sources": [
       {
         "name": "clearurls",
@@ -13,8 +13,8 @@
       },
       {
         "name": "adguard",
-        "version": "77377dd17fa0",
-        "hash": "77377dd17fa078d9583e89816389a048c38fdd735e35e7b100594580a1a6d6ef",
+        "version": "7046fc94d08c",
+        "hash": "7046fc94d08c7d429214ac97ad3623450e955c79441a30e55e56d135b79e5cec",
         "license": "LGPL-3.0-only",
         "upstream": "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt"
       },
