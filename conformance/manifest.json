@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-03T12:01:07.660Z",
+  "generatedAt": "2026-11-04T12:15:13.775Z",
   "catalog": {
-    "version": "merged(df97eb5c1aee,7046fc94d08c,83f004bb4573,61578ba740b7)",
-    "generatedAt": "2026-11-03T12:01:07.660Z",
+    "version": "merged(ccc0b05a867d,7046fc94d08c,83f004bb4573,61578ba740b7)",
+    "generatedAt": "2026-11-04T12:15:13.775Z",
     "sources": [
       {
         "name": "clearurls",
-        "version": "df97eb5c1aee",
-        "hash": "df97eb5c1aeeb9f96d0c28a6a60604f3cb2b1f9e7776eee228258e1b2bae1424",
+        "version": "ccc0b05a867d",
+        "hash": "ccc0b05a867d1ff577db3af8b6ad3f2889d259282a47dd99b3fa3db41a3c4c7d",
         "license": "LGPL-3.0-only",
         "upstream": "https://rules2.clearurls.xyz/data.minify.json"
       },

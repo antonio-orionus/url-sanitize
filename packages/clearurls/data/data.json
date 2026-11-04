@@ -160,7 +160,8 @@
         "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/s\\?tbm=map.*?gs_[a-z]*=.",
         "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/(?:complete\\/search|setprefs|searchbyimage)",
         "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/(?:appsactivity|aclk\\?)",
-        "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/safe[-]?browsing\\/([^&]+)"
+        "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/safe[-]?browsing\\/([^&]+)",
+        "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/async\\/.*"
       ],
       "redirections": [
         "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?google(?:\\.[a-z]{2,}){1,}\\/url\\?.*?(?:url|q)=(https?[^&]+)",
@@ -769,6 +770,9 @@
         "trk",
         "li[a-z]{2}",
         "trackingId"
+      ],
+      "redirections": [
+        "^https?:\\/\\/(?:[a-z0-9.-]*\\.)?linkedin\\.com\\/(?:redir\\/redirect|safety\\/go)\\/?\\?(?:url=|[^#]*?&url=)(https?(?::|%3[Aa])(?:\\/|%2[Ff]){2}[^&#]+)"
       ]
     },
     "LinkedIn Learning": {
