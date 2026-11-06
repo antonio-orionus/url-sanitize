@@ -87,7 +87,7 @@ Engine decisions:
 - `url-sanitize-core` — Rust engine crate matching the TypeScript behavior contract
 - `url-sanitize` — native Rust CLI with embedded ClearURLs-compatible catalog
 - Shared conformance corpus for TypeScript and Rust
-- Daily sync workflow → opens PR on rule changes with auto-generated changeset
+- Daily sync workflow → opens PR on rule changes. Today `sync-clearurls.yml` syncs all four sources, bumps the version with `scripts/bump-version.mjs` and opens a `release:` PR; Changesets is no longer part of the release path.
 - Vitest suite plus the shared conformance corpus in `conformance/`
 - CI workflow — typecheck, lint, test, build, generated-corpus freshness, Rust conformance, binary size check
 - License model docs + threat model + non-goals + ClearURLs compatibility migration guide
@@ -140,7 +140,7 @@ Engine decisions:
 - Documented threat model + license boundaries
 - Published benchmark numbers
 - `SECURITY.md` with responsible-disclosure policy
-- Fuzz-testing in CI — 10k random URLs/run, fails if any sanitize call exceeds 50ms (random URLs missed a real ReDoS; see v2.1)
+- Fuzz-testing in CI — 10k random URLs/run against the ClearURLs catalog, fails if any sanitize call exceeds 50ms (random URLs missed a real ReDoS; see v2.1)
 - GitHub artifact-attestation-backed native releases.
 - Every package ecosystem wrapper proves it invokes the same version/hash of the Rust binary or passes the same conformance smoke subset.
 
@@ -210,7 +210,7 @@ Three reasons, ranked by weight:
 
 `clearurls-ts` wins exact-match search. `url-sanitize` doesn't. Mitigations baked into day-1 design:
 
-- Package keywords include `clearurls` (`clearurls-ts`, `clearurls-typescript`, and `clearurls-compat` were planned but are not in any `package.json`)
+- Package keywords include `clearurls`; `@url-sanitize/clearurls` also carries `clearurls-ts` and `clearurls-typescript` (`clearurls-compat` was planned but is not in any `package.json`)
 - README opens with "Looking for ClearURLs behavior as a library or CLI?"
 - Dedicated `docs/clearurls-compat.md` for migration searches
 - HN / Reddit launch title front-loads `ClearURLs` keyword
@@ -228,7 +228,15 @@ Three reasons, ranked by weight:
 
 - `@url-sanitize/core` — **MIT** (clean-room TS algorithm port against the public ClearURLs rule spec)
 - `@url-sanitize/clearurls` — **MIT (code) + LGPL-3.0-only (bundled `data.json` derived from ClearURLs Rules repo)**
+- `@url-sanitize/adguard` — **LGPL-3.0-only** (bundled AdGuard filter data)
+- `@url-sanitize/brave` and `@url-sanitize/firefox` — **MPL-2.0** (bundled Brave and Mozilla data)
+- `@url-sanitize/merged` — **MIT (code) + the upstream data licenses** of the four catalogs it bundles
 - `@url-sanitize/cli` and `@url-sanitize/fetch` — **MIT**
+
+[`docs/license-model.md`](license-model.md) is the authoritative table. The
+`license` field in `@url-sanitize/clearurls`'s `package.json` says
+`LGPL-3.0-only` for the whole package; its `LICENSE` file carries the MIT/LGPL
+split.
 
 Why the split unlocks adoption:
 
@@ -254,6 +262,12 @@ What we add:
 - v0.3: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value). Since v2.1, a `pinnedHash` set to `undefined` or `''` throws instead of silently disabling the pin.
 
 Stricter integrity (e.g. signing) would need upstream ClearURLs maintainers to opt in. Not our project's gap to fix.
+
+The v2.0 sources publish no hash at all. The AdGuard, Brave, and Firefox sync
+scripts fetch over TLS (raw.githubusercontent.com and Mozilla Remote Settings)
+and compute their own SHA256 only to detect changes, so their integrity rests
+on TLS and on review of the daily sync PR. `@url-sanitize/fetch` fetches only
+the ClearURLs catalog.
 
 ### Why factory pattern over module singleton
 
@@ -316,7 +330,9 @@ Catches catastrophic-backtracking regexes upstream ships before they reach consu
 It is not enough on its own: random URLs never hit the inputs that make a pattern
 slow, and AdGuard's `.*z=.*&var=` shipped cubic until v2.1. v2.1 added the
 8192-character URL cap, defused leading `.*` in match-only patterns, and a
-regression test that feeds that pattern a long hostile URL.
+regression test that feeds that pattern a long hostile URL. The fuzz test still
+compiles only the ClearURLs catalog (about 820 rules), not the merged catalog's
+roughly 2,900 AdGuard, Brave, and Firefox rules.
 
 ### Non-goals (won't ship, ever)
 
@@ -334,8 +350,9 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 | `@brandonkal/url-purify` | Static fork, no sync. We solve freshness. |
 | `@mkljczk/url-purify` | Static fork, no sync. Same gap. |
 | Hand-rolled regexes per project | Stale within months. We solve maintenance. |
-| Brave Query String Filter | Browser-native, not a library. Different audience. |
-| AdGuard URL Tracking filter | Filter-list format, not API. We could adapt (v2.0). |
+| Brave Debouncer + query-string filter | Browser-native lists. The Debouncer is adapted as `@url-sanitize/brave` (v2.0); the query-strip list is deferred. |
+| AdGuard URL Tracking filter | Filter-list format, not API. Adapted as `@url-sanitize/adguard` (v2.0). |
+| Firefox query stripping | Browser-native list. Adapted as `@url-sanitize/firefox` (v2.0). |
 | Unalix Python / Nim | Archived. Confirms TS gap. |
 
 ## v0.1 launch history
@@ -345,11 +362,11 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 3. v0.1.2 aligned npm, crates.io, PyPI, and GitHub Release assets on one version
 4. v0.1.3 added verified Homebrew and Scoop publication on top of the automated release pipeline
 5. v0.1.4 added Intel macOS native archives, centralized release matrix dry-runs, auto-tag dispatch hardening, and public release smoke inside the release workflow
-6. Arroxy migration from vendored `src/shared/clearurls/` to npm dep remains the dogfood path
-7. Future announcement channels:
+6. Arroxy dropped its vendored `src/shared/clearurls/` for `@url-sanitize/core` and `@url-sanitize/clearurls` on 2026-05-26; it still pins 2.0.2, which predates the v2.1 hardening
+7. Announcement channels, none used as of 2026-11-06 (no Show HN post, nothing filed with the ClearURLs maintainers):
    - r/typescript
    - HN Show
    - lobste.rs
    - fediverse (Mastodon dev community)
    - ClearURLs maintainers (ask for blessing + link from their docs)
-8. Issue templates ready (`broken-url.yml`, `false-positive.yml`, `rule-source-request.yml`) to absorb feedback
+8. Issue templates `broken-url.yml` and `rule-source-request.yml` absorb feedback; the planned `false-positive.yml` was never added
