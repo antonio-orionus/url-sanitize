@@ -8,15 +8,16 @@ For current install commands, package surfaces, release channels, and automation
 status, use the [README](../README.md). This document keeps the milestone plan
 and rationale so there is one public discovery surface and one planning record.
 
-v0.1, v0.2, v0.3, and v1.0 are complete. The main package-manager path is
-proven across Homebrew and Scoop, v0.2 has CI/container install examples plus
-install-and-exercise smoke, v0.3 adds runtime ClearURLs fetching,
-schema-backed custom catalogs, and deterministic catalog composition, and v1.0
-stabilizes the public API, benchmarks, security policy, and release contract.
+v0.1 through v2.1 are complete. v0.2 proved the package-manager path across
+Homebrew and Scoop with CI/container install examples and install-and-exercise
+smoke; v0.3 added runtime ClearURLs fetching, schema-backed custom catalogs,
+and deterministic catalog composition; v1.0 stabilized the public API,
+benchmarks, security policy, and release contract; v2.0 added the AdGuard,
+Brave, and Firefox sources and the merged catalog; v2.1 hardened every surface
+against hostile URLs and rule data.
 
-The next active goal is v2.0 multi-source expansion: AdGuard, Brave, Firefox,
-and a merged catalog package. Other adoption surfaces and distribution
-expansions are deferred and tracked at the bottom of this document.
+There is no active milestone. New work is demand-driven and starts from the
+deferred list at the bottom of this document.
 
 ## Strategic bet
 
@@ -28,7 +29,7 @@ The adoption rule is blunt: meet people in their package manager, but run the sa
 2. **Agent-native output** — structured JSON, deterministic output, and explainable matches make this usable by agents without scraping terminal text.
 3. **Correctness + explainability** — never break a URL silently; report which param, redirect provider, or block rule fired.
 4. **Fresh rules with permissive engine licensing** — daily-synced ClearURLs-compatible data, MIT engine, no AGPL lock-in.
-5. **Multi-source next** — AdGuard/Brave/Firefox sources are the next product bet now that the ClearURLs path and distribution baseline are established.
+5. **Multi-source** — ClearURLs, AdGuard, Brave, and Firefox ship as one merged catalog (v2.0). More sources are demand-driven.
 
 The moat is execution and reach, not secrecy. The engine is small glue around public rule lists; the project wins by being the most correct, most current, most installable, and most automation-friendly option.
 
@@ -39,10 +40,8 @@ One behavioral spec, many shells:
 ```text
 url-sanitize/
 ├── catalog/                     # language-agnostic catalog artifacts
-│   ├── clearurls.json           # synced source today
-│   ├── catalog.json             # future merged catalog, with provenance
-│   ├── adguard.json             # future synced source
-│   └── schema.json              # JSON Schema for catalog interchange
+│   ├── catalog.json             # merged catalog, with provenance
+│   └── clearurls.json  adguard.json  brave.json  firefox.json   # per-source catalogs
 ├── conformance/                 # behavior contract every implementation must pass
 │   ├── vectors.jsonl
 │   ├── clearurls-corpus.jsonl
@@ -58,6 +57,10 @@ url-sanitize/
 ├── python/                      # PyPI wrapper around native CLI
 └── sources/                     # upstream sync scripts
 ```
+
+JSON Schemas for catalogs, options, and results are exported from
+`@url-sanitize/core` (`sanitizerCatalogJsonSchema` and friends), not kept as
+files.
 
 Engine decisions:
 
@@ -85,7 +88,7 @@ Engine decisions:
 - `url-sanitize` — native Rust CLI with embedded ClearURLs-compatible catalog
 - Shared conformance corpus for TypeScript and Rust
 - Daily sync workflow → opens PR on rule changes with auto-generated changeset
-- Vitest snapshot suite — fixtures live in `sources/clearurls/fixtures/`
+- Vitest suite plus the shared conformance corpus in `conformance/`
 - CI workflow — typecheck, lint, test, build, generated-corpus freshness, Rust conformance, binary size check
 - License model docs + threat model + non-goals + ClearURLs compatibility migration guide
 
@@ -137,18 +140,18 @@ Engine decisions:
 - Documented threat model + license boundaries
 - Published benchmark numbers
 - `SECURITY.md` with responsible-disclosure policy
-- Fuzz-testing in CI — ReDoS guard, 10k random URLs/run, fails if any sanitize call exceeds 50ms
+- Fuzz-testing in CI — 10k random URLs/run, fails if any sanitize call exceeds 50ms (random URLs missed a real ReDoS; see v2.1)
 - GitHub artifact-attestation-backed native releases.
 - Every package ecosystem wrapper proves it invokes the same version/hash of the Rust binary or passes the same conformance smoke subset.
 
 ## v2.0 — Multi-source expansion
 
-**Next active goal.**
+**Shipped.**
 
 - `@url-sanitize/adguard` — AdGuard URL Tracking Protection filter parsed → `SanitizerCatalog`
-- `@url-sanitize/brave` — Brave Debouncer + query-strip list
+- `@url-sanitize/brave` — Brave Debouncer (redirect unwrapping); Brave's query-strip list is deferred
 - `@url-sanitize/firefox` — Firefox query-stripping list (TOML-sourced)
-- `@url-sanitize/merged` — union of all 4, dedup, conflict resolution, source priority config
+- `@url-sanitize/merged` — union of all 4 in a fixed source order (ClearURLs, AdGuard, Brave, Firefox). `mergeSources()` drops semantically identical rules by default, keeping the first, so the order of the catalogs passed in is the source priority. Conflicting rules from different sources all stay; conflict resolution is deferred.
 
 **Implementation shape:**
 
@@ -156,13 +159,32 @@ Engine decisions:
 - Preserve `@url-sanitize/core` as the shared engine; do not fork sanitizer behavior by source.
 - Extend conformance with source-specific fixtures before shipping merged behavior.
 - Keep source provenance and license metadata explicit in each package and in merged output.
-- Make `@url-sanitize/merged` deterministic: stable source priority, stable output order, and documented conflict handling.
+- Make `@url-sanitize/merged` deterministic: stable source order and stable output order.
+
+## v2.1 — Security hardening
+
+**Shipped** as 2.1.1 (2.1.0 was merged but never released: GitHub retired the
+`macos-14` runner its release needed).
+
+- Engines (TypeScript and Rust, kept identical): redirect targets must be `http(s)` without userinfo and are sanitized again (up to 5 levels), so a redirect to a blocked domain is `blocked`; URLs over 8192 characters come back unchanged; the TS engine drops a leading `.*` from match-only patterns; `raw-replace` output must keep its origin; rules match the URL without userinfo; percent-decoding and base64 behave the same in both engines.
+- `keep-param` rule kind, used for AdGuard's `@@…$removeparam` allowlists. Engines skip rule kinds they don't know, so a newer catalog loads in an older engine.
+- Brave `*.host` patterns stay inside the host; unknown upstream pattern shapes skip their rule instead of failing the unattended sync.
+- CLIs: `--` ends options, control and bidi characters are escaped in text output, no silent truncation. Python wrapper: exact-name `PATH` lookup (no current folder, no `.cmd` shims), refuses to run itself. `@url-sanitize/fetch`: an empty `pinnedHash` throws, https only, body size cap.
+- Release CI: `auto-tag` runs only for pushes to this repo's `main`, `id-token` only in the publish and attest jobs (each publish job in its own environment), every action pinned to a commit SHA.
+
+**Why:** a reported `javascript:` redirect bypass led to a full audit. The v1.0
+random-URL fuzz test never hit AdGuard's `.*z=.*&var=`, which took about 30 s on
+an 8 KB URL in the TS engine; the length cap plus a targeted test replace that
+blind spot.
 
 ## Deferred surfaces
 
-These are intentionally below v2.0. Revisit only when user demand or maintenance
-leverage is concrete.
+These are intentionally below the shipped milestones. Revisit only when user
+demand or maintenance leverage is concrete.
 
+- `@url-sanitize/merged` conflict resolution and configurable source priority beyond catalog order.
+- Brave's query-strip list.
+- About 390 AdGuard strip rules (`example.*` hosts, `||host/dir/` paths) have never matched. The adapter can now build correct patterns for them, but reviving them unreviewed changes defaults: `||amazon.*^$removeparam=tag` would strip Amazon affiliate tags that are kept unless `stripReferralMarketing` is on.
 - `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs, with possible `comment`, `check`, and `fix` modes. This is for downstream repos; this repo already has internal ClearURLs catalog sync automation.
 - `@url-sanitize/mcp` — exposes `sanitize_url` with pinned, explainable, structured output for agent workflows.
 - AUR packaging.
@@ -188,8 +210,8 @@ Three reasons, ranked by weight:
 
 `clearurls-ts` wins exact-match search. `url-sanitize` doesn't. Mitigations baked into day-1 design:
 
-- Package keywords include: `clearurls`, `clearurls-ts`, `clearurls-typescript`, `clearurls-compat`
-- README H1 + above-fold opens with "Looking for ClearURLs in TypeScript?"
+- Package keywords include `clearurls` (`clearurls-ts`, `clearurls-typescript`, and `clearurls-compat` were planned but are not in any `package.json`)
+- README opens with "Looking for ClearURLs behavior as a library or CLI?"
 - Dedicated `docs/clearurls-compat.md` for migration searches
 - HN / Reddit launch title front-loads `ClearURLs` keyword
 
@@ -229,7 +251,7 @@ What we add:
 
 - Sync workflow verifies hash before writing files; mismatch = abort + retry
 - Cache-control issue: hash file has `max-age=600` (10min). Hash can be stale vs JSON. Sync script + workflow retry on mismatch instead of failing immediately.
-- v0.3: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value)
+- v0.3: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value). Since v2.1, a `pinnedHash` set to `undefined` or `''` throws instead of silently disabling the pin.
 
 Stricter integrity (e.g. signing) would need upstream ClearURLs maintainers to opt in. Not our project's gap to fix.
 
@@ -272,7 +294,7 @@ ClearURLs has `completeProvider: true` (refuse to load URL entirely). Browser-ex
 
 ### Catalog model — unified, source-tagged
 
-`SanitizerRule` is a discriminated union over `kind` (`strip-param` / `raw-replace` / `unwrap-redirect` / `block-domain`). Every rule carries `source: RuleSource` (`clearurls` / `adguard` / `brave` / `firefox` / `custom`).
+`SanitizerRule` is a discriminated union over `kind` (`strip-param` / `raw-replace` / `unwrap-redirect` / `block-domain` / `keep-param`). Every rule carries `source: RuleSource` (`clearurls` / `adguard` / `brave` / `firefox` / `custom`).
 
 - Adapters live in source-specific packages and convert native formats → unified shape
 - Core algorithm doesn't know which source produced a rule
@@ -290,6 +312,11 @@ Day-1 CI step in `packages/core/test/fuzz.test.ts` (v0.1 stretch, v1.0 mandatory
 - Assert no thrown exceptions outside expected catches
 
 Catches catastrophic-backtracking regexes upstream ships before they reach consumers. No existing fork does this.
+
+It is not enough on its own: random URLs never hit the inputs that make a pattern
+slow, and AdGuard's `.*z=.*&var=` shipped cubic until v2.1. v2.1 added the
+8192-character URL cap, defused leading `.*` in match-only patterns, and a
+regression test that feeds that pattern a long hostile URL.
 
 ### Non-goals (won't ship, ever)
 
