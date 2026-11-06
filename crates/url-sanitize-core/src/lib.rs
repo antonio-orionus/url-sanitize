@@ -6,6 +6,7 @@
 
 mod catalog;
 mod compile;
+mod literal;
 mod sanitize;
 mod types;
 

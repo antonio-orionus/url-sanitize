@@ -2,10 +2,8 @@ use base64::{engine::general_purpose, Engine as _};
 use percent_encoding::percent_decode_str;
 use url::Url;
 
-use crate::compile::{CompiledBody, CompiledRule};
-use crate::types::{
-    MatchedRule, RedirectPrependScheme, RedirectTargetEncoding, SanitizeResult, SanitizerOptions,
-};
+use crate::compile::{CompiledBody, CompiledRule, Sanitizer, UrlTest};
+use crate::types::{MatchedRule, RedirectPrependScheme, RedirectTargetEncoding, SanitizeResult};
 
 /// Normalized URLs longer than this come back `Unchanged`. Every rule's regex
 /// runs over the whole URL, so input length bounds the work per call.
@@ -14,18 +12,69 @@ const MAX_URL_LENGTH: usize = 8192;
 /// How many nested redirect targets are sanitized again.
 const MAX_REDIRECT_DEPTH: usize = 5;
 
-fn applies_to(rule: &CompiledRule, view: &str) -> bool {
-    if let Some(re) = &rule.url_pattern {
-        if !re.is_match(view) {
-            return false;
+/// The form rules match against for one URL state, and which of the
+/// sanitizer's url tests (url patterns and exceptions) it matches. Each test
+/// runs at most once per state, however many rules share it.
+struct UrlView<'a> {
+    tests: &'a [UrlTest],
+    view: String,
+    /// `view` ASCII-lowercased, for the literal prefilter.
+    lower: String,
+    /// Per test: 0 not run yet, 1 no match, 2 match.
+    hits: Vec<u8>,
+}
+
+impl<'a> UrlView<'a> {
+    fn new(tests: &'a [UrlTest], url: &str) -> Self {
+        let view = match_view(url);
+        UrlView {
+            tests,
+            lower: view.to_ascii_lowercase(),
+            view,
+            hits: vec![0; tests.len()],
         }
     }
-    for ex in &rule.exceptions {
-        if ex.is_match(view) {
-            return false;
-        }
+
+    fn set(&mut self, url: &str) {
+        self.view = match_view(url);
+        self.lower = self.view.to_ascii_lowercase();
+        self.hits.fill(0);
     }
-    true
+
+    fn as_str(&self) -> &str {
+        &self.view
+    }
+
+    fn matches(&mut self, test: usize) -> bool {
+        if self.hits[test] == 0 {
+            let UrlTest { regex, literals } = &self.tests[test];
+            let possible =
+                literals.is_empty() || literals.iter().any(|lit| self.lower.contains(lit.as_str()));
+            // Debug builds (the conformance and hardening tests) check the
+            // prefilter never rules out a match.
+            debug_assert!(
+                possible || !regex.is_match(&self.view),
+                "literals {literals:?} ruled out {:?} matching {:?}",
+                regex.as_str(),
+                self.view
+            );
+            self.hits[test] = if possible && regex.is_match(&self.view) {
+                2
+            } else {
+                1
+            };
+        }
+        self.hits[test] == 2
+    }
+
+    fn applies_to(&mut self, rule: &CompiledRule) -> bool {
+        if let Some(test) = rule.url_pattern {
+            if !self.matches(test) {
+                return false;
+            }
+        }
+        !rule.exceptions.iter().any(|&test| self.matches(test))
+    }
 }
 
 fn safe_decode(s: &str) -> String {
@@ -111,10 +160,13 @@ fn same_origin(current: &str, next: &str) -> bool {
 
 /// The keep-param patterns that apply to `view`; a `None` entry keeps every
 /// param.
-fn kept_patterns<'a>(keeps: &[&'a CompiledRule], view: &str) -> Vec<Option<&'a regex_lite::Regex>> {
+fn kept_patterns<'a>(
+    keeps: &[&'a CompiledRule],
+    view: &mut UrlView<'_>,
+) -> Vec<Option<&'a regex_lite::Regex>> {
     keeps
         .iter()
-        .filter(|rule| applies_to(rule, view))
+        .filter(|rule| view.applies_to(rule))
         .filter_map(|rule| match &rule.body {
             CompiledBody::KeepParam { param_pattern } => Some(param_pattern.as_ref()),
             _ => None,
@@ -200,20 +252,13 @@ fn strip_param_pairs(
     (kept.join("&"), removed)
 }
 
-pub(crate) fn sanitize_with(
-    rules: &[CompiledRule],
-    options: &SanitizerOptions,
-    input: &str,
-) -> SanitizeResult {
-    sanitize_at(rules, options, input, 0)
+pub(crate) fn sanitize_with(sanitizer: &Sanitizer, input: &str) -> SanitizeResult {
+    sanitize_at(sanitizer, input, 0)
 }
 
-fn sanitize_at(
-    rules: &[CompiledRule],
-    options: &SanitizerOptions,
-    input: &str,
-    depth: usize,
-) -> SanitizeResult {
+fn sanitize_at(sanitizer: &Sanitizer, input: &str, depth: usize) -> SanitizeResult {
+    let rules = &sanitizer.rules;
+    let options = &sanitizer.options;
     let parsed = match Url::parse(input) {
         Ok(u) => u,
         Err(_) => {
@@ -228,7 +273,7 @@ fn sanitize_at(
     if current.len() > MAX_URL_LENGTH {
         return SanitizeResult::Unchanged { url: original };
     }
-    let mut view = match_view(&current);
+    let mut view = UrlView::new(&sanitizer.url_tests, &current);
     // keep-param rules aren't iterated in order: they guard every strip-param.
     let keeps: Vec<&CompiledRule> = rules
         .iter()
@@ -241,7 +286,7 @@ fn sanitize_at(
     let mut matched_rules: Vec<MatchedRule> = Vec::new();
 
     for rule in rules {
-        if !applies_to(rule, &view) {
+        if !view.applies_to(rule) {
             continue;
         }
         match &rule.body {
@@ -278,7 +323,7 @@ fn sanitize_at(
                     };
                     url_obj.path().to_string()
                 } else {
-                    view.clone()
+                    view.as_str().to_string()
                 };
                 let Some(caps) = pattern.captures(&match_input) else {
                     continue;
@@ -333,7 +378,7 @@ fn sanitize_at(
                 // tracking params are stripped and a blocked domain stays
                 // blocked.
                 let inner = if depth < MAX_REDIRECT_DEPTH {
-                    sanitize_at(rules, options, &href, depth + 1)
+                    sanitize_at(sanitizer, &href, depth + 1)
                 } else {
                     SanitizeResult::Unchanged { url: href }
                 };
@@ -359,7 +404,7 @@ fn sanitize_at(
                     continue;
                 }
                 current = next.into_owned();
-                view = match_view(&current);
+                view.set(&current);
                 kept_cache = None;
                 params_cache = None;
                 matched_rules.push(MatchedRule {
@@ -383,7 +428,7 @@ fn sanitize_at(
                 else {
                     continue;
                 };
-                let kept = kept_cache.get_or_insert_with(|| kept_patterns(&keeps, &view));
+                let kept = kept_cache.get_or_insert_with(|| kept_patterns(&keeps, &mut view));
                 let value_pattern = value_pattern.as_ref();
                 let (query_rest, query_removed) =
                     strip_param_pairs(&params.query, param_pattern, value_pattern, kept);
@@ -407,7 +452,7 @@ fn sanitize_at(
                 let mut all_removed = query_removed;
                 all_removed.extend(fragment_removed);
                 current = url_obj.to_string();
-                view = match_view(&current);
+                view.set(&current);
                 kept_cache = None;
                 params_cache = None;
                 let detail = all_removed.join(",");

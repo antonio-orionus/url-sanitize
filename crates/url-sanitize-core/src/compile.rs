@@ -1,5 +1,8 @@
+use std::collections::HashMap;
+
 use regex_lite::Regex;
 
+use crate::literal::required_literals;
 use crate::sanitize::sanitize_with;
 use crate::types::{
     RedirectMatchPart, RedirectPrependScheme, RedirectTargetEncoding, RuleKind, RuleSource,
@@ -21,8 +24,10 @@ pub(crate) struct CompiledRule {
     pub source: RuleSource,
     pub provider: String,
     pub kind: RuleKind,
-    pub url_pattern: Option<Regex>,
-    pub exceptions: Vec<Regex>,
+    /// Index into `Sanitizer::url_tests`.
+    pub url_pattern: Option<usize>,
+    /// Indexes into `Sanitizer::url_tests`.
+    pub exceptions: Vec<usize>,
     pub body: CompiledBody,
 }
 
@@ -53,20 +58,58 @@ pub(crate) enum CompiledBody {
 
 pub struct Sanitizer {
     pub(crate) rules: Vec<CompiledRule>,
+    /// Every distinct url pattern and exception, compiled once. Many rules
+    /// share them, so `sanitize` tests each one at most once per URL.
+    pub(crate) url_tests: Vec<UrlTest>,
     pub(crate) options: SanitizerOptions,
 }
 
-fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
-    fn try_re(pat: &str) -> Option<Regex> {
-        Regex::new(pat).ok()
+/// A url pattern or exception: a regex run on the whole URL.
+pub(crate) struct UrlTest {
+    pub regex: Regex,
+    /// ASCII-lowercase texts one of which every match contains; empty when
+    /// unknown.
+    pub literals: Vec<String>,
+}
+
+/// Interns the regexes rules test the whole URL with.
+#[derive(Default)]
+struct UrlTestPool {
+    /// Pattern as compiled → index into `regexes`; None when it doesn't compile.
+    ids: HashMap<String, Option<usize>>,
+    regexes: Vec<UrlTest>,
+}
+
+impl UrlTestPool {
+    fn intern(&mut self, pattern: String) -> Option<usize> {
+        if let Some(id) = self.ids.get(&pattern) {
+            return *id;
+        }
+        let id = Regex::new(&pattern).ok().map(|regex| {
+            self.regexes.push(UrlTest {
+                literals: required_literals(&pattern),
+                regex,
+            });
+            self.regexes.len() - 1
+        });
+        self.ids.insert(pattern, id);
+        id
     }
-    fn try_re_ci(pat: &str) -> Option<Regex> {
-        Regex::new(&format!("(?i){}", pat)).ok()
+
+    fn url_pattern(&mut self, pattern: &str) -> Option<usize> {
+        self.intern(format!("(?i){}", pattern))
     }
+
     /// None when any exception fails to compile: a dropped exception would
     /// widen the rule.
-    fn compile_exceptions(list: &[String]) -> Option<Vec<Regex>> {
-        list.iter().map(|p| try_re(p)).collect()
+    fn exceptions(&mut self, list: &[String]) -> Option<Vec<usize>> {
+        list.iter().map(|p| self.intern(p.clone())).collect()
+    }
+}
+
+fn compile_one(r: &SanitizerRule, pool: &mut UrlTestPool) -> Option<CompiledRule> {
+    fn try_re_ci(pat: &str) -> Option<Regex> {
+        Regex::new(&format!("(?i){}", pat)).ok()
     }
 
     match r {
@@ -85,7 +128,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 None => None,
             };
             let urlp = match url_pattern.as_deref() {
-                Some(p) => Some(try_re_ci(p)?),
+                Some(p) => Some(pool.url_pattern(p)?),
                 None => None,
             };
             Some(CompiledRule {
@@ -93,7 +136,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::StripParam,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions)?,
+                exceptions: pool.exceptions(exceptions)?,
                 body: CompiledBody::StripParam {
                     param_pattern: pp,
                     value_pattern: vp,
@@ -111,7 +154,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
         } => {
             let p = try_re_ci(pattern)?;
             let urlp = match url_pattern.as_deref() {
-                Some(p) => Some(try_re_ci(p)?),
+                Some(p) => Some(pool.url_pattern(p)?),
                 None => None,
             };
             Some(CompiledRule {
@@ -119,7 +162,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::RawReplace,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions)?,
+                exceptions: pool.exceptions(exceptions)?,
                 body: CompiledBody::RawReplace {
                     pattern: p,
                     replacement: replacement.clone(),
@@ -140,7 +183,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
         } => {
             let p = try_re_ci(pattern)?;
             let urlp = match url_pattern.as_deref() {
-                Some(p) => Some(try_re_ci(p)?),
+                Some(p) => Some(pool.url_pattern(p)?),
                 None => None,
             };
             Some(CompiledRule {
@@ -148,7 +191,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::UnwrapRedirect,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions)?,
+                exceptions: pool.exceptions(exceptions)?,
                 body: CompiledBody::UnwrapRedirect {
                     pattern: p,
                     capture_group: *capture_group as usize,
@@ -165,13 +208,13 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
             url_pattern,
             exceptions,
         } => {
-            let urlp = try_re_ci(url_pattern)?;
+            let urlp = pool.url_pattern(url_pattern)?;
             Some(CompiledRule {
                 source: *source,
                 provider: provider.clone(),
                 kind: RuleKind::BlockDomain,
                 url_pattern: Some(urlp),
-                exceptions: compile_exceptions(exceptions)?,
+                exceptions: pool.exceptions(exceptions)?,
                 body: CompiledBody::BlockDomain,
             })
         }
@@ -187,7 +230,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 None => None,
             };
             let urlp = match url_pattern.as_deref() {
-                Some(p) => Some(try_re_ci(p)?),
+                Some(p) => Some(pool.url_pattern(p)?),
                 None => None,
             };
             Some(CompiledRule {
@@ -195,7 +238,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::KeepParam,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions)?,
+                exceptions: pool.exceptions(exceptions)?,
                 body: CompiledBody::KeepParam { param_pattern: pp },
             })
         }
@@ -205,14 +248,19 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
 
 impl Sanitizer {
     pub fn compile(rules: &[SanitizerRule], options: SanitizerOptions) -> Sanitizer {
-        let compiled: Vec<CompiledRule> = rules.iter().filter_map(compile_one).collect();
+        let mut pool = UrlTestPool::default();
+        let compiled: Vec<CompiledRule> = rules
+            .iter()
+            .filter_map(|rule| compile_one(rule, &mut pool))
+            .collect();
         Sanitizer {
             rules: compiled,
+            url_tests: pool.regexes,
             options,
         }
     }
 
     pub fn sanitize(&self, input: &str) -> SanitizeResult {
-        sanitize_with(&self.rules, &self.options, input)
+        sanitize_with(self, input)
     }
 }
