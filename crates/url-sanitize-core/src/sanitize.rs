@@ -124,7 +124,7 @@ fn kept_patterns<'a>(keeps: &[&'a CompiledRule], view: &str) -> Vec<Option<&'a r
 
 fn is_kept(kept: &[Option<&regex_lite::Regex>], decoded_name: &str) -> bool {
     kept.iter()
-        .any(|re| re.map_or(true, |re| re.is_match(decoded_name)))
+        .any(|re| re.is_none_or(|re| re.is_match(decoded_name)))
 }
 
 /// Strip params matching `pattern` from a raw query/fragment body (no leading
@@ -146,7 +146,7 @@ fn strip_param_pairs(
         // Names match decoded, so `utm%5Fsource` can't slip past `utm_source`.
         let decoded = safe_decode(name);
         if pattern.is_match(&decoded)
-            && value_pattern.map_or(true, |p| p.is_match(value))
+            && value_pattern.is_none_or(|p| p.is_match(value))
             && !is_kept(keep, &decoded)
         {
             removed.push(name.to_string());
