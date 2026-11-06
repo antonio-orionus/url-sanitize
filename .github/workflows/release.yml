@@ -6,9 +6,10 @@ on:
     tags:
       - 'v*'
 
+# Read-only by default. Only the jobs that publish or attest get id-token
+# (it mints npm, crates.io and PyPI publish tokens) or contents: write.
 permissions:
-  contents: write
-  id-token: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -29,13 +30,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6
+      # No pnpm or Rust cache in release jobs: caches are restored from main's
+      # scope, which scheduled and workflow_run jobs can write.
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
-          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
       - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
       - uses: actions/setup-python@v6
         with:
           python-version: '3.9'
@@ -77,7 +78,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-      - uses: Swatinem/rust-cache@v2
       - name: Build native binary
         run: cargo build --release -p url-sanitize --target "${{ matrix.target }}"
         shell: bash
@@ -119,6 +119,8 @@ jobs:
       attestations: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/download-artifact@v8
         with:
           pattern: release-*
@@ -185,12 +187,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       configured: ${{ steps.packaging-config.outputs.configured }}
+    # PACKAGING_REPO_TOKEN goes only to the steps that need it, not to the
+    # whole job's environment.
     env:
-      PACKAGING_REPO_TOKEN: ${{ secrets.PACKAGING_REPO_TOKEN }}
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
       SCOOP_BUCKET_REPO: ${{ vars.SCOOP_BUCKET_REPO || 'antonio-orionus/scoop-url-sanitize' }}
     steps:
       - id: packaging-config
+        env:
+          PACKAGING_REPO_TOKEN: ${{ secrets.PACKAGING_REPO_TOKEN }}
         run: |
           if [ -n "$PACKAGING_REPO_TOKEN" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
@@ -199,16 +204,17 @@ jobs:
           fi
 
       - name: Skip if package-manager publishing is not configured
-        if: env.PACKAGING_REPO_TOKEN == ''
+        if: steps.packaging-config.outputs.configured != 'true'
         run: echo "PACKAGING_REPO_TOKEN is not configured; skipping Homebrew/Scoop publishing"
 
       - uses: actions/checkout@v6
-        if: env.PACKAGING_REPO_TOKEN != ''
+        if: steps.packaging-config.outputs.configured == 'true'
         with:
           path: source
+          persist-credentials: false
 
       - name: Render package-manager files
-        if: env.PACKAGING_REPO_TOKEN != ''
+        if: steps.packaging-config.outputs.configured == 'true'
         run: |
           set -euo pipefail
           version="${GITHUB_REF_NAME#v}"
@@ -221,21 +227,21 @@ jobs:
             --out "$RUNNER_TEMP/package-managers"
 
       - uses: actions/checkout@v6
-        if: env.PACKAGING_REPO_TOKEN != ''
+        if: steps.packaging-config.outputs.configured == 'true'
         with:
           repository: ${{ env.HOMEBREW_TAP_REPO }}
-          token: ${{ env.PACKAGING_REPO_TOKEN }}
+          token: ${{ secrets.PACKAGING_REPO_TOKEN }}
           path: homebrew-tap
 
       - uses: actions/checkout@v6
-        if: env.PACKAGING_REPO_TOKEN != ''
+        if: steps.packaging-config.outputs.configured == 'true'
         with:
           repository: ${{ env.SCOOP_BUCKET_REPO }}
-          token: ${{ env.PACKAGING_REPO_TOKEN }}
+          token: ${{ secrets.PACKAGING_REPO_TOKEN }}
           path: scoop-bucket
 
       - name: Publish Homebrew formula
-        if: env.PACKAGING_REPO_TOKEN != ''
+        if: steps.packaging-config.outputs.configured == 'true'
         run: |
           set -euo pipefail
           mkdir -p homebrew-tap/Formula
@@ -251,7 +257,7 @@ jobs:
           fi
 
       - name: Publish Scoop manifest
-        if: env.PACKAGING_REPO_TOKEN != ''
+        if: steps.packaging-config.outputs.configured == 'true'
         run: |
           set -euo pipefail
           cp "$RUNNER_TEMP/package-managers/scoop/url-sanitize.json" scoop-bucket/url-sanitize.json
@@ -334,13 +340,18 @@ jobs:
     needs: verify
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22.18'
-          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
       - run: npm install -g 'npm@^11.5.1'
       - run: pnpm install --frozen-lockfile
@@ -376,10 +387,15 @@ jobs:
     needs: verify
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    environment: crates-io
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
       - uses: rust-lang/crates-io-auth-action@v1
         id: auth
       - name: Read crate version
@@ -413,8 +429,13 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     environment: pypi
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'

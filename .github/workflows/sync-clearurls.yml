@@ -5,9 +5,10 @@ on:
     - cron: '17 4 * * *'
   workflow_dispatch:
 
+# The PR and its merge use SYNC_TOKEN, so GITHUB_TOKEN stays read-only while
+# pnpm install, the upstream fetch and the build run third-party code.
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'

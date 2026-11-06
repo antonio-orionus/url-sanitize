@@ -14,7 +14,14 @@ env:
 
 jobs:
   tag:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    # Only a push to this repo's main may tag. A pull_request run of ci also
+    # reports head_branch 'main' when a fork opens its PR from its own main,
+    # and this job runs the checked-out code with a write token.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
