@@ -1,8 +1,27 @@
 import type { SanitizerCatalog, SanitizerRule } from '@url-sanitize/core';
 
-import type { BraveDebounceData, BraveMetadata } from './types.js';
+import type { BraveDebounceData, BraveMetadata, BraveParamData, BraveParamLists } from './types.js';
 
-export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): SanitizerCatalog {
+/**
+ * Params Brave strips that this project treats as referral marketing, as
+ * ClearURLs does: kept unless `stripReferralMarketing` is on. Amazon's `tag`
+ * and `ascsubtag` are affiliate IDs; `ref`, `ref_` and `referrer` credit the
+ * site that sent the visit. Matched case-insensitively.
+ */
+export const BRAVE_REFERRAL_MARKETING_PARAMS: readonly string[] = [
+  'ascsubtag',
+  'partner',
+  'ref',
+  'ref_',
+  'referrer',
+  'tag'
+];
+
+export function braveToCatalog(
+  data: BraveDebounceData,
+  meta: BraveMetadata,
+  paramLists?: BraveParamLists
+): SanitizerCatalog {
   const rules: SanitizerRule[] = [];
   let index = 0;
 
@@ -74,6 +93,11 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
     }
   }
 
+  if (paramLists) {
+    rules.push(...paramRules(paramLists.queryFilter, 'brave-query-filter'));
+    rules.push(...paramRules(paramLists.cleanUrls, 'brave-clean-urls'));
+  }
+
   return {
     version: meta.version,
     generatedAt: meta.fetchedAt,
@@ -88,6 +112,71 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
     ],
     rules
   };
+}
+
+/**
+ * One `strip-param` rule per include pattern of each entry, its params as one
+ * alternation. Referral-marketing params get a rule of their own, flagged.
+ */
+function paramRules(data: BraveParamData, prefix: string): SanitizerRule[] {
+  const rules: SanitizerRule[] = [];
+  const referral = new Set(BRAVE_REFERRAL_MARKETING_PARAMS);
+  for (const [entryIndex, entry] of data.entries()) {
+    const exceptions = entry.exclude.map(matchPatternToRegex);
+    if (exceptions.includes(null)) {
+      console.warn(
+        `brave: skipping ${prefix} entry with unsupported exclude: ${entry.exclude.join(' ')}`
+      );
+      continue;
+    }
+    const tracking = paramAlternation(entry.params.filter((p) => !referral.has(p.toLowerCase())));
+    const referralMarketing = paramAlternation(
+      entry.params.filter((p) => referral.has(p.toLowerCase()))
+    );
+    for (const [includeIndex, include] of entry.include.entries()) {
+      const urlPattern = matchPatternToRegex(include);
+      if (urlPattern === null) {
+        console.warn(`brave: skipping unsupported ${prefix} include pattern: ${include}`);
+        continue;
+      }
+      const provider = `${prefix}-${entryIndex}-${includeIndex}`;
+      const scope = {
+        source: 'brave' as const,
+        provider,
+        // `*://*/*` applies everywhere: leave it unscoped.
+        ...(include === '*://*/*' ? {} : { urlPattern }),
+        ...(exceptions.length > 0 ? { exceptions: exceptions as string[] } : {})
+      };
+      if (tracking) rules.push({ kind: 'strip-param', ...scope, paramPattern: tracking });
+      if (referralMarketing) {
+        rules.push({
+          kind: 'strip-param',
+          ...scope,
+          paramPattern: referralMarketing,
+          isReferralMarketing: true
+        });
+      }
+    }
+  }
+  return rules;
+}
+
+/**
+ * The exact names as one alternation. Engines match decoded names, so a
+ * percent-encoded name (`%24deep_link`) also gets its decoded form.
+ */
+function paramAlternation(params: string[]): string | null {
+  const names = new Set<string>();
+  for (const param of params) {
+    names.add(param);
+    try {
+      names.add(decodeURIComponent(param));
+    } catch {
+      // Not valid percent-encoding: the name as written is all there is.
+    }
+  }
+  if (names.size === 0) return null;
+  return [...names].sort().map(escapeRegExp).join('|');
 }
 
 /** Host characters: a host wildcard must not reach into the path or query. */

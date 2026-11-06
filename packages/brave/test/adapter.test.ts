@@ -148,3 +148,49 @@ describe('braveToCatalog', () => {
     expect(sanitize(`https://evil.example/x.ouo.today/?url=${target}`).kind).toBe('unchanged');
   });
 });
+
+describe('braveToCatalog param lists', () => {
+  const meta = {
+    version: 'test',
+    hash: 'test',
+    fetchedAt: '2026-01-01T00:00:00.000Z',
+    upstream: 'https://example.test/debounce.json',
+    license: 'MPL-2.0'
+  };
+  const catalog = braveToCatalog([], meta, {
+    queryFilter: [{ include: ['*://*/*'], exclude: [], params: ['bsft_clkid', '%24deep_link'] }],
+    cleanUrls: [
+      {
+        include: ['*://*.shop.test/*'],
+        exclude: ['*://help.shop.test/*'],
+        params: ['spm', 'tag']
+      }
+    ]
+  });
+  const sanitize = compileSanitizer(catalog);
+
+  it('strips query-filter params everywhere, matching decoded names', () => {
+    expect(sanitize('https://a.test/?bsft_clkid=1&%24deep_link=x&id=2')).toMatchObject({
+      kind: 'cleaned',
+      url: 'https://a.test/?id=2'
+    });
+  });
+
+  it('scopes clean-urls params to their sites and honors excludes', () => {
+    expect(sanitize('https://www.shop.test/item?spm=1&id=2')).toMatchObject({
+      kind: 'cleaned',
+      url: 'https://www.shop.test/item?id=2'
+    });
+    expect(sanitize('https://other.test/item?spm=1').kind).toBe('unchanged');
+    expect(sanitize('https://help.shop.test/item?spm=1').kind).toBe('unchanged');
+  });
+
+  it('keeps referral-marketing params unless stripReferralMarketing is on', () => {
+    expect(sanitize('https://www.shop.test/item?tag=aff-21').kind).toBe('unchanged');
+    expect(
+      compileSanitizer(catalog, { stripReferralMarketing: true })(
+        'https://www.shop.test/item?tag=aff-21'
+      )
+    ).toMatchObject({ kind: 'cleaned', url: 'https://www.shop.test/item' });
+  });
+});

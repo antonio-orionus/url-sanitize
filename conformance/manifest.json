@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-04T12:15:13.775Z",
+  "generatedAt": "2026-11-06T20:23:51.176Z",
   "catalog": {
-    "version": "merged(ccc0b05a867d,83f004bb4573,61578ba740b7)",
-    "generatedAt": "2026-11-04T12:15:13.775Z",
+    "version": "merged(ccc0b05a867d,e7337077043c,61578ba740b7)",
+    "generatedAt": "2026-11-06T20:23:51.176Z",
     "sources": [
       {
         "name": "clearurls",
@@ -13,8 +13,8 @@
       },
       {
         "name": "brave",
-        "version": "83f004bb4573",
-        "hash": "83f004bb4573a5656465ed17d0e27bdfd983e44459725a5c956ac1710518a891",
+        "version": "e7337077043c",
+        "hash": "e7337077043c6b6c0991671791ef7b346a8a9d95785e9c65922782761f63ae05",
         "license": "MPL-2.0",
         "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json"
       },
@@ -28,11 +28,11 @@
     ]
   },
   "counts": {
-    "vectors": 61,
+    "vectors": 67,
     "corpus": 46
   },
   "fileHashes": {
-    "vectors.jsonl": "cebe3332625a931ac9a2ad4f921ce640eee9e45ba8666ab7e5c63db13bebded8",
+    "vectors.jsonl": "64ddf8252fbaecdd8c67e37eed6b90f829ef2c1e360c3b54bffcff4cdc5ea07f",
     "clearurls-corpus.jsonl": "41519ef112c6c03158d5481229737081e155aa8d2929016e9ef1ea7e0b3fade2"
   }
 }

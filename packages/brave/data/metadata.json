@@ -1,7 +1,12 @@
 {
-  "version": "83f004bb4573",
-  "hash": "83f004bb4573a5656465ed17d0e27bdfd983e44459725a5c956ac1710518a891",
-  "fetchedAt": "2026-10-20T08:08:43.844Z",
+  "version": "e7337077043c",
+  "hash": "e7337077043c6b6c0991671791ef7b346a8a9d95785e9c65922782761f63ae05",
+  "fetchedAt": "2026-11-06T20:23:51.176Z",
   "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json",
+  "upstreams": [
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/query-filter.json",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/clean-urls.json"
+  ],
   "license": "MPL-2.0"
 }
