@@ -256,7 +256,7 @@ println!("{}", serde_json::to_string(&result)?);
 | [`@url-sanitize/merged`](packages/merged) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fmerged?label=npm)](https://www.npmjs.com/package/@url-sanitize/merged) | Default merged catalog: ClearURLs, Brave, Firefox. | MIT (code; data stays in the source packages) |
 | [`@url-sanitize/clearurls`](packages/clearurls) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fclearurls?label=npm)](https://www.npmjs.com/package/@url-sanitize/clearurls) | ClearURLs-compatible catalog + adapter. | MIT AND LGPL-3.0-only |
 | [`@url-sanitize/adguard`](packages/adguard) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fadguard?label=npm)](https://www.npmjs.com/package/@url-sanitize/adguard) | AdGuard URL Tracking catalog + adapter. Opt-in, not in the default catalog. | MIT AND GPL-3.0-only |
-| [`@url-sanitize/brave`](packages/brave) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fbrave?label=npm)](https://www.npmjs.com/package/@url-sanitize/brave) | Brave Debouncer catalog + adapter. | MIT AND MPL-2.0 |
+| [`@url-sanitize/brave`](packages/brave) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fbrave?label=npm)](https://www.npmjs.com/package/@url-sanitize/brave) | Brave Debouncer, query-filter and clean-URLs catalog + adapter. | MIT AND MPL-2.0 |
 | [`@url-sanitize/firefox`](packages/firefox) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffirefox?label=npm)](https://www.npmjs.com/package/@url-sanitize/firefox) | Firefox Query Stripping catalog + adapter. | MIT AND MPL-2.0 |
 | [`@url-sanitize/cli`](packages/cli) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fcli?label=npm)](https://www.npmjs.com/package/@url-sanitize/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
 | [`@url-sanitize/fetch`](packages/fetch) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffetch?label=npm)](https://www.npmjs.com/package/@url-sanitize/fetch) | Runtime ClearURLs catalog fetch with SHA256 and pinned-hash verification. | MIT |
@@ -305,6 +305,7 @@ Publishing to Homebrew tap and Scoop bucket repositories requires a `PACKAGING_R
 - **v2.0** — multi-source packages: AdGuard, Brave, Firefox, merged catalog ✓
 - **v2.1** — security hardening across engines, CLIs, Python wrapper, runtime fetch and release CI; `keep-param` rules for AdGuard allowlists ✓
 - **v2.2** — AdGuard (GPL-3.0 data) leaves the default catalog and becomes opt-in; every artifact declares the licenses of the data it ships ✓
+- **v2.3** — Brave's query filter and clean-URLs lists join the default catalog ✓
 - **Deferred** — GitHub Action, MCP, AUR/Winget/distro packages, native npm packages, WASM, in-process Python bindings
 
 ## Development

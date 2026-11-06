@@ -81,8 +81,8 @@ jobs:
           title: 'chore(sources): sync upstream rules → v${{ steps.bump.outputs.new_version }}'
           body: |
             Automated daily sync of url-sanitize upstream rule catalogs:
-            ClearURLs, AdGuard URL Tracking Protection, Brave Debouncer, and
-            Firefox Query Stripping.
+            ClearURLs, AdGuard URL Tracking Protection, Brave (Debouncer, query
+            filter, clean URLs), and Firefox Query Stripping.
           branch: source-sync
           delete-branch: true
 

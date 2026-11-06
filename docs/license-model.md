@@ -11,7 +11,7 @@ The `license` field of each package uses the SPDX expression in the second colum
 | `@url-sanitize/core` | **MIT** | Clean-room algorithm port. No code derived from ClearURLs Addon. |
 | `@url-sanitize/clearurls` | **MIT AND LGPL-3.0-only** | Adapter code is MIT; bundled `data.json` is derived from the ClearURLs Rules repo, which is LGPL-3.0. |
 | `@url-sanitize/adguard` | **MIT AND GPL-3.0-only** | Adapter code is MIT; the bundled URL Tracking filter's header names AdGuard Filters' license, GPL-3.0. **Opt-in: not part of the default catalog.** |
-| `@url-sanitize/brave` | **MIT AND MPL-2.0** | Adapter code is MIT; the bundled Debouncer list is from `brave/adblock-lists`, licensed MPL-2.0. |
+| `@url-sanitize/brave` | **MIT AND MPL-2.0** | Adapter code is MIT; the bundled Debouncer, query-filter and clean-URLs lists are from `brave/adblock-lists`, licensed MPL-2.0. |
 | `@url-sanitize/firefox` | **MIT AND MPL-2.0** | Adapter code is MIT; the bundled Query Stripping records are Mozilla Remote Settings data, labelled MPL-2.0 here. The Remote Settings endpoint states no license, so this label is unverified. |
 | `@url-sanitize/merged` | **MIT** | Merge code only. It depends on the ClearURLs, Brave and Firefox packages and copies no data. AdGuard is not a dependency. |
 | `@url-sanitize/cli` | **MIT** | Wraps `core` + `merged`. CLI tool itself is fresh code. |
