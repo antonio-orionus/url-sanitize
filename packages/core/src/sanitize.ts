@@ -207,6 +207,7 @@ function hexValue(byte: number): number {
 }
 
 const utf8Decoder = new TextDecoder('utf-8', { ignoreBOM: true });
+const utf8Encoder = new TextEncoder();
 
 /**
  * Percent-decode byte by byte, keeping `%` sequences that aren't two hex
@@ -214,7 +215,7 @@ const utf8Decoder = new TextDecoder('utf-8', { ignoreBOM: true });
  */
 function percentDecode(value: string): string {
   if (!value.includes('%')) return value;
-  const bytes = new TextEncoder().encode(value);
+  const bytes = utf8Encoder.encode(value);
   const out = new Uint8Array(bytes.length);
   let n = 0;
   for (let i = 0; i < bytes.length; i++) {
@@ -334,11 +335,14 @@ export function compileSanitizer(
     let view = matchView(current);
     let exceptionHits = new Map<RegExp, boolean>();
     let keptPatterns: (RegExp | null)[] | null = null;
+    // Split and decoded once per URL, not once per strip-param rule. null: unparsable.
+    let params: UrlParams | null | undefined;
     const setCurrent = (next: string): void => {
       current = next;
       view = matchView(next);
       exceptionHits = new Map();
       keptPatterns = null;
+      params = undefined;
     };
     const appliesTo = (rule: CompiledRule): boolean => {
       if (rule.urlPattern && !rule.urlPattern.test(view)) return false;
@@ -437,26 +441,14 @@ export function compileSanitizer(
 
         case 'strip-param': {
           if (rule.isReferralMarketing && !stripReferralMarketing) continue;
-          let urlObj: URL;
-          try {
-            urlObj = new URL(current);
-          } catch {
-            continue;
-          }
-          const search = stripFromQueryString(
-            urlObj.search,
-            rule.paramPattern,
-            rule.valuePattern,
-            isKept
-          );
-          const hash = stripFromQueryString(
-            urlObj.hash,
-            rule.paramPattern,
-            rule.valuePattern,
-            isKept
-          );
+          if (params === undefined) params = parseUrlParams(current);
+          if (params === null) continue;
+          const search = stripParams(params.search, rule.paramPattern, rule.valuePattern, isKept);
+          const hash = stripParams(params.hash, rule.paramPattern, rule.valuePattern, isKept);
           const removed = [...search.removed, ...hash.removed];
           if (removed.length === 0) continue;
+          // It parsed a moment ago, as `params` did.
+          const urlObj = new URL(current);
           // Assign only the part that changed: assigning an empty search or
           // hash also drops a bare `?` or `#` the Rust engine keeps.
           if (search.removed.length > 0) urlObj.search = search.result;
@@ -487,25 +479,60 @@ export function compileSanitizer(
   return (input: string): SanitizeResult => sanitizeAt(input, 0);
 }
 
-function stripFromQueryString(
-  searchOrHash: string,
+interface ParamPair {
+  /** The pair as written, kept verbatim when it survives. */
+  pair: string;
+  name: string;
+  value: string;
+  /** Names match decoded, so `utm%5Fsource` can't slip past `utm_source`. */
+  decoded: string;
+}
+
+interface ParamList {
+  /** The search or hash as the URL serializes it, `?` or `#` included. */
+  raw: string;
+  prefix: string;
+  pairs: ParamPair[];
+}
+
+interface UrlParams {
+  search: ParamList;
+  hash: ParamList;
+}
+
+function parseUrlParams(url: string): UrlParams | null {
+  let urlObj: URL;
+  try {
+    urlObj = new URL(url);
+  } catch {
+    return null;
+  }
+  return { search: parseParamList(urlObj.search), hash: parseParamList(urlObj.hash) };
+}
+
+function parseParamList(searchOrHash: string): ParamList {
+  const prefix = searchOrHash.charAt(0);
+  const body = prefix === '?' || prefix === '#' ? searchOrHash.slice(1) : searchOrHash;
+  const pairs: ParamPair[] = [];
+  for (const pair of body.split('&')) {
+    if (!pair) continue;
+    const eqIdx = pair.indexOf('=');
+    const name = eqIdx === -1 ? pair : pair.slice(0, eqIdx);
+    const value = eqIdx === -1 ? '' : pair.slice(eqIdx + 1);
+    pairs.push({ pair, name, value, decoded: percentDecode(name) });
+  }
+  return { raw: searchOrHash, prefix, pairs };
+}
+
+function stripParams(
+  list: ParamList,
   paramPattern: RegExp,
   valuePattern: RegExp | null,
   isKept: (decodedName: string) => boolean
 ): { result: string; removed: string[] } {
-  if (!searchOrHash) return { result: searchOrHash, removed: [] };
-  const prefix = searchOrHash.charAt(0);
-  const body = prefix === '?' || prefix === '#' ? searchOrHash.slice(1) : searchOrHash;
-  if (!body) return { result: searchOrHash, removed: [] };
-  const pairs = body.split('&').filter(Boolean);
   const kept: string[] = [];
   const removed: string[] = [];
-  for (const pair of pairs) {
-    const eqIdx = pair.indexOf('=');
-    const name = eqIdx === -1 ? pair : pair.slice(0, eqIdx);
-    const value = eqIdx === -1 ? '' : pair.slice(eqIdx + 1);
-    // Names match decoded, so `utm%5Fsource` can't slip past `utm_source`.
-    const decoded = percentDecode(name);
+  for (const { pair, name, value, decoded } of list.pairs) {
     if (
       paramPattern.test(decoded) &&
       (!valuePattern || valuePattern.test(value)) &&
@@ -516,7 +543,7 @@ function stripFromQueryString(
       kept.push(pair);
     }
   }
-  if (removed.length === 0) return { result: searchOrHash, removed: [] };
+  if (removed.length === 0) return { result: list.raw, removed: [] };
   if (kept.length === 0) return { result: '', removed };
-  return { result: prefix + kept.join('&'), removed };
+  return { result: list.prefix + kept.join('&'), removed };
 }
