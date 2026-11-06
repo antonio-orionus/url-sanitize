@@ -2,7 +2,7 @@
   "name": "@url-sanitize/brave",
   "version": "2.1.2",
   "description": "Brave Debouncer catalog adapter for @url-sanitize/core.",
-  "license": "MPL-2.0",
+  "license": "MIT AND MPL-2.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -28,7 +28,8 @@
   "files": [
     "dist",
     "data",
-    "NOTICE"
+    "NOTICE",
+    "LICENSES"
   ],
   "scripts": {
     "build": "vp pack",

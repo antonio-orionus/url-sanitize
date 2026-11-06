@@ -32,3 +32,8 @@ url-sanitize = "url_sanitize.__main__:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["python/url_sanitize"]
+
+# The sdist carries only the wrapper. Without this list hatchling packs the
+# whole repository, rule data included, under the wrapper's MIT label.
+[tool.hatch.build.targets.sdist]
+include = ["python/url_sanitize", "python/README.md", "LICENSE", "pyproject.toml"]

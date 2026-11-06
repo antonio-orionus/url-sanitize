@@ -1,10 +1,11 @@
 [package]
 name = "url-sanitize"
-description = "Native CLI to remove tracking parameters and unwrap tracking redirects. ClearURLs ruleset baked in."
+description = "Native CLI to remove tracking parameters and unwrap tracking redirects. ClearURLs, Brave and Firefox rules baked in."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-license.workspace = true
+# The binary embeds LGPL-3.0 (ClearURLs) and MPL-2.0 (Brave, Firefox) rule data.
+license = "MIT AND LGPL-3.0-only AND MPL-2.0"
 authors.workspace = true
 repository.workspace = true
 homepage.workspace = true

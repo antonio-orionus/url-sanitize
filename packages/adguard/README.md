@@ -34,5 +34,6 @@ import { adguardToCatalog } from '@url-sanitize/adguard/adapter';
 
 ## License
 
-Adapter code is project code. Bundled AdGuard filter data is **LGPL-3.0-only**.
-See [NOTICE](NOTICE).
+Adapter code is MIT. Bundled AdGuard filter data is **GPL-3.0-only**: the filter's
+header names AdGuard Filters' GPL-3.0 license. Because of that, AdGuard is not
+part of `@url-sanitize/merged`'s default catalog; see [NOTICE](NOTICE).

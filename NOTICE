@@ -1,0 +1,20 @@
+url-sanitize: code is MIT (see LICENSE). Rule data from upstream lists keeps
+its source license.
+
+The native `url-sanitize` binary (crates.io, GitHub Releases, Homebrew, Scoop)
+embeds the default catalog, built from:
+
+- ClearURLs Rules, https://github.com/ClearURLs/Rules: LGPL-3.0-only
+- Brave Debouncer list, https://github.com/brave/adblock-lists: MPL-2.0
+- Firefox Query Stripping records, Mozilla Remote Settings: MPL-2.0
+
+So the binary as distributed is MIT AND LGPL-3.0-only AND MPL-2.0. The license
+texts are in LICENSES/. The embedded rule data is the catalog.json shipped
+with the crate source; replacing it with your own catalog is supported by the
+`url-sanitize-core` library.
+
+The AdGuard URL Tracking filter (GPL-3.0, via @url-sanitize/adguard) is not
+part of the default catalog or the binary.
+
+This project is not affiliated with or endorsed by ClearURLs, Brave, Mozilla,
+or AdGuard.

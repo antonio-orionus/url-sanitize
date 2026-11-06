@@ -98,6 +98,10 @@ jobs:
           src="target/${{ matrix.target }}/release/${{ matrix.binary }}"
           mkdir -p "dist/${{ matrix.target }}"
           cp "$src" "dist/${{ matrix.target }}/${{ matrix.binary }}"
+          # The binary embeds LGPL-3.0 and MPL-2.0 rule data: ship its notices.
+          cp LICENSE NOTICE "dist/${{ matrix.target }}/"
+          mkdir -p "dist/${{ matrix.target }}/LICENSES"
+          cp LICENSES/LGPL-3.0-only.txt LICENSES/MPL-2.0.txt "dist/${{ matrix.target }}/LICENSES/"
           chmod +x "dist/${{ matrix.target }}/${{ matrix.binary }}" || true
         shell: bash
       - name: Smoke native binary

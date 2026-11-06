@@ -1,5 +1,11 @@
-This package bundles AdGuard URL Tracking Protection filter data from:
+This package bundles AdGuard URL Tracking filter data (filter 17) from:
 
-https://github.com/AdguardTeam/FiltersRegistry
+https://github.com/AdguardTeam/AdguardFilters
+(fetched through https://github.com/AdguardTeam/FiltersRegistry)
 
-The bundled data is licensed LGPL-3.0-only by its upstream maintainers.
+The filter file's header names its license as AdGuard Filters' license,
+GPL-3.0. The bundled data is reproduced under GPL-3.0-only; see
+LICENSES/GPL-3.0-only.txt. The adapter code is MIT.
+
+This source is not part of @url-sanitize/merged's default catalog. Pass
+adguardCatalog to mergeSources() to opt in.

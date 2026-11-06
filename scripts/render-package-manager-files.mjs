@@ -45,7 +45,8 @@ class UrlSanitize < Formula
   desc "Remove tracking parameters and unwrap tracking redirects from URLs"
   homepage "https://github.com/antonio-orionus/url-sanitize"
   version "${version}"
-  license "MIT"
+  # The binary embeds LGPL-3.0 (ClearURLs) and MPL-2.0 (Brave, Firefox) rule data.
+  license all_of: ["MIT", "LGPL-3.0-only", "MPL-2.0"]
 
   if OS.mac?
     if Hardware::CPU.arm?
@@ -73,6 +74,8 @@ class UrlSanitize < Formula
 
   def install
     bin.install "url-sanitize"
+    # LICENSE and NOTICE install themselves; the license texts need a hand.
+    prefix.install Dir["LICENSES"]
   end
 
   test do
@@ -100,7 +103,11 @@ function renderScoop(version, assetNames, checksums) {
     version,
     description: 'Remove tracking parameters and unwrap tracking redirects from URLs.',
     homepage: 'https://github.com/antonio-orionus/url-sanitize',
-    license: 'MIT',
+    // Scoop separates licenses that all apply with a comma.
+    license: {
+      identifier: 'MIT,LGPL-3.0-only,MPL-2.0',
+      url: 'https://github.com/antonio-orionus/url-sanitize/blob/main/NOTICE'
+    },
     architecture: {
       '64bit': {
         url: `https://github.com/antonio-orionus/url-sanitize/releases/download/v${version}/${assetNames.windowsX64}`,
