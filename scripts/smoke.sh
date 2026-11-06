@@ -99,6 +99,7 @@ if (fetchedResult.kind !== 'cleaned' || fetchedResult.url !== 'https://example.c
 JS
 
   "$ROOT/scripts/smoke-cli.sh" "./node_modules/.bin/url-sanitize" "$cli_version"
+  "$ROOT/scripts/smoke-cli-hardening.sh" "./node_modules/.bin/url-sanitize"
   "./node_modules/.bin/url-sanitize" --version > "$TMP/npm-version.txt"
 )
 
@@ -110,8 +111,11 @@ echo "==> Smoke Python wheel wrapper"
 
 rust_bin="$ROOT/target/debug/url-sanitize"
 "$ROOT/scripts/smoke-cli.sh" "$rust_bin" "$crate_version"
+"$ROOT/scripts/smoke-cli-hardening.sh" "$rust_bin"
 
-URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" <<'PY'
+# stdin carries a URL the wrapper must not read: sanitize("-") once returned
+# the caller's stdin instead of its own argument.
+wrapper_checks="$(cat <<'PY'
 from url_sanitize import sanitize
 
 result = sanitize("https://example.com/article?utm_source=newsletter&id=123")
@@ -121,7 +125,31 @@ if result["url"] != "https://example.com/article?id=123":
     raise SystemExit(f"unexpected sanitized URL: {result['url']}")
 if "utm_source" not in result["strippedParams"]:
     raise SystemExit(f"missing stripped utm_source param: {result}")
+
+for flag_like in ("-", "--help", "--version", "--block-domains"):
+    result = sanitize(flag_like)
+    if result != {"kind": "unchanged", "url": flag_like}:
+        raise SystemExit(f"sanitize({flag_like!r}) was treated as a flag: {result}")
+
+# U+2028 is valid inside JSON but str.splitlines() splits on it.
+result = sanitize("foo\u2028bar")
+if result["kind"] != "unchanged":
+    raise SystemExit(f"unexpected result for U+2028 input: {result}")
 PY
+)"
+printf 'https://secret.example/?session=SECRET\n' |
+  URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -c "$wrapper_checks"
+
+# With only pip's console script on PATH, the wrapper must report the missing
+# native CLI instead of running itself.
+set +e
+self_output="$(env -u URL_SANITIZE_BIN PATH="$TMP/venv/bin:/usr/bin:/bin" perl -e 'alarm 20; exec @ARGV' "$TMP/venv/bin/url-sanitize" --version 2>&1)"
+self_status=$?
+set -e
+if [[ "$self_status" != 1 || "$self_output" != *"binary not found"* ]]; then
+  echo "Python wrapper without a native CLI: exit $self_status, output: $self_output" >&2
+  exit 1
+fi
 
 python_output="$(
   URL_SANITIZE_BIN="$rust_bin" "$TMP/venv/bin/python" -m url_sanitize \
