@@ -32,11 +32,12 @@ docs/          public docs (threat model, license, roadmap)
 
 ## Adding a rule fixture
 
-ClearURLs ruleset changes upstream. To pin a behavior:
+Upstream rule sets change daily. To pin a behavior, add it to the shared
+conformance corpus, which both the TypeScript and Rust engines must pass:
 
-1. Add a fixture under `sources/clearurls/fixtures/<provider>.json` with input + expected output URLs
-2. Reference it in `packages/core/test/sanitize.test.ts`
-3. PR
+1. Add a line to `conformance/inputs/vectors.jsonl` with an `id`, a `note` and the `input` URL (plus `options` if needed)
+2. Run `pnpm build:conformance`: the TypeScript engine writes the expected result to `conformance/vectors.jsonl`
+3. Check that expected result, then commit both files and open a PR
 
 ## Reporting a broken URL
 
