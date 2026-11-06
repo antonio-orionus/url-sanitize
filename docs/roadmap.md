@@ -8,7 +8,7 @@ For current install commands, package surfaces, release channels, and automation
 status, use the [README](../README.md). This document keeps the milestone plan
 and rationale so there is one public discovery surface and one planning record.
 
-v0.1 through v2.2 are complete. v0.2 proved the package-manager path across
+v0.1 through v2.3 are complete. v0.2 proved the package-manager path across
 Homebrew and Scoop with CI/container install examples and install-and-exercise
 smoke; v0.3 added runtime ClearURLs fetching, schema-backed custom catalogs,
 and deterministic catalog composition; v1.0 stabilized the public API,
@@ -16,7 +16,7 @@ benchmarks, security policy, and release contract; v2.0 added the AdGuard,
 Brave, and Firefox sources and the merged catalog; v2.1 hardened every surface
 against hostile URLs and rule data; v2.2 moved the GPL-3.0 AdGuard source out
 of the default catalog and made every artifact declare the licenses of the data
-it ships.
+it ships; v2.3 added Brave's query filter and clean-URLs lists to the default.
 
 There is no active milestone. New work is demand-driven and starts from the
 deferred list at the bottom of this document.
@@ -151,7 +151,7 @@ Engine decisions:
 **Shipped.**
 
 - `@url-sanitize/adguard` — AdGuard URL Tracking Protection filter parsed → `SanitizerCatalog`
-- `@url-sanitize/brave` — Brave Debouncer (redirect unwrapping); Brave's query-strip list is deferred
+- `@url-sanitize/brave` — Brave Debouncer (redirect unwrapping); Brave's query filter and clean-URLs lists followed in v2.3
 - `@url-sanitize/firefox` — Firefox query-stripping list (TOML-sourced)
 - `@url-sanitize/merged` — union of all 4 in a fixed source order (ClearURLs, AdGuard, Brave, Firefox; since v2.2 AdGuard is opt-in, see below). `mergeSources()` drops semantically identical rules by default, keeping the first, so the order of the catalogs passed in is the source priority. Conflicting rules from different sources all stay; conflict resolution is deferred.
 
@@ -201,13 +201,30 @@ blind spot.
 the default binary would put the default install under copyleft terms, which
 the MIT engine exists to avoid. See [`docs/license-model.md`](license-model.md).
 
+## v2.3 — Brave query filter and clean URLs
+
+**Shipped** as 2.3.0.
+
+- `@url-sanitize/brave` adds Brave's `query-filter.json` (the tracking params
+  Brave strips on navigation) and `clean-urls.json` (per-site params behind its
+  "Copy clean link"), from the same MPL-2.0 `brave/adblock-lists` repo as the
+  Debouncer. The default catalog grows from 1,027 to 1,455 rules; 307 of the
+  500 listed params were kept by the default before.
+- Params the project treats as referral marketing (Amazon's affiliate `tag`,
+  `ref`, `referrer`, …) become flagged rules, kept unless
+  `stripReferralMarketing` is on. A test in `@url-sanitize/merged` fails when
+  Brave lists a param that ClearURLs marks as referral marketing and the
+  adapter doesn't flag it.
+
+**Why:** the GPL-3.0 AdGuard source left the default in v2.2; these lists fit
+the default's licensing and win back much of that coverage.
+
 ## Deferred surfaces
 
 These are intentionally below the shipped milestones. Revisit only when user
 demand or maintenance leverage is concrete.
 
 - `@url-sanitize/merged` conflict resolution and configurable source priority beyond catalog order.
-- Brave's query-strip list (`brave-core`, MPL-2.0). Fits the default catalog's licensing.
 - DuckDuckGo's `tracking-parameters` list (`duckduckgo/privacy-configuration`, Apache-2.0). Small (about 25 global params) but with a curated exceptions list from breakage reports; fits the default.
 - Ask AdGuard whether the URL Tracking filter may be used under LGPL-3.0 or a permissive license; if so, it can return to the default.
 - Other lists with `$removeparam`-style rules are copyleft and can only be opt-in like AdGuard: uBlock Origin filters (GPL-3.0), EasyList/EasyPrivacy (GPL-3.0 or CC BY-SA 3.0). DandelionSprout's Legitimate URL Shortener uses a custom license and copies AdGuard's GPL rules.
@@ -341,7 +358,7 @@ ClearURLs has `completeProvider: true` (refuse to load URL entirely). Browser-ex
 
 ### Fuzz testing — differentiator nobody else has
 
-The four upstream lists hold about 3,700 regexes; the default catalog uses about 1,000 of them. ReDoS risk is real (catastrophic backtracking in user-supplied URLs can hang a server).
+The four upstream lists hold about 3,700 regexes; the default catalog uses about 1,450 of them. ReDoS risk is real (catastrophic backtracking in user-supplied URLs can hang a server).
 
 Two CI tests, both seeded and deterministic:
 
@@ -368,7 +385,7 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 | `@brandonkal/url-purify` | Static fork, no sync. We solve freshness. |
 | `@mkljczk/url-purify` | Static fork, no sync. Same gap. |
 | Hand-rolled regexes per project | Stale within months. We solve maintenance. |
-| Brave Debouncer + query-string filter | Browser-native lists. The Debouncer is adapted as `@url-sanitize/brave` (v2.0); the query-strip list is deferred. |
+| Brave Debouncer + query-string filter | Browser-native lists. Adapted as `@url-sanitize/brave`: the Debouncer in v2.0, the query filter and clean-URLs lists in v2.3. |
 | AdGuard URL Tracking filter | Filter-list format, not API. Adapted as `@url-sanitize/adguard` (v2.0); opt-in since v2.2 because its data is GPL-3.0. |
 | Firefox query stripping | Browser-native list. Adapted as `@url-sanitize/firefox` (v2.0). |
 | Unalix Python / Nim | Archived. Confirms TS gap. |

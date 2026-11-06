@@ -1,8 +1,9 @@
 The @url-sanitize/brave package ships two layers with different licenses:
 
 1. Source code (adapter, types, exports) — MIT License
-2. Rule data in data/data.json and its copy compiled into dist/, from Brave's
-   Debouncer list (https://github.com/brave/adblock-lists) — MPL-2.0
+2. Rule data in data/ (data.json, query-filter.json, clean-urls.json) and its
+   copy compiled into dist/, from Brave's Debouncer, query-filter and
+   clean-URLs lists (https://github.com/brave/adblock-lists) — MPL-2.0
 
 The MPL-2.0 text is in LICENSES/MPL-2.0.txt. See NOTICE for upstream
 attribution.

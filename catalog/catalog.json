@@ -1,6 +1,6 @@
 {
-  "version": "merged(ccc0b05a867d,83f004bb4573,61578ba740b7)",
-  "generatedAt": "2026-11-04T12:15:13.775Z",
+  "version": "merged(ccc0b05a867d,e7337077043c,61578ba740b7)",
+  "generatedAt": "2026-11-06T20:23:51.176Z",
   "sources": [
     {
       "name": "clearurls",
@@ -11,8 +11,8 @@
     },
     {
       "name": "brave",
-      "version": "83f004bb4573",
-      "hash": "83f004bb4573a5656465ed17d0e27bdfd983e44459725a5c956ac1710518a891",
+      "version": "e7337077043c",
+      "hash": "e7337077043c6b6c0991671791ef7b346a8a9d95785e9c65922782761f63ae05",
       "license": "MPL-2.0",
       "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json"
     },
@@ -12709,6 +12709,3084 @@
       "captureGroup": 1,
       "matchPart": "pathname",
       "targetTemplate": "https://www.youtube.com/watch?v=$1"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-0-0",
+      "paramPattern": "__hsfp|__hssc|__hstc|__s|_bhlid|_branch_match_id|_branch_referrer|_gl|_hsenc|_openstat|at_recipient_id|at_recipient_list|bbeml|bsft_clkid|bsft_uid|dclid|et_rid|fb_action_ids|fb_comment_id|fbclid|gclid|guce_referrer|guce_referrer_sig|hsCtaTracking|irclickid|mc_eid|ml_subscriber|ml_subscriber_hash|msclkid|mtm_cid|oft_c|oft_ck|oft_d|oft_id|oft_ids|oft_k|oft_lk|oft_sk|oly_anon_id|oly_enc_id|pk_cid|rb_clickid|s_cid|sc_customer|sc_eh|sc_uid|sfmc_activityid|sfmc_id|sms_click|sms_source|sms_uph|srsltid|ss_email_id|syclid|ttclid|twclid|unicorn_click_id|vero_conv|vero_id|vgo_ee|wbraid|wickedid|yclid|ymclid|ysclid"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-1-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?instagram\\.com/.*$",
+      "paramPattern": "igsh|igshid|stkn"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-1-1",
+      "urlPattern": "^https?:\\/\\/instagram\\.com/.*$",
+      "paramPattern": "igsh|igshid|stkn"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-2-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?twitter\\.com/.*$",
+      "paramPattern": "a|ref_src|ref_url|s|t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-2-1",
+      "urlPattern": "^https?:\\/\\/twitter\\.com/.*$",
+      "paramPattern": "a|ref_src|ref_url|s|t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-2-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?x\\.com/.*$",
+      "paramPattern": "a|ref_src|ref_url|s|t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-2-3",
+      "urlPattern": "^https?:\\/\\/x\\.com/.*$",
+      "paramPattern": "a|ref_src|ref_url|s|t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-3-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?youtube\\.com/.*$",
+      "paramPattern": "si"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-3-1",
+      "urlPattern": "^https?:\\/\\/youtube\\.com/.*$",
+      "paramPattern": "si"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-query-filter-3-2",
+      "urlPattern": "^https?:\\/\\/youtu\\.be/.*$",
+      "paramPattern": "si"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-0-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?facebook\\.com/.*$",
+      "paramPattern": "__cft__%5B0%5D|__cft__\\[0\\]|__tn__|acontext|external_ref|gd_impression_id|idorvanity|sale_post_id|set|source|store_visit_source|with_pv"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-0-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?facebook\\.com/.*$",
+      "paramPattern": "ref|referrer",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.ae/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.ae/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.ca/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.ca/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.cn/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.cn/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-3",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.co\\.jp/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-3",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.co\\.jp/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-4",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.co\\.uk/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-4",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.co\\.uk/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-5",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.co\\.za/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-5",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.co\\.za/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-6",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-6",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-7",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.au/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-7",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.au/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-8",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.be/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-8",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.be/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-9",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.br/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-9",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.br/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-10",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.mx/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-10",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.mx/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-11",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.tr/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-11",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.com\\.tr/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-12",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.de/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-12",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.de/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-13",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.eg/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-13",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.eg/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-14",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.es/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-14",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.es/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-15",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.fr/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-15",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.fr/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-16",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.ie/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-16",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.ie/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-17",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.in/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-17",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.in/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-18",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.it/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-18",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.it/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-19",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.nl/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-19",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.nl/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-20",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.pl/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-20",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.pl/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-21",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.sa/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-21",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.sa/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-22",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.se/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-22",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.se/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-23",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.sg/.*$",
+      "paramPattern": "content-id|crid|dib|dib_tag|geniuslink|keywords|linkCode|linkId|pd_rd_i|pd_rd_r|pd_rd_w|pd_rd_wg|pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|qid|refinements|rnid|social_share|sprefix|th|ufe"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-1-23",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?amazon\\.sg/.*$",
+      "paramPattern": "ascsubtag|ref|ref_|tag",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-0",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ac/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-1",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ad/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-2",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ae/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-3",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.al/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-4",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.am/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-5",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.as/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-6",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.at/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-7",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.az/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-8",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ba/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-9",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.be/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-10",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.bf/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-11",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.bg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-12",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.bi/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-13",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.bj/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-14",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.bs/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-15",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.bt/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-16",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.by/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-17",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ca/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-18",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cat/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-19",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cd/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-20",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cf/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-21",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-22",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ch/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-23",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ci/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-24",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cl/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-25",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-26",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-27",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ao/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-28",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.bw/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-29",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ck/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-30",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.cr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-31",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.id/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-32",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.il/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-33",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.in/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-34",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.jp/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-35",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ke/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-36",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.kr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-37",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ls/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-38",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ma/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-39",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.mz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-40",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.nz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-41",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.th/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-42",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.tz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-43",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ug/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-44",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.uk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-45",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.uz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-46",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.ve/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-47",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.vi/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-48",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.za/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-49",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.zm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-50",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.co\\.zw/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-51",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-52",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.af/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-53",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ag/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-54",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ai/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-55",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ar/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-56",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.au/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-57",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.bd/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-58",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.bh/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-59",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.bn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-60",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.bo/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-61",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.br/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-62",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.bz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-63",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.co/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-64",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.cu/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-65",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.cy/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-66",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.do/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-67",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ec/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-68",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.eg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-69",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.et/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-70",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.fj/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-71",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.gh/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-72",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.gi/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-73",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.gt/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-74",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.hk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-75",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.iq/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-76",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.jm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-77",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.kh/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-78",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.kw/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-79",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.lb/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-80",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ly/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-81",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.mm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-82",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.mt/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-83",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.mx/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-84",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.my/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-85",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.na/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-86",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.nf/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-87",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ng/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-88",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ni/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-89",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.np/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-90",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.om/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-91",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.pa/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-92",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.pe/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-93",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.pg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-94",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ph/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-95",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.pk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-96",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.pr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-97",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.py/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-98",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.qa/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-99",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.sa/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-100",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.sb/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-101",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.sg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-102",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.sl/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-103",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.sv/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-104",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.tj/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-105",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.tn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-106",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.tr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-107",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.tw/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-108",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.ua/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-109",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.uy/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-110",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.vc/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-111",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.com\\.vn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-112",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cv/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-113",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.cz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-114",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.de/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-115",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.dj/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-116",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.dk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-117",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.dm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-118",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.dz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-119",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ee/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-120",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.es/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-121",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.eus/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-122",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.fi/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-123",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.fm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-124",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.fr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-125",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ga/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-126",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ge/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-127",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.gg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-128",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.gl/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-129",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.gm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-130",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.gp/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-131",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.gr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-132",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.gy/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-133",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.hn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-134",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.hr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-135",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ht/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-136",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.hu/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-137",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ie/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-138",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.im/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-139",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.iq/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-140",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.is/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-141",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.it/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-142",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.je/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-143",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.jo/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-144",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.kg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-145",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ki/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-146",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.kz/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-147",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.la/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-148",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.li/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-149",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.lk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-150",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.lt/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-151",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.lu/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-152",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.lv/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-153",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.md/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-154",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.me/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-155",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.mg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-156",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.mk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-157",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ml/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-158",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.mn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-159",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ms/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-160",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.mu/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-161",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.mv/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-162",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.mw/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-163",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ne/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-164",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ng/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-165",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.nl/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-166",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.no/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-167",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.nr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-168",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.nu/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-169",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.pl/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-170",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.pn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-171",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ps/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-172",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.pt/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-173",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ro/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-174",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.rs/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-175",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ru/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-176",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.rw/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-177",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.sc/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-178",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.se/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-179",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.sh/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-180",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.si/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-181",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.sk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-182",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.sm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-183",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.sn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-184",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.so/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-185",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.sr/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-186",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.st/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-187",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.td/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-188",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.tg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-189",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.tk/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-190",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.tl/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-191",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.tm/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-192",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.tn/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-193",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.to/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-194",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.tt/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-195",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.vg/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-196",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.vu/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-2-197",
+      "urlPattern": "^https?:\\/\\/www\\.google\\.ws/search\\?.*$",
+      "paramPattern": "bih|biw|client|dpr|ei|fbs|gs_lcrp|gs_lp|ictx|iflsig|oq|sa|sca_esv|sclient|sei|source|sourceid|spell|sstk|uact|ved"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-3-0",
+      "urlPattern": "^https?:\\/\\/new\\.reddit\\.com/.*$",
+      "paramPattern": "\\$deep_link|%24deep_link|correlation_id|post_fullname|post_index|ref_campaign|ref_source|share_id|target_user"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-3-0",
+      "urlPattern": "^https?:\\/\\/new\\.reddit\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-3-1",
+      "urlPattern": "^https?:\\/\\/old\\.reddit\\.com/.*$",
+      "paramPattern": "\\$deep_link|%24deep_link|correlation_id|post_fullname|post_index|ref_campaign|ref_source|share_id|target_user"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-3-1",
+      "urlPattern": "^https?:\\/\\/old\\.reddit\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-3-2",
+      "urlPattern": "^https?:\\/\\/www\\.reddit\\.com/.*$",
+      "paramPattern": "\\$deep_link|%24deep_link|correlation_id|post_fullname|post_index|ref_campaign|ref_source|share_id|target_user"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-3-2",
+      "urlPattern": "^https?:\\/\\/www\\.reddit\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-4-0",
+      "urlPattern": "^https:\\/\\/(?:[^/?#]+\\.)?app\\.link/.*$",
+      "paramPattern": "cjevent|click_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-5-0",
+      "urlPattern": "^https:\\/\\/www\\.goodreads\\.com/book/show/.*$",
+      "paramPattern": "from_search|from_srp|qid|rank"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-6-0",
+      "urlPattern": "^https?:\\/\\/www\\.ft\\.com/.*$",
+      "paramPattern": "trk"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-6-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?linkedin\\.com/.*$",
+      "paramPattern": "trk"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-6-2",
+      "urlPattern": "^https?:\\/\\/therecord\\.media/.*$",
+      "paramPattern": "trk"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-7-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?cbsnews\\.com/.*$",
+      "paramPattern": "ftag|intcid|linkId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-7-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?cbssports\\.com/.*$",
+      "paramPattern": "ftag|intcid|linkId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-7-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?cnet\\.com/.*$",
+      "paramPattern": "ftag|intcid|linkId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-7-3",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?gamespot\\.com/.*$",
+      "paramPattern": "ftag|intcid|linkId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-7-4",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?insideedition\\.com/.*$",
+      "paramPattern": "ftag|intcid|linkId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-7-5",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?paramountplus\\.com/.*$",
+      "paramPattern": "ftag|intcid|linkId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-8-0",
+      "urlPattern": "^https?:\\/\\/www\\.zoopla\\.co\\.uk/.*$",
+      "paramPattern": "search_identifier"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-9-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?bandcamp\\.com/.*$",
+      "paramPattern": "from"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-10-0",
+      "urlPattern": "^https?:\\/\\/www\\.gofundme\\.com/.*$",
+      "paramPattern": "attribution_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-11-0",
+      "urlPattern": "^https?:\\/\\/gamefound\\.com/.*$",
+      "paramPattern": "refcode"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-11-0",
+      "urlPattern": "^https?:\\/\\/gamefound\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-12-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?washingtonpost\\.com/.*$",
+      "paramPattern": "itid"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-13-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?ticketweb\\.ca/.*$",
+      "paramPattern": "REFERRAL_ID|afsrc|camefrom|impradid|impradname|wt\\.mc_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-13-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?ticketweb\\.com/.*$",
+      "paramPattern": "REFERRAL_ID|afsrc|camefrom|impradid|impradname|wt\\.mc_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-13-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?ticketweb\\.ie/.*$",
+      "paramPattern": "REFERRAL_ID|afsrc|camefrom|impradid|impradname|wt\\.mc_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-13-3",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?ticketweb\\.uk/.*$",
+      "paramPattern": "REFERRAL_ID|afsrc|camefrom|impradid|impradname|wt\\.mc_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-14-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?imdb\\.com/.*$",
+      "paramPattern": "pf_rd_i|pf_rd_m|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-14-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?imdb\\.com/.*$",
+      "paramPattern": "ref_",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?ebay\\.com/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-1",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.at/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-2",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.ca/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-3",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.co\\.uk/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-4",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.com\\.au/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-5",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.com\\.sg/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-6",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.de/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-7",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.es/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-8",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.ie/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-9",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.fr/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-10",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.it/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-11",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.ch/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-12",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.nl/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-15-13",
+      "urlPattern": "^https?:\\/\\/www\\.ebay\\.pl/itm/.*$",
+      "paramPattern": "media|mkcid|mkevt|ssrc|ssspo|ssuid|widget_ver"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-16-0",
+      "urlPattern": "^https?:\\/\\/www\\.instagram\\.com/.*$",
+      "paramPattern": "ig_rid|igsh|igshid|stkn"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-17-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?twitter\\.com/.*$",
+      "exceptions": [
+        "^https?:\\/\\/(?:[^/?#]+\\.)?twitter\\.com/i/redirect\\?.*$",
+        "^https?:\\/\\/(?:[^/?#]+\\.)?x\\.com/i/redirect\\?.*$"
+      ],
+      "paramPattern": "a|cxt|ref_src|ref_url|s|t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-17-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?x\\.com/.*$",
+      "exceptions": [
+        "^https?:\\/\\/(?:[^/?#]+\\.)?twitter\\.com/i/redirect\\?.*$",
+        "^https?:\\/\\/(?:[^/?#]+\\.)?x\\.com/i/redirect\\?.*$"
+      ],
+      "paramPattern": "a|cxt|ref_src|ref_url|s|t"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-18-0",
+      "urlPattern": "^https?:\\/\\/hbr\\.org/.*$",
+      "paramPattern": "tpcc"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-18-1",
+      "urlPattern": "^https?:\\/\\/techcrunch\\.com/.*$",
+      "paramPattern": "tpcc"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-19-0",
+      "urlPattern": "^https?:\\/\\/www\\.wsj\\.com/.*$",
+      "paramPattern": "mod|reflink|st"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-20-0",
+      "urlPattern": "^https?:\\/\\/ici\\.radio-canada\\.ca/.*$",
+      "paramPattern": "partageApp"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-20-1",
+      "urlPattern": "^https?:\\/\\/radio-canada\\.ca/.*$",
+      "paramPattern": "partageApp"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-21-0",
+      "urlPattern": "^https?:\\/\\/search\\.brave\\.com/.*$",
+      "paramPattern": "source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-21-1",
+      "urlPattern": "^https?:\\/\\/actionnetwork\\.org/.*$",
+      "paramPattern": "source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-21-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?bamboohr\\.com/careers/.*$",
+      "paramPattern": "source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-21-3",
+      "urlPattern": "^https?:\\/\\/www\\.tumblr\\.com/.*$",
+      "paramPattern": "source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-21-4",
+      "urlPattern": "^https?:\\/\\/medium\\.com/.*$",
+      "paramPattern": "source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-22-0",
+      "urlPattern": "^https?:\\/\\/www\\.zillow\\.com/.*$",
+      "paramPattern": "rtoken"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-23-0",
+      "urlPattern": "^https?:\\/\\/feverup\\.com/.*$",
+      "paramPattern": "CAMEFROM"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-24-0",
+      "urlPattern": "^https?:\\/\\/www\\.linkedin\\.com/in/.*$",
+      "paramPattern": "original_referer|trackingCode|trackingId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-25-0",
+      "urlPattern": "^https?:\\/\\/www\\.linkedin\\.com/jobs/view/.*$",
+      "paramPattern": "alternateChannel|eBP|refId|trackingId"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-26-0",
+      "urlPattern": "^https?:\\/\\/www\\.linkedin\\.com/help/.*$",
+      "paramPattern": "mcid|src"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-27-0",
+      "urlPattern": "^https?:\\/\\/www\\.linkedin\\.com/posts/.*$",
+      "paramPattern": "rcm"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-28-0",
+      "urlPattern": "^https?:\\/\\/open\\.spotify\\.com/.*$",
+      "paramPattern": "si"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-29-0",
+      "urlPattern": "^https?:\\/\\/youtu\\.be/.*$",
+      "paramPattern": "app|embeds_euri|embeds_loader_url_for_pings|embeds_origin|feature|is|pp|si|source_ve_path"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-29-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?youtube\\.com/watch\\?.*$",
+      "paramPattern": "app|embeds_euri|embeds_loader_url_for_pings|embeds_origin|feature|is|pp|si|source_ve_path"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-0",
+      "urlPattern": "^https?:\\/\\/www\\.limesonline\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-1",
+      "urlPattern": "^https?:\\/\\/www\\.lastampa\\.it/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-2",
+      "urlPattern": "^https?:\\/\\/laprovinciapavese\\.gelocal\\.it/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-3",
+      "urlPattern": "^https?:\\/\\/lasentinella\\.gelocal\\.it/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-4",
+      "urlPattern": "^https?:\\/\\/www\\.huffingtonpost\\.it/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-5",
+      "urlPattern": "^https?:\\/\\/www\\.ilsecoloxix\\.it/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-6",
+      "urlPattern": "^https?:\\/\\/eprint\\.iacr\\.org/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-7",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?goodreads\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-8",
+      "urlPattern": "^https?:\\/\\/hackernoon\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-9",
+      "urlPattern": "^https?:\\/\\/www\\.backerkit\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-30-10",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?kickstarter\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-31-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?tiktok\\.com/.*$",
+      "paramPattern": "_t|embed_source|refer|referer_url|referer_video_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-32-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?bloomberglaw\\.com/.*$",
+      "paramPattern": "in_source|leadSource|srnd|trk"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-32-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?bloomberg\\.com/.*$",
+      "paramPattern": "in_source|leadSource|srnd|trk"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-33-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?aliexpress\\.com/item/.*$",
+      "paramPattern": "algo_exp_id|curPageLogUid|pdp_npi"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-34-0",
+      "exceptions": [
+        "^https?:\\/\\/app\\.hive\\.co/.*$"
+      ],
+      "paramPattern": "h_sid|h_slt"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.at/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.at/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.be/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.be/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.ca/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-2",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.ca/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-3",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.ch/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-3",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.ch/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-4",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.cl/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-4",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.cl/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-5",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.co/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-5",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.co/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-6",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.ar/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-6",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.ar/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-7",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.au/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-7",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.au/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-8",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.br/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-8",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.br/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-9",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.mx/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-9",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.mx/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-10",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.pe/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-10",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com\\.pe/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-11",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.co\\.nz/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-11",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.co\\.nz/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-12",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.co\\.uk/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-12",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.co\\.uk/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-13",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.de/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-13",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.de/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-14",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.dk/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-14",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.dk/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-15",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.es/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-15",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.es/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-16",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.fi/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-16",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.fi/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-17",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.fr/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-17",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.fr/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-18",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.hk/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-18",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.hk/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-19",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.ie/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-19",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.ie/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-20",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.it/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-20",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.it/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-21",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.nl/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-21",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.nl/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-22",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.pt/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-22",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.pt/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-23",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.se/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-23",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.se/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-24",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.sg/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-24",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.sg/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-25",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com/.*$",
+      "paramPattern": "aff|can_id|email_referrer|email_subject|link_id|source|utm-campaign|utm-content|utm-experiment|utm-medium|utm-share-source|utm-source|utm-term"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-35-25",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?eventbrite\\.com/.*$",
+      "paramPattern": "ref",
+      "isReferralMarketing": true
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-36-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?seek\\.com\\.au/.*$",
+      "paramPattern": "tracking"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-36-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?seek\\.co\\.nz/.*$",
+      "paramPattern": "tracking"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-37-0",
+      "urlPattern": "^https?:\\/\\/mailchi\\.mp/.*$",
+      "paramPattern": "e"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-38-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?songkick\\.com/.*$",
+      "paramPattern": "deep_link_campaign|deep_link_medium|deep_link_source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-39-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?humblebundle\\.com/.*$",
+      "paramPattern": "hmb_campaign|hmb_medium|hmb_source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-40-0",
+      "urlPattern": "^https?:\\/\\/ctr\\.narvar\\.com/.*/tracking/.*$",
+      "paramPattern": "destination_country|dzip|order_number|origin_country|ozip|service"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-41-0",
+      "urlPattern": "^https?:\\/\\/dice\\.fm/event/.*$",
+      "paramPattern": "cid1|cid2|pid"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-42-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?nytimes\\.com/.*$",
+      "paramPattern": "referringSource|sgrp|smid|ugrp"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-43-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?github\\.com/.*$",
+      "paramPattern": "notification_referrer_id"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-0",
+      "urlPattern": "^https?:\\/\\/arstechnica\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-1",
+      "urlPattern": "^https?:\\/\\/pitchfork\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-2",
+      "urlPattern": "^https?:\\/\\/www\\.allure\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-3",
+      "urlPattern": "^https?:\\/\\/www\\.architecturaldigest\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-4",
+      "urlPattern": "^https?:\\/\\/www\\.bonappetit\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-5",
+      "urlPattern": "^https?:\\/\\/www\\.cntraveler\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-6",
+      "urlPattern": "^https?:\\/\\/www\\.epicurious\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-7",
+      "urlPattern": "^https?:\\/\\/www\\.glamour\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-8",
+      "urlPattern": "^https?:\\/\\/www\\.gq\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-9",
+      "urlPattern": "^https?:\\/\\/www\\.gq-magazine\\.co\\.uk/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-10",
+      "urlPattern": "^https?:\\/\\/www\\.gqitalia\\.it/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-11",
+      "urlPattern": "^https?:\\/\\/www\\.gqmagazine\\.fr/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-12",
+      "urlPattern": "^https?:\\/\\/www\\.newyorker\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-13",
+      "urlPattern": "^https?:\\/\\/www\\.self\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-14",
+      "urlPattern": "^https?:\\/\\/www\\.them\\.us/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-15",
+      "urlPattern": "^https?:\\/\\/www\\.teenvogue\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-16",
+      "urlPattern": "^https?:\\/\\/www\\.vanityfair\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-17",
+      "urlPattern": "^https?:\\/\\/www\\.vogue\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-18",
+      "urlPattern": "^https?:\\/\\/www\\.wired\\.com/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-44-19",
+      "urlPattern": "^https?:\\/\\/www\\.wired\\.co\\.uk/.*$",
+      "paramPattern": "bxid|cndid|esrc|hasha|hashb|hashc|mbid|source"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-45-0",
+      "exceptions": [
+        "^https:\\/\\/urldefense\\.com/v3/.*$"
+      ],
+      "paramPattern": "__hssc|__hstc|_bhlid|_branch_match_id|_branch_referrer|_hsenc|_hsmi|_kx|action_object_map|action_ref_map|action_type_map|at_campaign|at_campaign_type|at_channel|at_creation|at_custom1|at_custom2|at_custom3|at_custom4|at_detail_placement|at_emailtype|at_format|at_general_placement|at_identifier|at_link|at_link_id|at_link_origin|at_link_type|at_medium|at_network|at_platform|at_ptr_name|at_recipient_id|at_recipient_list|at_send_date|at_term|at_type|at_variant|brave-campaign-id|brave-creative-id|brave-creative-set-id|ck_subscriber_id|clickid|cm_cr|cm_me|cm_mmc|cm_mmca1|cm_mmca10|cm_mmca11|cm_mmca12|cm_mmca13|cm_mmca14|cm_mmca15|cm_mmca2|cm_mmca3|cm_mmca4|cm_mmca5|cm_mmca6|cm_mmca7|cm_mmca8|cm_mmca9|cm_re|cm_sp|cx_click|cx_recsOrder|cx_recsWidget|eblastId|et_cid|et_lid|et_rid|ex_cid|fb_action_ids|fb_action_types|fb_comment_id|fb_ref|fb_source|gad_campaignid|gad_source|gbraid|gclid|gclsrc|guccounter|guce_referrer|guce_referrer_sig|hootPostID|hsCtaTracking|hsa_acc|hsa_ad|hsa_cam|hsa_grp|hsa_kw|hsa_la|hsa_mt|hsa_net|hsa_ol|hsa_src|hsa_tgt|hsa_ver|ir_adid|ir_campaignid|ir_partnerid|ircid|irclickid|irgwc|mc_cid|ml_sub|ml_sub_hash|ml_subscriber|ml_subscriber_hash|mtm_campaign|mtm_cid|mtm_content|mtm_group|mtm_keyword|mtm_kwd|mtm_medium|mtm_placement|mtm_source|nb_adid|nb_aname|nb_asize|nb_atype|nb_cid|nb_mtype|nb_partner_name|nb_partner_shared_id|nb_pid|nb_platform|nb_product_sku|piwik_campaign|piwik_kwd|pk_campaign|pk_cid|pk_content|pk_cpn|pk_keyword|pk_kwd|pk_medium|pk_source|s_campaign|sc_customer|sc_eh|sc_lid|sc_llid|sc_src|sc_uid|sms_click|sms_source|sms_uph|srsltid|ss_campaign_id|ss_campaign_name|ss_campaign_sent_date|ss_source|ttclid|tw_adid|tw_campaign|tw_content|tw_kwdid|tw_source|tw_term|usqp|utm_ad|utm_affiliate|utm_ag|utm_brand|utm_campaign|utm_campaigncode|utm_campaignid|utm_channel|utm_cid|utm_content|utm_creative|utm_creative_format|utm_custom1|utm_custom2|utm_device|utm_emcid|utm_emmid|utm_id|utm_internal|utm_keyword|utm_mailing|utm_marketing_tactic|utm_medium|utm_name|utm_place|utm_product|utm_pubreferrer|utm_reader|utm_referrer|utm_serial|utm_session|utm_siteid|utm_social|utm_social-type|utm_source|utm_source_platform|utm_supplier|utm_swu|utm_term|utm_umguk|utm_userid|utm_viz_id|wbraid|yadclid|yadordid|yclid|ymclid|ysclid"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-46-0",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?threads\\.com/.*$",
+      "paramPattern": "xmt"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-46-1",
+      "urlPattern": "^https?:\\/\\/(?:[^/?#]+\\.)?threads\\.net/.*$",
+      "paramPattern": "xmt"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-47-0",
+      "urlPattern": "^https:\\/\\/dev-pages\\.bravesoftware\\.com/clean-urls/.*$",
+      "exceptions": [
+        "^https:\\/\\/dev-pages\\.bravesoftware\\.com/clean-urls/exempted/.*$"
+      ],
+      "paramPattern": "brave_testing1|brave_testing2"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-48-0",
+      "urlPattern": "^https?:\\/\\/www\\.axs\\.com/.*$",
+      "paramPattern": "aff"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-49-0",
+      "urlPattern": "^https?:\\/\\/www\\.theguardian\\.com/.*$",
+      "paramPattern": "CMP"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-50-0",
+      "urlPattern": "^https?:\\/\\/www\\.immobilienscout24\\.de/.*$",
+      "paramPattern": "imgOrder|searchId|searchType"
+    },
+    {
+      "kind": "strip-param",
+      "source": "brave",
+      "provider": "brave-clean-urls-50-0",
+      "urlPattern": "^https?:\\/\\/www\\.immobilienscout24\\.de/.*$",
+      "paramPattern": "referrer",
+      "isReferralMarketing": true
     },
     {
       "kind": "strip-param",

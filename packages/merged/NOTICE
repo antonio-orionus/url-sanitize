@@ -2,7 +2,7 @@ This package merges catalogs from these packages, which it depends on and
 does not copy:
 
 - @url-sanitize/clearurls: ClearURLs-derived data, LGPL-3.0-only
-- @url-sanitize/brave: Brave Debouncer data, MPL-2.0
+- @url-sanitize/brave: Brave Debouncer, query-filter and clean-URLs data, MPL-2.0
 - @url-sanitize/firefox: Firefox Query Stripping data, MPL-2.0
 
 @url-sanitize/adguard (AdGuard URL Tracking data, GPL-3.0-only) is not a

@@ -59,3 +59,9 @@
 {"id":"adguard-keep-archive-all-params","note":"AdGuard @@||archive.*^$removeparam keeps every param, across sources","catalog":"all-sources","input":"https://archive.org/details/x?utm_source=a&fbclid=b"}
 {"id":"adguard-keep-shopify-login-param","note":"AdGuard @@||shopify.com/authentication/$removeparam=analytics_trace_id","catalog":"all-sources","input":"https://shopify.com/authentication/login?analytics_trace_id=1&utm_source=x"}
 {"id":"brave-host-wildcard-stays-in-host","note":"*://*.ouo.today/* no longer matches ouo.today in the path","input":"https://evil.example/x.ouo.today/?cr=aHR0cHM6Ly9leGFtcGxlLmNvbS9iNjQ="}
+{"id":"brave-query-filter-global","note":"Brave query filter strips Blueshift click IDs on any site","input":"https://example.com/article?bsft_clkid=abc&keep=1"}
+{"id":"brave-clean-urls-site","note":"Brave clean-urls strips cxt on twitter.com","input":"https://twitter.com/user/status/1?cxt=abc&keep=1"}
+{"id":"brave-clean-urls-out-of-scope","note":"Brave clean-urls params stay scoped: cxt survives elsewhere","input":"https://example.com/?cxt=abc&keep=1"}
+{"id":"brave-clean-urls-exclude","note":"Brave clean-urls exclude: app.hive.co keeps h_sid that other sites lose","input":"https://app.hive.co/x?h_sid=abc&keep=1"}
+{"id":"brave-clean-urls-referral-kept","note":"Amazon affiliate tag from Brave clean-urls is kept by default","input":"https://www.amazon.de/dp/B000000000?tag=affiliate-21"}
+{"id":"brave-clean-urls-referral-stripped","note":"stripReferralMarketing removes the Amazon affiliate tag","input":"https://www.amazon.de/dp/B000000000?tag=affiliate-21","options":{"stripReferralMarketing":true}}

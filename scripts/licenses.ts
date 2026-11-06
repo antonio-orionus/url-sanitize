@@ -26,7 +26,8 @@ const at = (...parts: string[]): string => resolve(root, ...parts);
 const SOURCE_NAMES: Record<string, string> = {
   clearurls: 'ClearURLs Rules (https://github.com/ClearURLs/Rules)',
   adguard: 'AdGuard URL Tracking filter (https://github.com/AdguardTeam/AdguardFilters)',
-  brave: 'Brave Debouncer list (https://github.com/brave/adblock-lists)',
+  brave:
+    'Brave Debouncer, query-filter and clean-URLs lists (https://github.com/brave/adblock-lists)',
   firefox: 'Firefox Query Stripping records (Mozilla Remote Settings)'
 };
 

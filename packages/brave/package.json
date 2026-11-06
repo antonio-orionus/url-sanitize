@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/brave",
-  "version": "2.2.0",
-  "description": "Brave Debouncer catalog adapter for @url-sanitize/core.",
+  "version": "2.3.0",
+  "description": "Brave Debouncer, query-filter and clean-URLs catalog adapter for @url-sanitize/core.",
   "license": "MIT AND MPL-2.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -43,7 +43,9 @@
     "debouncer",
     "url",
     "tracking",
-    "privacy"
+    "privacy",
+    "query-filter",
+    "clean-urls"
   ],
   "publishConfig": {
     "access": "public"

@@ -1,4 +1,5 @@
-This package bundles Brave Debouncer data from:
+This package bundles Brave's Debouncer, query-filter and clean-URLs lists
+(debounce.json, query-filter.json, clean-urls.json) from:
 
 https://github.com/brave/adblock-lists
 

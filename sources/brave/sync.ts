@@ -3,8 +3,12 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const RULES_URL =
-  'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json';
+const LISTS_URL = 'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists';
+// Debouncer (redirect unwrapping), the navigation query filter, and the
+// per-site params behind Brave's "Copy clean link".
+const RULES_URL = `${LISTS_URL}/debounce.json`;
+const QUERY_FILTER_URL = `${LISTS_URL}/query-filter.json`;
+const CLEAN_URLS_URL = `${LISTS_URL}/clean-urls.json`;
 const LICENSE = 'MPL-2.0';
 const FETCH_TIMEOUT_MS = 10_000;
 
@@ -29,12 +33,35 @@ async function readExistingHash(): Promise<string | null> {
   }
 }
 
+async function fetchJson(url: string): Promise<unknown> {
+  console.log(`fetching ${url}`);
+  const response = await fetchWithTimeout(url);
+  if (!response.ok) throw new Error(`Fetch ${url} failed: ${response.status}`);
+  return JSON.parse(await response.text()) as unknown;
+}
+
+/** query-filter.json and clean-urls.json: `{ include, exclude, params }` entries. */
+function checkParamLists(parsed: unknown, name: string): unknown[] {
+  if (!Array.isArray(parsed)) throw new Error(`Brave ${name} data must be an array`);
+  for (const [index, entry] of parsed.entries()) {
+    const e = entry as { include?: unknown; exclude?: unknown; params?: unknown };
+    const strings = (value: unknown): boolean =>
+      Array.isArray(value) && value.every((item) => typeof item === 'string');
+    if (
+      typeof entry !== 'object' ||
+      entry === null ||
+      !strings(e.include) ||
+      !strings(e.exclude) ||
+      !strings(e.params)
+    ) {
+      throw new Error(`Brave ${name} entry ${index} has an unsupported shape`);
+    }
+  }
+  return parsed;
+}
+
 async function main(): Promise<void> {
-  console.log(`fetching ${RULES_URL}`);
-  const response = await fetchWithTimeout(RULES_URL);
-  if (!response.ok) throw new Error(`Fetch ${RULES_URL} failed: ${response.status}`);
-  const text = await response.text();
-  const parsed = JSON.parse(text) as unknown;
+  const parsed = await fetchJson(RULES_URL);
   if (!Array.isArray(parsed)) throw new Error('Brave debounce data must be an array');
   for (const [index, rule] of parsed.entries()) {
     if (
@@ -48,10 +75,18 @@ async function main(): Promise<void> {
       throw new Error(`Brave debounce rule ${index} has an unsupported shape`);
     }
   }
+  const queryFilter = checkParamLists(await fetchJson(QUERY_FILTER_URL), 'query-filter');
+  const cleanUrls = checkParamLists(await fetchJson(CLEAN_URLS_URL), 'clean-urls');
 
-  const normalizedData = normalizeBraveData(parsed);
-  const normalized = `${JSON.stringify(normalizedData, null, 2)}\n`;
-  const hash = createHash('sha256').update(normalized).digest('hex');
+  const files = {
+    'data.json': `${JSON.stringify(normalizeBraveData(parsed), null, 2)}\n`,
+    'query-filter.json': `${JSON.stringify(queryFilter, null, 2)}\n`,
+    'clean-urls.json': `${JSON.stringify(cleanUrls, null, 2)}\n`
+  };
+  // One identity for the source: every file, in a fixed order.
+  const hasher = createHash('sha256');
+  for (const [name, body] of Object.entries(files)) hasher.update(`${name}\n${body}`);
+  const hash = hasher.digest('hex');
   const existingHash = await readExistingHash();
   if (existingHash === hash) {
     console.log(`rules unchanged: ${hash}`);
@@ -59,7 +94,7 @@ async function main(): Promise<void> {
   }
 
   await mkdir(dataDir, { recursive: true });
-  await writeFile(resolve(dataDir, 'data.json'), normalized);
+  for (const [name, body] of Object.entries(files)) await writeFile(resolve(dataDir, name), body);
   await writeFile(
     metadataPath,
     `${JSON.stringify(
@@ -68,13 +103,14 @@ async function main(): Promise<void> {
         hash,
         fetchedAt: new Date().toISOString(),
         upstream: RULES_URL,
+        upstreams: [RULES_URL, QUERY_FILTER_URL, CLEAN_URLS_URL],
         license: LICENSE
       },
       null,
       2
     )}\n`
   );
-  console.log(`wrote ${dataDir}/data.json + metadata.json`);
+  console.log(`wrote ${Object.keys(files).join(', ')} + metadata.json to ${dataDir}`);
   console.log(`hash: ${hash}`);
 }
 
