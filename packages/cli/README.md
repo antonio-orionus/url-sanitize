@@ -2,8 +2,9 @@
 
 Command-line tool for removing tracking parameters and unwrapping tracking redirects from URLs with the merged multi-source catalog.
 
-The default catalog combines ClearURLs, AdGuard URL Tracking Protection, Brave
-Debouncer, and Firefox Query Stripping rules.
+The default catalog combines ClearURLs, Brave Debouncer, and Firefox Query
+Stripping rules. The AdGuard URL Tracking source (GPL-3.0 data) is not included;
+use `@url-sanitize/adguard` from code to add it.
 
 ## Install
 
@@ -33,4 +34,5 @@ see the [root README](https://github.com/antonio-orionus/url-sanitize#install).
 
 ## License
 
-MIT.
+MIT. Rule data comes from dependencies that keep their own licenses:
+ClearURLs data is LGPL-3.0-only, Brave and Firefox data are MPL-2.0.

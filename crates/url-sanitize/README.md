@@ -19,4 +19,11 @@ See [the spec](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/sp
 for the full CLI contract, exit codes, and output schema.
 
 Built on [`url-sanitize-core`](https://crates.io/crates/url-sanitize-core) and
-the merged ClearURLs, AdGuard, Brave, and Firefox catalog.
+the merged ClearURLs, Brave, and Firefox catalog.
+
+## License
+
+The CLI code is MIT. The binary embeds rule data under its upstream licenses,
+ClearURLs (LGPL-3.0-only) and Brave and Firefox (MPL-2.0), so it is distributed
+as `MIT AND LGPL-3.0-only AND MPL-2.0`. See `LICENSE`, `NOTICE` and `LICENSES/`
+in this crate. The AdGuard source (GPL-3.0) is not embedded.

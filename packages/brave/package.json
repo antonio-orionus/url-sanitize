@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/brave",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Brave Debouncer catalog adapter for @url-sanitize/core.",
   "license": "MIT AND MPL-2.0",
   "type": "module",

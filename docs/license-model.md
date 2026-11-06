@@ -4,24 +4,54 @@
 
 ## Per-package licenses
 
+The `license` field of each package uses the SPDX expression in the second column.
+
 | Package | License | Why |
 | --- | --- | --- |
 | `@url-sanitize/core` | **MIT** | Clean-room algorithm port. No code derived from ClearURLs Addon. |
-| `@url-sanitize/clearurls` | **MIT (code) + LGPL-3.0-only (data)** | Adapter code is fresh; bundled `data.json` is derived from ClearURLs Rules repo, which is LGPL-3.0. |
-| `@url-sanitize/adguard` | **LGPL-3.0-only** | Bundled URL Tracking Protection filter is from AdGuard Filters / FiltersRegistry, licensed LGPL-3.0-only. |
-| `@url-sanitize/brave` | **MPL-2.0** | Bundled Brave Debouncer list is from `brave/adblock-lists`, licensed MPL-2.0. |
-| `@url-sanitize/firefox` | **MPL-2.0** | Bundled Firefox Query Stripping records are Mozilla Remote Settings data for Firefox anti-tracking behavior. |
-| `@url-sanitize/merged` | **MIT (code) + upstream data licenses** | Merges ClearURLs, AdGuard, Brave, and Firefox catalogs without changing their source licenses. |
+| `@url-sanitize/clearurls` | **MIT AND LGPL-3.0-only** | Adapter code is MIT; bundled `data.json` is derived from the ClearURLs Rules repo, which is LGPL-3.0. |
+| `@url-sanitize/adguard` | **MIT AND GPL-3.0-only** | Adapter code is MIT; the bundled URL Tracking filter's header names AdGuard Filters' license, GPL-3.0. **Opt-in: not part of the default catalog.** |
+| `@url-sanitize/brave` | **MIT AND MPL-2.0** | Adapter code is MIT; the bundled Debouncer list is from `brave/adblock-lists`, licensed MPL-2.0. |
+| `@url-sanitize/firefox` | **MIT AND MPL-2.0** | Adapter code is MIT; the bundled Query Stripping records are Mozilla Remote Settings data, labelled MPL-2.0 here. The Remote Settings endpoint states no license, so this label is unverified. |
+| `@url-sanitize/merged` | **MIT** | Merge code only. It depends on the ClearURLs, Brave and Firefox packages and copies no data. AdGuard is not a dependency. |
 | `@url-sanitize/cli` | **MIT** | Wraps `core` + `merged`. CLI tool itself is fresh code. |
 | `@url-sanitize/fetch` | **MIT** | Network + hash-verify utilities. Fresh code. |
+| `url-sanitize-core` (crate) | **MIT** | Rust engine. No rule data. |
+| `url-sanitize` (crate, native binary, Homebrew, Scoop, release archives) | **MIT AND LGPL-3.0-only AND MPL-2.0** | The binary embeds the default catalog: ClearURLs (LGPL-3.0) plus Brave and Firefox (MPL-2.0). Archives ship `LICENSE`, `NOTICE` and `LICENSES/`. |
+| `url-sanitize` (PyPI) | **MIT** | Wrapper that runs a separately installed binary. Ships no rule data. |
 | `@url-sanitize/action` | **MIT** | Deferred downstream Action wrapping CLI if demand appears. Fresh code. |
+
+Each package with bundled data ships the full license text in `LICENSES/`. The
+repository root keeps the canonical copies, and CI checks that every copy
+matches.
+
+## Why AdGuard is opt-in
+
+Through v2.1 the AdGuard data was labelled LGPL-3.0, after the FiltersRegistry
+repository it is fetched from. The filter file itself says otherwise: its header
+reads `License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE`,
+which is GPL-3.0.
+
+GPL-3.0 is strong copyleft. Embedded in the native binary or bundled into the
+default catalog, it would arguably put the whole distributed work under GPL
+terms, which contradicts the MIT engine this project promises. So from v2.2:
+
+- The default catalog (`@url-sanitize/merged`, the npm CLI, the native binary)
+  is ClearURLs, Brave and Firefox only.
+- `@url-sanitize/adguard` still ships, labelled `MIT AND GPL-3.0-only`. Pass
+  `adguardCatalog` to `mergeSources()` to use it, and check that GPL-3.0 fits
+  your project first.
+
+If AdGuard confirms the filter can be used under a weaker license, it can
+return to the default.
 
 ## What this means for consumers
 
 ### "I want to use this in a closed-source / commercial SaaS"
 
 - Use `@url-sanitize/core` directly — MIT, no copyleft.
-- Use `@url-sanitize/clearurls`, `@url-sanitize/adguard`, `@url-sanitize/brave`, `@url-sanitize/firefox`, or `@url-sanitize/merged` only if their bundled data licenses are acceptable. LGPL/MPL on data files is generally fine for non-derivative use, but consult your legal team if unsure.
+- Use `@url-sanitize/clearurls`, `@url-sanitize/brave`, `@url-sanitize/firefox`, or `@url-sanitize/merged` only if their data licenses are acceptable. LGPL/MPL on data files is generally fine for non-derivative use, but consult your legal team if unsure.
+- Avoid `@url-sanitize/adguard` unless GPL-3.0 is acceptable for what you ship. It is not part of any default.
 - Or: write your own catalog (plain TypeScript literal of `SanitizerCatalog`) and skip bundled source packages entirely. No upstream data-license surface.
 
 ### "I'm building an open-source project"

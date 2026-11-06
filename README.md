@@ -6,15 +6,15 @@
 [![PyPI](https://img.shields.io/pypi/v/url-sanitize?label=PyPI)](https://pypi.org/project/url-sanitize/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> Remove tracking parameters and unwrap tracking redirects from URLs using ClearURLs, AdGuard, Brave, and Firefox rules.
+> Remove tracking parameters and unwrap tracking redirects from URLs using ClearURLs, Brave, and Firefox rules, with AdGuard as an opt-in.
 
-**Looking for ClearURLs behavior as a library or CLI?** `url-sanitize` removes tracking noise like `utm_*`, `fbclid`, and redirect wrappers from a merged, daily-synced catalog of four upstream rule sources.
+**Looking for ClearURLs behavior as a library or CLI?** `url-sanitize` removes tracking noise like `utm_*`, `fbclid`, and redirect wrappers from a merged, daily-synced catalog of three upstream rule sources, plus an opt-in fourth.
 
 Available from npm, crates.io, native release binaries, Python, CI environments, workers, browsers, edge runtimes, Node.js, Bun, and Deno.
 
 - **One behavior contract across languages.** TypeScript and Rust implementations are checked against the same JSONL conformance corpus.
 - **Explainable results.** Stripped params, redirect provider, or block rule are included — no opaque string replacement.
-- **Multi-source without AGPL lock-in.** Engine and CLI are MIT; upstream rule data keeps its source license.
+- **Multi-source without GPL lock-in.** Engine and CLI code are MIT; the default catalog uses only LGPL-3.0 and MPL-2.0 rule data, and the GPL-3.0 AdGuard source is opt-in.
 - **Automation-friendly.** The Rust CLI is deterministic, prompt-free, supports `--json`, and embeds a pinned catalog.
 - **Fresh rules.** GitHub Actions syncs ClearURLs, AdGuard, Brave, and Firefox catalogs daily; releases publish npm packages, crates, Python wheels, and native binaries automatically.
 
@@ -58,7 +58,8 @@ irm https://github.com/antonio-orionus/url-sanitize/releases/latest/download/url
 ```sh
 npm install -g @url-sanitize/cli
 npm install @url-sanitize/merged
-npm install @url-sanitize/core @url-sanitize/clearurls @url-sanitize/adguard @url-sanitize/brave @url-sanitize/firefox
+npm install @url-sanitize/core @url-sanitize/clearurls @url-sanitize/brave @url-sanitize/firefox
+npm install @url-sanitize/adguard   # opt-in, GPL-3.0 data
 npm install @url-sanitize/fetch
 cargo install url-sanitize
 cargo add url-sanitize-core
@@ -252,15 +253,15 @@ println!("{}", serde_json::to_string(&result)?);
 | Package | Registry | Description | License |
 | --- | --- | --- | --- |
 | [`@url-sanitize/core`](packages/core) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fcore?label=npm)](https://www.npmjs.com/package/@url-sanitize/core) | Pure TypeScript sanitization engine. Zero runtime deps. | MIT |
-| [`@url-sanitize/merged`](packages/merged) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fmerged?label=npm)](https://www.npmjs.com/package/@url-sanitize/merged) | Default merged multi-source catalog. | MIT (code) + upstream data licenses |
-| [`@url-sanitize/clearurls`](packages/clearurls) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fclearurls?label=npm)](https://www.npmjs.com/package/@url-sanitize/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
-| [`@url-sanitize/adguard`](packages/adguard) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fadguard?label=npm)](https://www.npmjs.com/package/@url-sanitize/adguard) | AdGuard URL Tracking Protection catalog + adapter. | LGPL-3.0-only |
-| [`@url-sanitize/brave`](packages/brave) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fbrave?label=npm)](https://www.npmjs.com/package/@url-sanitize/brave) | Brave Debouncer catalog + adapter. | MPL-2.0 |
-| [`@url-sanitize/firefox`](packages/firefox) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffirefox?label=npm)](https://www.npmjs.com/package/@url-sanitize/firefox) | Firefox Query Stripping catalog + adapter. | MPL-2.0 |
+| [`@url-sanitize/merged`](packages/merged) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fmerged?label=npm)](https://www.npmjs.com/package/@url-sanitize/merged) | Default merged catalog: ClearURLs, Brave, Firefox. | MIT (code; data stays in the source packages) |
+| [`@url-sanitize/clearurls`](packages/clearurls) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fclearurls?label=npm)](https://www.npmjs.com/package/@url-sanitize/clearurls) | ClearURLs-compatible catalog + adapter. | MIT AND LGPL-3.0-only |
+| [`@url-sanitize/adguard`](packages/adguard) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fadguard?label=npm)](https://www.npmjs.com/package/@url-sanitize/adguard) | AdGuard URL Tracking catalog + adapter. Opt-in, not in the default catalog. | MIT AND GPL-3.0-only |
+| [`@url-sanitize/brave`](packages/brave) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fbrave?label=npm)](https://www.npmjs.com/package/@url-sanitize/brave) | Brave Debouncer catalog + adapter. | MIT AND MPL-2.0 |
+| [`@url-sanitize/firefox`](packages/firefox) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffirefox?label=npm)](https://www.npmjs.com/package/@url-sanitize/firefox) | Firefox Query Stripping catalog + adapter. | MIT AND MPL-2.0 |
 | [`@url-sanitize/cli`](packages/cli) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fcli?label=npm)](https://www.npmjs.com/package/@url-sanitize/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
 | [`@url-sanitize/fetch`](packages/fetch) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffetch?label=npm)](https://www.npmjs.com/package/@url-sanitize/fetch) | Runtime ClearURLs catalog fetch with SHA256 and pinned-hash verification. | MIT |
 | [`url-sanitize-core`](crates/url-sanitize-core) | [![crates.io](https://img.shields.io/crates/v/url-sanitize-core?label=crates.io)](https://crates.io/crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
-| [`url-sanitize`](crates/url-sanitize) | [![crates.io](https://img.shields.io/crates/v/url-sanitize?label=crates.io)](https://crates.io/crates/url-sanitize) | Native Rust CLI with embedded merged catalog. | MIT |
+| [`url-sanitize`](crates/url-sanitize) | [![crates.io](https://img.shields.io/crates/v/url-sanitize?label=crates.io)](https://crates.io/crates/url-sanitize) | Native Rust CLI with embedded merged catalog. | MIT AND LGPL-3.0-only AND MPL-2.0 |
 | [`url-sanitize`](python) | [![PyPI](https://img.shields.io/pypi/v/url-sanitize?label=PyPI)](https://pypi.org/project/url-sanitize/) | Python wrapper around the native CLI. | MIT |
 | `@url-sanitize/action` | — | GitHub Action for URL hygiene in PRs and docs. (Planned — not yet published.) | MIT |
 
@@ -303,6 +304,7 @@ Publishing to Homebrew tap and Scoop bucket repositories requires a `PACKAGING_R
 - **v1.0** — stable public API, result types, benchmarks, security policy ✓
 - **v2.0** — multi-source packages: AdGuard, Brave, Firefox, merged catalog ✓
 - **v2.1** — security hardening across engines, CLIs, Python wrapper, runtime fetch and release CI; `keep-param` rules for AdGuard allowlists ✓
+- **v2.2** — AdGuard (GPL-3.0 data) leaves the default catalog and becomes opt-in; every artifact declares the licenses of the data it ships ✓
 - **Deferred** — GitHub Action, MCP, AUR/Winget/distro packages, native npm packages, WASM, in-process Python bindings
 
 ## Development
@@ -334,4 +336,4 @@ PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT for engine, CLI, and tooling. Bundled upstream rule data keeps its source license: ClearURLs and AdGuard data are LGPL-3.0-only; Brave and Firefox data are MPL-2.0. See [LICENSE](LICENSE) and [docs/license-model.md](docs/license-model.md).
+Code is MIT. Bundled upstream rule data keeps its source license: ClearURLs data is LGPL-3.0-only, Brave and Firefox data are MPL-2.0, and the opt-in AdGuard data is GPL-3.0-only. The native binary embeds the default catalog, so it is MIT AND LGPL-3.0-only AND MPL-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), [LICENSES/](LICENSES) and [docs/license-model.md](docs/license-model.md).

@@ -5,7 +5,7 @@ tracking redirects according to the
 [url-sanitize behavioral spec](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.md).
 
 Engine only — no embedded catalog. For a ready-to-use binary with the merged
-ClearURLs, AdGuard, Brave, and Firefox catalog baked in, see the
+ClearURLs, Brave, and Firefox catalog baked in, see the
 [`url-sanitize`](https://crates.io/crates/url-sanitize) crate.
 
 ```rust

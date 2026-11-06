@@ -42,7 +42,10 @@ import { clearurlsToCatalog } from '@url-sanitize/clearurls/adapter';
 
 ## License
 
-- `src/` (adapter, types) — **MIT**
-- `data/data.json` (bundled ClearURLs ruleset) — **LGPL-3.0-only**
+`MIT AND LGPL-3.0-only`:
 
-See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+- `src/` (adapter, types) — **MIT**
+- `data/data.json` (bundled ClearURLs ruleset) and its copy compiled into
+  `dist/` — **LGPL-3.0-only**
+
+See [LICENSE](LICENSE), [NOTICE](NOTICE) and `LICENSES/LGPL-3.0-only.txt`.
