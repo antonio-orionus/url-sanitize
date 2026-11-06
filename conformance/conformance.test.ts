@@ -6,7 +6,7 @@
  * generated corpus is out of sync with the engine — re-run
  * `pnpm build:conformance` after intentional behavior changes.
  *
- * Also runs the P1–P11 property invariants from `conformance/properties.md`
+ * Also runs the P1–P13 property invariants from `conformance/properties.md`
  * against the corpus.
  */
 import { readFileSync } from 'node:fs';
@@ -152,6 +152,25 @@ describe('properties (corpus-driven)', () => {
       const r = sanitizerFor(v.options)(v.input);
       if (r.kind !== 'redirected') continue;
       expect(['http:', 'https:'], `${v.id}: protocol`).toContain(new URL(r.url).protocol);
+      expect(new URL(r.url).username, `${v.id}: no userinfo`).toBe('');
+    }
+  });
+
+  it('P12: inputs over 8192 characters are unchanged', () => {
+    const long = `https://example.com/?utm_source=x&q=${'a'.repeat(8200)}`;
+    expect(sanitizeAll(long)).toEqual({ kind: 'unchanged', url: long });
+  });
+
+  it('P13: userinfo does not change which rules apply', () => {
+    for (const v of corpus) {
+      if (!/^https?:\/\/[^/@]+\//.test(v.input)) continue;
+      const withUser = v.input.replace(/^(https?:\/\/)/, '$1x@');
+      const plain = sanitizeAll(v.input);
+      const hidden = sanitizeAll(withUser);
+      expect(hidden.kind, `${v.id}: kind`).toBe(plain.kind);
+      if (plain.kind === 'cleaned' && hidden.kind === 'cleaned') {
+        expect(hidden.strippedParams, `${v.id}: params`).toEqual(plain.strippedParams);
+      }
     }
   });
 

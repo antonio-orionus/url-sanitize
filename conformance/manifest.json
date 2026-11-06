@@ -35,11 +35,11 @@
     ]
   },
   "counts": {
-    "vectors": 48,
+    "vectors": 58,
     "corpus": 46
   },
   "fileHashes": {
-    "vectors.jsonl": "a0e4090c95276a06093670fd764512a49b255d36608e51f2a1e4841016be8195",
+    "vectors.jsonl": "79958fa43764432d79d0e5bfa18b2c249c998dd215995d9374c5f997b14329b2",
     "clearurls-corpus.jsonl": "41519ef112c6c03158d5481229737081e155aa8d2929016e9ef1ea7e0b3fade2"
   }
 }

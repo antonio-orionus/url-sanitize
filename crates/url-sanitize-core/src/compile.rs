@@ -59,8 +59,10 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
     fn try_re_ci(pat: &str) -> Option<Regex> {
         Regex::new(&format!("(?i){}", pat)).ok()
     }
-    fn compile_exceptions(list: &[String]) -> Vec<Regex> {
-        list.iter().filter_map(|p| try_re(p)).collect()
+    /// None when any exception fails to compile: a dropped exception would
+    /// widen the rule.
+    fn compile_exceptions(list: &[String]) -> Option<Vec<Regex>> {
+        list.iter().map(|p| try_re(p)).collect()
     }
 
     match r {
@@ -87,7 +89,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::StripParam,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions),
+                exceptions: compile_exceptions(exceptions)?,
                 body: CompiledBody::StripParam {
                     param_pattern: pp,
                     value_pattern: vp,
@@ -113,7 +115,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::RawReplace,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions),
+                exceptions: compile_exceptions(exceptions)?,
                 body: CompiledBody::RawReplace {
                     pattern: p,
                     replacement: replacement.clone(),
@@ -142,7 +144,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::UnwrapRedirect,
                 url_pattern: urlp,
-                exceptions: compile_exceptions(exceptions),
+                exceptions: compile_exceptions(exceptions)?,
                 body: CompiledBody::UnwrapRedirect {
                     pattern: p,
                     capture_group: *capture_group as usize,
@@ -165,7 +167,7 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 provider: provider.clone(),
                 kind: RuleKind::BlockDomain,
                 url_pattern: Some(urlp),
-                exceptions: compile_exceptions(exceptions),
+                exceptions: compile_exceptions(exceptions)?,
                 body: CompiledBody::BlockDomain,
             })
         }
