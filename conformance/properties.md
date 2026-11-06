@@ -94,3 +94,29 @@ this is allowed and is observed in the `unchanged` case as well.)
 If an `unwrap-redirect` rule matches but the captured target is empty or fails
 URL parsing, the rule is skipped and iteration continues — it does NOT
 terminate with `redirected`, and it does NOT corrupt `current`.
+
+## P11 — Redirect targets are web URLs
+
+If `sanitize(s, o)` returns `redirected`, the parsed scheme of `result.url` is
+`http` or `https`. A target with any other scheme (`javascript:`, `data:`,
+`vbscript:`, `file:`, …) is skipped as in P10.
+
+Rationale: callers put a `redirected` URL into links and navigation, so a
+`javascript:` target smuggled through a redirect parameter would run script.
+A target with a username or password (`https://good.com@evil.com/`) is
+skipped too: it reads as one host and goes to another.
+
+## P12 — Long inputs are unchanged
+
+If the normalized URL is longer than 8192 characters, `sanitize(s, o)` returns
+`{ kind: "unchanged", url: s }`. No rule runs, so a hostile URL can't make a
+backtracking regex take seconds.
+
+## P13 — Userinfo doesn't hide the host
+
+`sanitize("https://x@" + rest, o)` applies the same rules as
+`sanitize("https://" + rest, o)`: rules match the URL with userinfo removed.
+Cleaning keeps the userinfo in `result.url`.
+
+P2 is enforced in code, not only tested: a `raw-replace` whose result changes
+scheme, userinfo, host or port, or doesn't parse, is not applied.

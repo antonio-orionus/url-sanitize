@@ -3,9 +3,11 @@ import type { SanitizerCatalog, SanitizerRule } from '@url-sanitize/core';
 import type { AdguardData, AdguardMetadata } from './types.js';
 
 interface ParsedRule {
+  /** `keep` for an `@@` allowlist line: AdGuard must not remove these params there. */
+  kind: 'strip' | 'keep';
   exceptions: string[];
-  paramPattern: string;
-  provider: string;
+  /** Absent on a keep rule that protects every param. */
+  paramPattern?: string;
   urlPattern?: string;
   valuePattern?: string;
 }
@@ -14,15 +16,28 @@ export function adguardToCatalog(data: AdguardData, meta: AdguardMetadata): Sani
   const rules: SanitizerRule[] = [];
   const lines = preprocessConditionals(data.text);
   let index = 0;
+  let keepIndex = 0;
 
   for (const line of lines) {
-    const parsed = parseLine(line, index);
+    const parsed = parseLine(line);
     if (!parsed) continue;
-    index++;
+    if (parsed.kind === 'keep') {
+      const keep: Extract<SanitizerRule, { kind: 'keep-param' }> = {
+        kind: 'keep-param',
+        source: 'adguard',
+        provider: `adguard-keep-${keepIndex++}`,
+        exceptions: parsed.exceptions
+      };
+      if (parsed.urlPattern) keep.urlPattern = parsed.urlPattern;
+      if (parsed.paramPattern) keep.paramPattern = parsed.paramPattern;
+      rules.push(keep);
+      continue;
+    }
+    if (!parsed.paramPattern) continue;
     const rule: Extract<SanitizerRule, { kind: 'strip-param' }> = {
       kind: 'strip-param',
       source: 'adguard',
-      provider: parsed.provider,
+      provider: `adguard-${index++}`,
       paramPattern: parsed.paramPattern,
       exceptions: parsed.exceptions
     };
@@ -98,16 +113,28 @@ function booleanToken(token: string): boolean {
   return token.trim() === 'true';
 }
 
-function parseLine(line: string, index: number): ParsedRule | null {
-  const modifierIndex = modifierStart(line);
+function parseLine(rawLine: string): ParsedRule | null {
+  // `@@` marks an allowlist (exception) rule: where it applies, AdGuard keeps
+  // the named params, or every param for a bare `$removeparam`.
+  const keep = rawLine.startsWith('@@');
+  const line = keep ? rawLine.slice(2) : rawLine;
+  // Allowlist modifiers may come before removeparam (`$app=…,removeparam=x`),
+  // so they start at the last `$`.
+  const modifierIndex = keep ? line.lastIndexOf('$') : modifierStart(line);
   if (modifierIndex === -1) return null;
 
   const prefix = line.slice(0, modifierIndex);
   const modifiers = parseModifiers(line.slice(modifierIndex + 1));
-  const removeParam = modifiers.get('removeparam') ?? deriveParamFromPrefix(prefix);
-  if (!removeParam) return null;
-
-  const pattern = parseRemoveParam(removeParam);
+  let pattern: { paramPattern?: string; valuePattern?: string } | null;
+  if (keep) {
+    const value = modifiers.get('removeparam');
+    if (value === undefined) return null;
+    pattern = value === '' ? {} : parseRemoveParam(value);
+  } else {
+    const removeParam = modifiers.get('removeparam') ?? deriveParamFromPrefix(prefix);
+    if (!removeParam) return null;
+    pattern = parseRemoveParam(removeParam);
+  }
   if (!pattern) return null;
 
   const domainModifier = modifiers.get('domain');
@@ -125,14 +152,26 @@ function parseLine(line: string, index: number): ParsedRule | null {
     ...(denyallow ? denyallow.split('|').filter(Boolean) : [])
   ];
 
-  const urlPattern = positives.length > 0 ? domainsPattern(positives) : prefixPattern(prefix);
+  // Keep rules get the corrected host patterns (`example.*`, `||host/path`).
+  // Strip rules keep the old ones for now: about 390 of them never matched
+  // (`example.*`, or `||host/dir/` followed by more path), and reviving them
+  // unreviewed changed defaults (`||amazon.*^$removeparam=tag`
+  // stripped affiliate tags that are kept unless stripReferralMarketing is on).
+  const domain = keep ? domainPattern : legacyDomainPattern;
+  const urlPattern =
+    positives.length > 0
+      ? positives.map(domain).join('|')
+      : keep
+        ? prefixPattern(prefix)
+        : legacyPrefixPattern(prefix);
   const parsed: ParsedRule = {
-    provider: `adguard-${index}`,
-    paramPattern: pattern.paramPattern,
-    exceptions: negatives.map(domainPattern)
+    kind: keep ? 'keep' : 'strip',
+    exceptions: negatives.map(domain)
   };
+  if (pattern.paramPattern) parsed.paramPattern = pattern.paramPattern;
   if (urlPattern) parsed.urlPattern = urlPattern;
-  if (pattern.valuePattern) parsed.valuePattern = pattern.valuePattern;
+  // A keep rule matches by name; AdGuard allowlists don't filter by value.
+  if (pattern.valuePattern && !keep) parsed.valuePattern = pattern.valuePattern;
   return parsed;
 }
 
@@ -211,19 +250,47 @@ function deriveParamFromPrefix(prefix: string): string | null {
 function prefixPattern(prefix: string): string | undefined {
   if (!prefix) return undefined;
   if (prefix.startsWith('||')) {
-    const domain = prefix.slice(2).replace(/\^.*$/, '');
-    return domainPattern(domain);
+    // `||host/path`: the host ends at the first `/`, `^` or `?`. Treating the
+    // whole prefix as a host made `||shopify.com/authentication/` expect a
+    // port or terminator after the path, so it never matched.
+    const rest = prefix.slice(2);
+    const cut = rest.search(/[/^?]/);
+    const host = cut === -1 ? rest : rest.slice(0, cut);
+    const tail = cut === -1 ? '' : rest.slice(cut);
+    if (/^\^*$/.test(tail)) return domainPattern(host);
+    return hostPattern(host) + globPattern(tail.replace(/\^/g, '*'));
   }
   return globPattern(prefix.replace(/\^/g, '*'));
 }
 
-function domainsPattern(domains: string[]): string {
-  return domains.map(domainPattern).join('|');
+/**
+ * The pre-2.1 patterns, still used for strip rules: `||host/path` is treated
+ * as one host, so `||host/dir/` misses `/dir/more`, and `*` in a host is a
+ * literal, so `example.*` never matches.
+ */
+function legacyPrefixPattern(prefix: string): string | undefined {
+  if (!prefix) return undefined;
+  if (prefix.startsWith('||')) return legacyDomainPattern(prefix.slice(2).replace(/\^.*$/, ''));
+  return globPattern(prefix.replace(/\^/g, '*'));
+}
+
+function legacyDomainPattern(domain: string): string {
+  const escaped = escapeRegExp(domain.replace(/^\|\|/, '').replace(/\^$/, ''));
+  return `^https?:\\/\\/([^/?#]+\\.)?${escaped}(?::[0-9]+)?(?:[/?#]|$)`;
+}
+
+/** `^scheme://` + optional subdomains + host + optional port. */
+function hostPattern(domain: string): string {
+  // `example.*` is AdGuard's any-TLD wildcard; it must stay inside the host.
+  const escaped = escapeRegExp(domain.replace(/^\|\|/, '').replace(/\^$/, '')).replace(
+    /\\\*/g,
+    '[^/?#:]*'
+  );
+  return `^https?:\\/\\/([^/?#]+\\.)?${escaped}(?::[0-9]+)?`;
 }
 
 function domainPattern(domain: string): string {
-  const escaped = escapeRegExp(domain.replace(/^\|\|/, '').replace(/\^$/, ''));
-  return `^https?:\\/\\/([^/?#]+\\.)?${escaped}(?::[0-9]+)?(?:[/?#]|$)`;
+  return `${hostPattern(domain)}(?:[/?#]|$)`;
 }
 
 function globPattern(glob: string): string {

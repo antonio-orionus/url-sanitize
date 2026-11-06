@@ -98,53 +98,79 @@ Given an input string `S`:
    - If parsing fails, return `{ kind: "unchanged", url: S }` immediately.
    - If parsing succeeds, set `current = url.toString()` (the normalized form
      used as the working state).
+   - If `current` is longer than 8192 characters, return
+     `{ kind: "unchanged", url: S }` immediately. Every rule's regex runs over
+     the whole URL, so this bounds the work per call. (`current` is ASCII
+     after WHATWG serialization, so both engines count the same.)
 
-2. **Iterate rules in catalog order.** For each compiled rule:
+2. **Iterate rules in catalog order.** Rules match against the **match view**:
+   `current` with any username and password removed, so `https://x@host/`
+   can't hide `host` from `^https?://host` patterns. Edits still apply to
+   `current`, which keeps its userinfo. For each compiled rule:
 
    a. **Applicability filter:**
-      - For all kinds: if `rule.urlPattern` is set and does not match `current`,
+      - For all kinds: if `rule.urlPattern` is set and does not match the
+        match view, skip.
+      - For all kinds: if any `rule.exceptions` regex matches the match view,
         skip.
-      - For all kinds: if any `rule.exceptions` regex matches `current`, skip.
 
-   b. **Dispatch by kind:**
+   b. **Dispatch by kind** (a rule whose `kind` the engine doesn't know, from
+      a newer catalog, is skipped at compile time):
+
+      - **`keep-param`**: never runs in order. Where its applicability filter
+        passes, it protects params from every `strip-param` rule, wherever
+        either sits in the catalog: a param whose percent-decoded name matches
+        `paramPattern` (anchored, case-insensitive: `^(?:<pattern>)$`) is
+        kept, and without `paramPattern` every param is kept. Sources use it
+        for allowlists, such as AdGuard's `@@...$removeparam` lines.
 
       - **`block-domain`**: if `domainBlocking` is false, skip. Otherwise return
         `{ kind: "blocked", original: S, via }` immediately. (Terminal.)
 
       - **`unwrap-redirect`**: if `unwrapRedirects` is false, skip.
-        Run `rule.pattern` against `current` by default, or against the URL
-        pathname when `matchPart: "pathname"` is set. Take capture group
+        Run `rule.pattern` against the match view by default, or against the
+        URL pathname when `matchPart: "pathname"` is set. Take capture group
         `rule.captureGroup`, or substitute `$1..$9` into `targetTemplate` when
-        set. Percent-decode it, or percent-decode then base64-decode when
-        `targetEncoding: "base64"` is set. If `prependScheme` is set, prepend
-        that scheme only when the target is not already a valid absolute URL.
-        Try to parse as URL.
-        - If valid URL: return `{ kind: "redirected", original: S, url: parsed.toString(), via }` immediately. (Terminal.)
-        - If invalid or empty: skip and continue iteration.
+        set (an empty template gives an empty target). Percent-decode it, or
+        percent-decode then base64-decode when `targetEncoding: "base64"` is
+        set. If `prependScheme` is set, prepend that scheme only when the
+        target is not already a valid absolute URL. Try to parse as URL.
+        - If valid URL with scheme `http` or `https` and no username or password: sanitize the target again with the same options (at most 5 nested levels; deeper targets are returned as parsed). If that gives `blocked`, return `{ kind: "blocked", original: S, via }` with the blocking rule's `via`. Otherwise return `{ kind: "redirected", original: S, url: <the result's url>, via }`. (Terminal.)
+        - If invalid, empty, any other scheme (`javascript:`, `data:`, `file:`, …), or carrying userinfo (`https://good.com@evil.com/`): skip and continue iteration.
+
+        **Percent-decoding** is byte-wise: `%XX` with two hex digits becomes
+        that byte, any other `%` stays literal, and the bytes are read as
+        UTF-8 with invalid sequences replaced by U+FFFD. **Base64** accepts
+        the standard or URL-safe alphabet with optional padding, and only in
+        canonical form: no whitespace, no non-zero trailing bits.
 
       - **`raw-replace`**: replace all (`g` flag) matches of `rule.pattern` in
-        `current` with `rule.replacement`. If the string changed, update
-        `current` and record a `matchedRules` entry.
+        `current` with `rule.replacement`, taken as literal text (no `$&` or
+        `$1` expansion). Keep the result only if it parses as a URL with the
+        same scheme, username, password, host and port as `current`:
+        cleaning may change path, query and fragment, never the origin. If
+        kept and changed, update `current` and record a `matchedRules` entry.
 
       - **`strip-param`**: if `rule.isReferralMarketing` and not
         `stripReferralMarketing`, skip. Re-parse `current` as URL. Walk both
         the query string (`?...`) and the fragment-as-query (`#...`), splitting
         on `&`. For each `name[=value]` pair: if `paramPattern` matches the
-        name (anchored, case-insensitive: `^(?:<pattern>)$`) and
-        `valuePattern` is absent or matches the raw value, drop the pair and
-        append the name to `strippedParams`. Reassemble. If anything was
-        removed, update `current` and record a `matchedRules` entry. Order of
-        kept pairs is preserved.
+        percent-decoded name (anchored, case-insensitive: `^(?:<pattern>)$`),
+        `valuePattern` is absent or matches the raw value, and no applicable
+        `keep-param` rule protects the name, drop the pair
+        and append the raw name to `strippedParams`. Reassemble only the part
+        that lost a pair, so a bare `?` or `#` elsewhere survives. If
+        anything was removed, update `current` and record a `matchedRules`
+        entry. Order of kept pairs is preserved.
 
 3. **Finalize.**
    - If `current == original input verbatim`, return `{ kind: "unchanged", url: S }`.
    - Otherwise return `{ kind: "cleaned", original: S, url: current, strippedParams, matchedRules }`.
 
 Note: step 3's equality check uses the **original input string** `S`, not the
-post-parse normalized form. This preserves the invariant "no-op input returns
-unchanged" even when WHATWG normalization would alter `current`. An input that
-normalizes but matches no rule still returns `unchanged`. (TS reference does
-the same — see `packages/core/src/sanitize.ts`.)
+post-parse normalized form. An input that WHATWG normalization alters
+(`HTTPS://A.COM` → `https://a.com/`) therefore returns `cleaned` with the
+normalized URL and an empty `matchedRules`, even when no rule fired.
 
 ---
 
@@ -173,7 +199,14 @@ Flags used (per kind):
 
 Implementations should use a **linear-time / ReDoS-safe** regex engine
 (`regex-lite` in Rust). A pattern that fails to compile MUST be silently
-dropped from the compiled ruleset (do not crash startup).
+dropped from the compiled ruleset (do not crash startup). If any of a rule's
+exceptions fails to compile, the whole rule is dropped: keeping the rule
+without that exception would widen it.
+
+The TS engine's `RegExp` backtracks. For patterns only tested for a match
+(`urlPattern`, `exceptions`) it drops a leading `.*` or `.*?`, which can't
+change whether an unanchored pattern matches but makes `.*a.*b` cubic. The
+length cap in step 1 bounds what remains.
 
 ---
 

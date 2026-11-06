@@ -35,6 +35,12 @@ const { catalog } = await fetchClearurlsCatalog({
 
 `fetchClearurlsCatalog` refuses to return any catalog whose SHA256 doesn't match `pinnedHash`. The tradeoff: rules can go stale silently if you don't rotate the pin.
 
+The guard above is no longer required for safety: a `pinnedHash` key set to `undefined` or `''` throws before any request, so an unset variable can't silently turn pinning off. Fetches also require `https:` (redirects included), cap each body at `maxBytes` (16 MiB), time out the body read, and reject providers with the wrong shape.
+
+## Hostile rules
+
+Rules are regexes run against every URL, so a malicious catalog is closer to code than to data. `@url-sanitize/core` bounds the damage: it returns URLs over 8192 characters unchanged, drops the leading `.*` that makes unanchored patterns cubic in the backtracking TS engine, refuses `raw-replace` results that change origin, and refuses redirect targets that aren't `http(s)` or carry userinfo. It cannot detect every exponential pattern (`(a+)+b`): ClearURLs' own host prefix `(?:[a-z0-9-]+\.)*?` has the same nested shape and is safe, so a syntactic check would reject a quarter of real rules. A pinned hash is the defense against a hostile origin.
+
 The pinned-bundle in `@url-sanitize/clearurls` is hash-checked at sync time, so for most users the bundled snapshot is already vetted up to the moment of npm publish. Hash pinning matters mainly for runtime hot-refresh scenarios.
 
 ## Reporting issues

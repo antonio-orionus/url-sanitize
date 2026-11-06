@@ -7,14 +7,28 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
   let index = 0;
 
   for (const upstreamRule of data) {
+    // The daily sync runs unattended, so an unknown pattern shape skips its
+    // rule (the URL stays wrapped) instead of failing every update. An
+    // unknown exclude drops the whole rule: ignoring it would widen it.
     const exceptions = upstreamRule.exclude.map(matchPatternToRegex);
+    if (exceptions.includes(null)) {
+      console.warn(
+        `brave: skipping rule with unsupported exclude: ${upstreamRule.exclude.join(' ')}`
+      );
+      continue;
+    }
     for (const include of upstreamRule.include) {
+      const urlPattern = matchPatternToRegex(include);
+      if (urlPattern === null) {
+        console.warn(`brave: skipping unsupported include pattern: ${include}`);
+        continue;
+      }
       const base: Extract<SanitizerRule, { kind: 'unwrap-redirect' }> = {
         kind: 'unwrap-redirect' as const,
         source: 'brave' as const,
         provider: `brave-debounce-${index}`,
-        urlPattern: matchPatternToRegex(include),
-        exceptions,
+        urlPattern,
+        exceptions: exceptions as string[],
         pattern: upstreamRule.param,
         captureGroup: 1
       };
@@ -53,7 +67,8 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
         }
         rules.push(templateRule);
       } else {
-        throw new Error(`Unsupported Brave debounce action: ${upstreamRule.action}`);
+        console.warn(`brave: skipping rule with unsupported action: ${upstreamRule.action}`);
+        continue;
       }
       index++;
     }
@@ -75,12 +90,34 @@ export function braveToCatalog(data: BraveDebounceData, meta: BraveMetadata): Sa
   };
 }
 
-function matchPatternToRegex(pattern: string): string {
+/** Host characters: a host wildcard must not reach into the path or query. */
+const HOST_CHARS = '[^/?#]';
+
+/**
+ * Convert a WebExtension match pattern (`scheme://host/path`) to a regex.
+ * `*` as the host is any host, a leading `*.` is the domain or any subdomain,
+ * and `*` in the path is anything. Replacing every `*` with `.*` let
+ * `*://*.ouo.today/*` match `https://evil.com/x.ouo.today/`. Returns null
+ * for a shape it doesn't know.
+ */
+function matchPatternToRegex(pattern: string): string | null {
   pattern = normalizedIncludePattern(pattern);
-  if (pattern.startsWith('*://')) {
-    return `^https?:\\/\\/${escapeRegExp(pattern.slice('*://'.length)).replace(/\\\*/g, '.*')}$`;
+  const match = /^(\*|https?):\/\/([^/]*)(\/.*)?$/.exec(pattern);
+  if (!match) return null;
+  const [, scheme = '*', host = '', path = '/'] = match;
+  const schemeRe = scheme === '*' ? 'https?' : scheme;
+  let hostRe: string;
+  if (host === '*') {
+    hostRe = `${HOST_CHARS}+`;
+  } else if (host.startsWith('*.')) {
+    hostRe = `(?:${HOST_CHARS}+\\.)?${escapeRegExp(host.slice(2))}`;
+  } else if (host.includes('*')) {
+    return null;
+  } else {
+    hostRe = escapeRegExp(host);
   }
-  return `^${escapeRegExp(pattern).replace(/\\\*/g, '.*')}$`;
+  const pathRe = escapeRegExp(path).replace(/\\\*/g, '.*');
+  return `^${schemeRe}:\\/\\/${hostRe}${pathRe}$`;
 }
 
 function normalizedIncludePattern(pattern: string): string {

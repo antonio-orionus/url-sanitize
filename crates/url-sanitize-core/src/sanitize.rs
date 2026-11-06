@@ -7,14 +7,21 @@ use crate::types::{
     MatchedRule, RedirectPrependScheme, RedirectTargetEncoding, SanitizeResult, SanitizerOptions,
 };
 
-fn applies_to(rule: &CompiledRule, current: &str) -> bool {
+/// Normalized URLs longer than this come back `Unchanged`. Every rule's regex
+/// runs over the whole URL, so input length bounds the work per call.
+const MAX_URL_LENGTH: usize = 8192;
+
+/// How many nested redirect targets are sanitized again.
+const MAX_REDIRECT_DEPTH: usize = 5;
+
+fn applies_to(rule: &CompiledRule, view: &str) -> bool {
     if let Some(re) = &rule.url_pattern {
-        if !re.is_match(current) {
+        if !re.is_match(view) {
             return false;
         }
     }
     for ex in &rule.exceptions {
-        if ex.is_match(current) {
+        if ex.is_match(view) {
             return false;
         }
     }
@@ -25,27 +32,17 @@ fn safe_decode(s: &str) -> String {
     percent_decode_str(s).decode_utf8_lossy().into_owned()
 }
 
+/// Strict, canonical base64 (standard or URL-safe alphabet; padding optional).
 fn safe_base64_decode(s: &str) -> Option<String> {
     let normalized = s.replace('-', "+").replace('_', "/");
-    let padded = {
-        let remainder = normalized.len() % 4;
-        if remainder == 0 {
-            normalized.clone()
-        } else {
-            format!("{}{}", normalized, "=".repeat(4 - remainder))
-        }
+    let remainder = normalized.len() % 4;
+    let padded = if remainder == 0 {
+        normalized
+    } else {
+        format!("{}{}", normalized, "=".repeat(4 - remainder))
     };
-
-    for engine in [
-        &general_purpose::STANDARD,
-        &general_purpose::URL_SAFE,
-        &general_purpose::URL_SAFE_NO_PAD,
-    ] {
-        if let Ok(bytes) = engine.decode(&padded) {
-            return Some(String::from_utf8_lossy(&bytes).into_owned());
-        }
-    }
-    None
+    let bytes = general_purpose::STANDARD.decode(&padded).ok()?;
+    Some(String::from_utf8_lossy(&bytes).into_owned())
 }
 
 fn template_target(template: &str, caps: &regex_lite::Captures<'_>) -> String {
@@ -86,6 +83,50 @@ fn target_with_prepended_scheme(
     ))
 }
 
+/// The form rules match against: userinfo would hide the host from
+/// `^https?://host` patterns.
+fn match_view(url: &str) -> String {
+    match Url::parse(url) {
+        Ok(mut parsed) if !parsed.username().is_empty() || parsed.password().is_some() => {
+            let _ = parsed.set_username("");
+            let _ = parsed.set_password(None);
+            parsed.to_string()
+        }
+        _ => url.to_string(),
+    }
+}
+
+/// True when `next` parses and keeps the scheme, userinfo, host and port of
+/// `current`.
+fn same_origin(current: &str, next: &str) -> bool {
+    let (Ok(a), Ok(b)) = (Url::parse(current), Url::parse(next)) else {
+        return false;
+    };
+    a.scheme() == b.scheme()
+        && a.username() == b.username()
+        && a.password().unwrap_or("") == b.password().unwrap_or("")
+        && a.host_str() == b.host_str()
+        && a.port() == b.port()
+}
+
+/// The keep-param patterns that apply to `view`; a `None` entry keeps every
+/// param.
+fn kept_patterns<'a>(keeps: &[&'a CompiledRule], view: &str) -> Vec<Option<&'a regex_lite::Regex>> {
+    keeps
+        .iter()
+        .filter(|rule| applies_to(rule, view))
+        .filter_map(|rule| match &rule.body {
+            CompiledBody::KeepParam { param_pattern } => Some(param_pattern.as_ref()),
+            _ => None,
+        })
+        .collect()
+}
+
+fn is_kept(kept: &[Option<&regex_lite::Regex>], decoded_name: &str) -> bool {
+    kept.iter()
+        .any(|re| re.map_or(true, |re| re.is_match(decoded_name)))
+}
+
 /// Strip params matching `pattern` from a raw query/fragment body (no leading
 /// `?`/`#`). Returns (kept body, removed names). Pair format preserved verbatim
 /// for kept entries.
@@ -93,19 +134,21 @@ fn strip_param_pairs(
     body: &str,
     pattern: &regex_lite::Regex,
     value_pattern: Option<&regex_lite::Regex>,
+    keep: &[Option<&regex_lite::Regex>],
 ) -> (String, Vec<String>) {
     let mut kept: Vec<&str> = Vec::new();
     let mut removed: Vec<String> = Vec::new();
     for pair in body.split('&').filter(|p| !p.is_empty()) {
-        let name = match pair.find('=') {
-            Some(idx) => &pair[..idx],
-            None => pair,
+        let (name, value) = match pair.find('=') {
+            Some(idx) => (&pair[..idx], &pair[idx + 1..]),
+            None => (pair, ""),
         };
-        let value = match pair.find('=') {
-            Some(idx) => &pair[idx + 1..],
-            None => "",
-        };
-        if pattern.is_match(name) && value_pattern.map_or(true, |p| p.is_match(value)) {
+        // Names match decoded, so `utm%5Fsource` can't slip past `utm_source`.
+        let decoded = safe_decode(name);
+        if pattern.is_match(&decoded)
+            && value_pattern.map_or(true, |p| p.is_match(value))
+            && !is_kept(keep, &decoded)
+        {
             removed.push(name.to_string());
         } else {
             kept.push(pair);
@@ -119,6 +162,15 @@ pub(crate) fn sanitize_with(
     options: &SanitizerOptions,
     input: &str,
 ) -> SanitizeResult {
+    sanitize_at(rules, options, input, 0)
+}
+
+fn sanitize_at(
+    rules: &[CompiledRule],
+    options: &SanitizerOptions,
+    input: &str,
+    depth: usize,
+) -> SanitizeResult {
     let parsed = match Url::parse(input) {
         Ok(u) => u,
         Err(_) => {
@@ -130,14 +182,25 @@ pub(crate) fn sanitize_with(
 
     let original = input.to_string();
     let mut current = parsed.to_string();
+    if current.len() > MAX_URL_LENGTH {
+        return SanitizeResult::Unchanged { url: original };
+    }
+    let mut view = match_view(&current);
+    // keep-param rules aren't iterated in order: they guard every strip-param.
+    let keeps: Vec<&CompiledRule> = rules
+        .iter()
+        .filter(|rule| matches!(rule.body, CompiledBody::KeepParam { .. }))
+        .collect();
+    let mut kept_cache: Option<Vec<Option<&regex_lite::Regex>>> = None;
     let mut stripped_params: Vec<String> = Vec::new();
     let mut matched_rules: Vec<MatchedRule> = Vec::new();
 
     for rule in rules {
-        if !applies_to(rule, &current) {
+        if !applies_to(rule, &view) {
             continue;
         }
         match &rule.body {
+            CompiledBody::KeepParam { .. } => continue,
             CompiledBody::BlockDomain => {
                 if !options.domain_blocking {
                     continue;
@@ -170,7 +233,7 @@ pub(crate) fn sanitize_with(
                     };
                     url_obj.path().to_string()
                 } else {
-                    current.clone()
+                    view.clone()
                 };
                 let Some(caps) = pattern.captures(&match_input) else {
                     continue;
@@ -196,37 +259,69 @@ pub(crate) fn sanitize_with(
                         decoded
                     }
                 };
+                if decoded.is_empty() {
+                    continue;
+                }
                 let Some(target) = target_with_prepended_scheme(&decoded, *prepend_scheme) else {
                     continue;
                 };
                 let Ok(target_url) = Url::parse(&target) else {
                     continue;
                 };
-                return SanitizeResult::Redirected {
-                    original,
-                    url: target_url.to_string(),
-                    via: MatchedRule {
-                        source: rule.source,
-                        provider: rule.provider.clone(),
-                        kind: rule.kind,
-                        detail: None,
-                    },
+                // A javascript:, data: or file: target is an attack payload,
+                // not a destination: callers put `url` into links. Userinfo
+                // makes `https://good.com@evil.com/` read as good.com.
+                if !matches!(target_url.scheme(), "http" | "https") {
+                    continue;
+                }
+                if !target_url.username().is_empty() || target_url.password().is_some() {
+                    continue;
+                }
+                let via = MatchedRule {
+                    source: rule.source,
+                    provider: rule.provider.clone(),
+                    kind: rule.kind,
+                    detail: None,
                 };
+                let href = target_url.to_string();
+                // The target gets the same treatment as the input: its
+                // tracking params are stripped and a blocked domain stays
+                // blocked.
+                let inner = if depth < MAX_REDIRECT_DEPTH {
+                    sanitize_at(rules, options, &href, depth + 1)
+                } else {
+                    SanitizeResult::Unchanged { url: href }
+                };
+                let url = match inner {
+                    SanitizeResult::Blocked { via, .. } => {
+                        return SanitizeResult::Blocked { original, via };
+                    }
+                    SanitizeResult::Unchanged { url }
+                    | SanitizeResult::Cleaned { url, .. }
+                    | SanitizeResult::Redirected { url, .. } => url,
+                };
+                return SanitizeResult::Redirected { original, url, via };
             }
             CompiledBody::RawReplace {
                 pattern,
                 replacement,
             } => {
-                let next = pattern.replace_all(&current, replacement.as_str());
-                if next != current {
-                    current = next.into_owned();
-                    matched_rules.push(MatchedRule {
-                        source: rule.source,
-                        provider: rule.provider.clone(),
-                        kind: rule.kind,
-                        detail: None,
-                    });
+                // The replacement is literal text, and the result must stay
+                // on the same origin: cleaning may only touch path, query and
+                // fragment.
+                let next = pattern.replace_all(&current, regex_lite::NoExpand(replacement));
+                if next == current || !same_origin(&current, &next) {
+                    continue;
                 }
+                current = next.into_owned();
+                view = match_view(&current);
+                kept_cache = None;
+                matched_rules.push(MatchedRule {
+                    source: rule.source,
+                    provider: rule.provider.clone(),
+                    kind: rule.kind,
+                    detail: None,
+                });
             }
             CompiledBody::StripParam {
                 param_pattern,
@@ -240,17 +335,18 @@ pub(crate) fn sanitize_with(
                     continue;
                 };
 
+                let kept = kept_cache.get_or_insert_with(|| kept_patterns(&keeps, &view));
                 let mut all_removed: Vec<String> = Vec::new();
 
                 // Query
                 if let Some(q) = url_obj.query() {
-                    let (kept, removed) =
-                        strip_param_pairs(q, param_pattern, value_pattern.as_ref());
+                    let (rest, removed) =
+                        strip_param_pairs(q, param_pattern, value_pattern.as_ref(), kept);
                     if !removed.is_empty() {
-                        if kept.is_empty() {
+                        if rest.is_empty() {
                             url_obj.set_query(None);
                         } else {
-                            url_obj.set_query(Some(&kept));
+                            url_obj.set_query(Some(&rest));
                         }
                         all_removed.extend(removed);
                     }
@@ -258,13 +354,13 @@ pub(crate) fn sanitize_with(
 
                 // Fragment-as-query
                 if let Some(f) = url_obj.fragment() {
-                    let (kept, removed) =
-                        strip_param_pairs(f, param_pattern, value_pattern.as_ref());
+                    let (rest, removed) =
+                        strip_param_pairs(f, param_pattern, value_pattern.as_ref(), kept);
                     if !removed.is_empty() {
-                        if kept.is_empty() {
+                        if rest.is_empty() {
                             url_obj.set_fragment(None);
                         } else {
-                            url_obj.set_fragment(Some(&kept));
+                            url_obj.set_fragment(Some(&rest));
                         }
                         all_removed.extend(removed);
                     }
@@ -274,6 +370,8 @@ pub(crate) fn sanitize_with(
                     continue;
                 }
                 current = url_obj.to_string();
+                view = match_view(&current);
+                kept_cache = None;
                 let detail = all_removed.join(",");
                 stripped_params.extend(all_removed);
                 matched_rules.push(MatchedRule {

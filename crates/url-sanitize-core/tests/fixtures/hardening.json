@@ -1,0 +1,332 @@
+{
+  "catalog": {
+    "version": "0.0.0-test",
+    "generatedAt": "2026-01-01T00:00:00Z",
+    "sources": [
+      {
+        "name": "custom"
+      }
+    ],
+    "rules": [
+      {
+        "kind": "raw-replace",
+        "source": "custom",
+        "provider": "host-swap",
+        "urlPattern": "^https://good\\.example/",
+        "pattern": "^https://good\\.example/",
+        "replacement": "https://evil.example/"
+      },
+      {
+        "kind": "raw-replace",
+        "source": "custom",
+        "provider": "scheme-swap",
+        "urlPattern": "^https://js\\.example/",
+        "pattern": "^https?://.*$",
+        "replacement": "javascript:alert(1)//"
+      },
+      {
+        "kind": "raw-replace",
+        "source": "custom",
+        "provider": "userinfo-inject",
+        "urlPattern": "^https://ui\\.example/",
+        "pattern": "^https://",
+        "replacement": "https://good.example@"
+      },
+      {
+        "kind": "raw-replace",
+        "source": "custom",
+        "provider": "unparseable",
+        "urlPattern": "^https://broken\\.example/",
+        "pattern": "^https?://",
+        "replacement": ""
+      },
+      {
+        "kind": "raw-replace",
+        "source": "custom",
+        "provider": "literal",
+        "urlPattern": "^https://lit\\.example/",
+        "pattern": "b",
+        "replacement": "[$&$1]"
+      },
+      {
+        "kind": "raw-replace",
+        "source": "custom",
+        "provider": "path-ref",
+        "urlPattern": "^https://path\\.example/",
+        "pattern": "/ref=[^/?]*",
+        "replacement": ""
+      },
+      {
+        "kind": "unwrap-redirect",
+        "source": "custom",
+        "provider": "empty-template",
+        "urlPattern": "^https://tpl\\.example/",
+        "pattern": "[?&]to=([^&]+)",
+        "captureGroup": 1,
+        "targetTemplate": ""
+      },
+      {
+        "kind": "unwrap-redirect",
+        "source": "custom",
+        "provider": "plain-redirect",
+        "urlPattern": "^https://go\\.example/",
+        "pattern": "[?&]to=([^&]+)",
+        "captureGroup": 1
+      },
+      {
+        "kind": "strip-param",
+        "source": "custom",
+        "provider": "bad-exception",
+        "paramPattern": "dropme",
+        "exceptions": [
+          "("
+        ]
+      },
+      {
+        "kind": "strip-param",
+        "source": "custom",
+        "provider": "tracking",
+        "paramPattern": "utm_.+"
+      },
+      {
+        "kind": "block-domain",
+        "source": "custom",
+        "provider": "blocked",
+        "urlPattern": "^https?://(?:[a-z0-9-]+\\.)*?ads\\.example(?:[/?#:]|$)"
+      },
+      {
+        "kind": "keep-param",
+        "source": "custom",
+        "provider": "keep-one",
+        "urlPattern": "^https://keep\\.example/",
+        "paramPattern": "utm_source"
+      },
+      {
+        "kind": "keep-param",
+        "source": "custom",
+        "provider": "keep-all",
+        "urlPattern": "^https://keepall\\.example/"
+      },
+      {
+        "kind": "future-kind",
+        "source": "custom",
+        "provider": "from-a-newer-catalog",
+        "whatever": 1
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "raw-replace-host-swap-rejected",
+      "input": "https://good.example/x",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://good.example/x"
+      }
+    },
+    {
+      "id": "raw-replace-scheme-swap-rejected",
+      "input": "https://js.example/x",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://js.example/x"
+      }
+    },
+    {
+      "id": "raw-replace-userinfo-rejected",
+      "input": "https://ui.example/x",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://ui.example/x"
+      }
+    },
+    {
+      "id": "raw-replace-unparseable-rejected",
+      "input": "https://broken.example/x",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://broken.example/x"
+      }
+    },
+    {
+      "id": "raw-replace-replacement-is-literal",
+      "input": "https://lit.example/abc",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://lit.example/a[$&$1]c"
+      }
+    },
+    {
+      "id": "raw-replace-path-change-allowed",
+      "input": "https://path.example/dp/B0/ref=abc",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://path.example/dp/B0"
+      }
+    },
+    {
+      "id": "empty-template-is-empty-target",
+      "input": "https://tpl.example/?to=https%3A%2F%2Fevil.example%2F",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://tpl.example/?to=https%3A%2F%2Fevil.example%2F"
+      }
+    },
+    {
+      "id": "redirect-target-is-cleaned",
+      "input": "https://go.example/?to=https%3A%2F%2Fdest.example%2F%3Futm_source%3Dx%26keep%3D1",
+      "expected": {
+        "kind": "redirected",
+        "url": "https://dest.example/?keep=1"
+      }
+    },
+    {
+      "id": "redirect-nested-unwraps-fully",
+      "input": "https://go.example/?to=https%3A%2F%2Fgo.example%2F%3Fto%3Dhttps%253A%252F%252Fdest.example%252F",
+      "expected": {
+        "kind": "redirected",
+        "url": "https://dest.example/"
+      }
+    },
+    {
+      "id": "redirect-to-blocked-domain-is-blocked",
+      "input": "https://go.example/?to=https%3A%2F%2Fads.example%2Fx",
+      "options": {
+        "domainBlocking": true
+      },
+      "expected": {
+        "kind": "blocked"
+      }
+    },
+    {
+      "id": "redirect-userinfo-target-rejected",
+      "input": "https://go.example/?to=https%3A%2F%2Fgood.example%40evil.example%2F",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://go.example/?to=https%3A%2F%2Fgood.example%40evil.example%2F"
+      }
+    },
+    {
+      "id": "userinfo-does-not-hide-blocked-host",
+      "input": "https://x@ads.example/x",
+      "options": {
+        "domainBlocking": true
+      },
+      "expected": {
+        "kind": "blocked"
+      }
+    },
+    {
+      "id": "userinfo-does-not-hide-redirect",
+      "input": "https://x@go.example/?to=https%3A%2F%2Fdest.example%2F",
+      "expected": {
+        "kind": "redirected",
+        "url": "https://dest.example/"
+      }
+    },
+    {
+      "id": "userinfo-kept-when-cleaning",
+      "input": "https://x@shop.example/?utm_source=a&keep=1",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://x@shop.example/?keep=1"
+      }
+    },
+    {
+      "id": "invalid-exception-drops-rule",
+      "input": "https://a.example/?dropme=1",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://a.example/?dropme=1"
+      }
+    },
+    {
+      "id": "encoded-param-name-is-stripped",
+      "input": "https://a.example/?utm%5Fsource=x&keep=1",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://a.example/?keep=1"
+      }
+    },
+    {
+      "id": "bare-fragment-kept",
+      "input": "https://a.example/?utm_source=1#",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://a.example/#"
+      }
+    },
+    {
+      "id": "bare-query-kept",
+      "input": "https://a.example/?#utm_source=1",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://a.example/?"
+      }
+    },
+    {
+      "id": "invalid-utf8-target-decodes-lossily",
+      "input": "https://go.example/?to=https%3A%2F%2Fdest.example%2F%E0",
+      "expected": {
+        "kind": "redirected",
+        "url": "https://dest.example/%EF%BF%BD"
+      }
+    },
+    {
+      "id": "long-url-unchanged",
+      "input": "LONG",
+      "expected": {
+        "kind": "unchanged",
+        "url": "LONG"
+      }
+    },
+    {
+      "id": "keep-param-protects-one-param",
+      "input": "https://keep.example/?utm_source=a&utm_medium=b",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://keep.example/?utm_source=a"
+      }
+    },
+    {
+      "id": "keep-param-protects-every-param",
+      "input": "https://keepall.example/?utm_source=a&utm_medium=b",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://keepall.example/?utm_source=a&utm_medium=b"
+      }
+    },
+    {
+      "id": "keep-param-matches-decoded-name",
+      "input": "https://keep.example/?utm%5Fsource=a",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://keep.example/?utm%5Fsource=a"
+      }
+    },
+    {
+      "id": "keep-param-only-where-it-applies",
+      "input": "https://other.example/?utm_source=a",
+      "expected": {
+        "kind": "cleaned",
+        "url": "https://other.example/"
+      }
+    },
+    {
+      "id": "keep-param-sees-through-userinfo",
+      "input": "https://x@keepall.example/?utm_source=a",
+      "expected": {
+        "kind": "unchanged",
+        "url": "https://x@keepall.example/?utm_source=a"
+      }
+    },
+    {
+      "id": "keep-param-applies-to-redirect-target",
+      "input": "https://go.example/?to=https%3A%2F%2Fkeepall.example%2F%3Futm_source%3Da",
+      "expected": {
+        "kind": "redirected",
+        "url": "https://keepall.example/?utm_source=a"
+      }
+    }
+  ]
+}

@@ -43,6 +43,20 @@ export type SanitizerRule =
       provider: string;
       urlPattern: string;
       exceptions?: string[];
+    }
+  | {
+      /**
+       * Protects params from every `strip-param` rule, wherever it sits in the
+       * catalog: on URLs it applies to, a param whose decoded name matches
+       * `paramPattern` (anchored, case-insensitive) is kept. Without
+       * `paramPattern`, every param is kept.
+       */
+      kind: 'keep-param';
+      source: RuleSource;
+      provider: string;
+      urlPattern?: string;
+      paramPattern?: string;
+      exceptions?: string[];
     };
 
 export interface SanitizerCatalog {

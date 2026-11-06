@@ -15,7 +15,15 @@ fn catalog() -> &'static Catalog {
     })
 }
 
+#[derive(PartialEq)]
+enum Action {
+    Run,
+    Help,
+    Version,
+}
+
 struct Args {
+    action: Action,
     json: bool,
     explain: bool,
     options: SanitizerOptions,
@@ -34,6 +42,7 @@ USAGE:
     url-sanitize [OPTIONS] [URL]...
     url-sanitize [OPTIONS] -          read URLs from stdin (one per line)
     url-sanitize [OPTIONS] < file     same
+    url-sanitize [OPTIONS] -- [URL]... treat every later argument as a URL
 
 OPTIONS:
     --json                  Emit one JSON SanitizeResult per input line
@@ -67,9 +76,24 @@ fn parse_args(raw: Vec<String>) -> Result<Args, String> {
     let mut domain_blocking = false;
     let mut urls = Vec::new();
     let mut read_stdin = false;
+    let mut action = Action::Run;
+    let mut end_of_options = false;
 
     for arg in raw {
+        // After `--` every argument is a URL, so `url-sanitize -- "$untrusted"`
+        // can't be turned into a flag.
+        if end_of_options {
+            urls.push(arg);
+            continue;
+        }
         match arg.as_str() {
+            "--" => end_of_options = true,
+            "-h" | "--help" => action = Action::Help,
+            "--version" => {
+                if action != Action::Help {
+                    action = Action::Version;
+                }
+            }
             "--json" => json = true,
             "--explain" => explain = true,
             "--strip-referral" => strip_referral = true,
@@ -90,6 +114,7 @@ fn parse_args(raw: Vec<String>) -> Result<Args, String> {
     }
 
     Ok(Args {
+        action,
         json,
         explain,
         options: SanitizerOptions {
@@ -102,23 +127,44 @@ fn parse_args(raw: Vec<String>) -> Result<Args, String> {
     })
 }
 
+/// Percent-encode control and bidi-override characters for text output: an
+/// unparseable input is echoed as given, and `\x1b[...` or U+202E in it would
+/// reach the terminal. Must match `printable()` in the TS CLI.
+fn printable(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    for ch in text.chars() {
+        let unprintable = matches!(ch, '\u{0}'..='\u{1f}' | '\u{7f}'..='\u{9f}' | '\u{202a}'..='\u{202e}' | '\u{2066}'..='\u{2069}');
+        if unprintable {
+            let mut buf = [0u8; 4];
+            for b in ch.encode_utf8(&mut buf).bytes() {
+                out.push_str(&format!("%{:02X}", b));
+            }
+        } else {
+            out.push(ch);
+        }
+    }
+    out
+}
+
+/// Writes one result; returns whether it was blocked. A write error is
+/// passed up so the run stops instead of reporting success.
 fn emit(
     res: &SanitizeResult,
     json: bool,
     explain: bool,
     stdout: &mut dyn Write,
     stderr: &mut dyn Write,
-) -> bool {
+) -> io::Result<bool> {
     if json {
         // serde_json::to_string is infallible on owned types here.
         let s = serde_json::to_string(res).expect("serialize SanitizeResult");
-        let _ = writeln!(stdout, "{}", s);
-        return matches!(res, SanitizeResult::Blocked { .. });
+        writeln!(stdout, "{}", s)?;
+        return Ok(matches!(res, SanitizeResult::Blocked { .. }));
     }
     match res {
         SanitizeResult::Unchanged { url } => {
-            let _ = writeln!(stdout, "{}", url);
-            false
+            writeln!(stdout, "{}", printable(url))?;
+            Ok(false)
         }
         SanitizeResult::Cleaned {
             url,
@@ -126,53 +172,60 @@ fn emit(
             matched_rules,
             ..
         } => {
-            let _ = writeln!(stdout, "{}", url);
+            writeln!(stdout, "{}", printable(url))?;
             if explain {
                 let providers: Vec<_> = matched_rules.iter().map(|m| m.provider.as_str()).collect();
-                let _ = writeln!(
+                writeln!(
                     stderr,
                     "# cleaned: {} -> {} [{}]",
-                    original,
-                    url,
-                    providers.join(",")
-                );
+                    printable(original),
+                    printable(url),
+                    printable(&providers.join(","))
+                )?;
             }
-            false
+            Ok(false)
         }
         SanitizeResult::Redirected { url, original, via } => {
-            let _ = writeln!(stdout, "{}", url);
+            writeln!(stdout, "{}", printable(url))?;
             if explain {
-                let _ = writeln!(
+                writeln!(
                     stderr,
                     "# redirected: {} -> {} [{}]",
-                    original, url, via.provider
-                );
+                    printable(original),
+                    printable(url),
+                    printable(&via.provider)
+                )?;
             }
-            false
+            Ok(false)
         }
         SanitizeResult::Blocked { original, via } => {
-            let _ = writeln!(stderr, "blocked: {} (via {})", original, via.provider);
-            true
+            writeln!(
+                stderr,
+                "blocked: {} (via {})",
+                printable(original),
+                printable(&via.provider)
+            )?;
+            Ok(true)
         }
     }
 }
 
+/// A reader that closes early (`| head -1`) ends the run quietly with the
+/// exit code so far; any other write error exits 1.
+fn write_failed(err: &io::Error, any_blocked: bool) -> ExitCode {
+    if err.kind() == io::ErrorKind::BrokenPipe {
+        return if any_blocked {
+            ExitCode::from(2)
+        } else {
+            ExitCode::SUCCESS
+        };
+    }
+    eprintln!("error: writing output: {}", err);
+    ExitCode::from(1)
+}
+
 fn run() -> ExitCode {
     let raw: Vec<String> = std::env::args().skip(1).collect();
-
-    if raw.iter().any(|a| a == "-h" || a == "--help") {
-        print_help(&mut io::stdout().lock());
-        return ExitCode::SUCCESS;
-    }
-    if raw.iter().any(|a| a == "--version") {
-        println!(
-            "url-sanitize {} (catalog {} {})",
-            CRATE_VERSION,
-            catalog().catalog_identity(),
-            catalog().generated_at()
-        );
-        return ExitCode::SUCCESS;
-    }
 
     let args = match parse_args(raw) {
         Ok(a) => a,
@@ -182,6 +235,20 @@ fn run() -> ExitCode {
             return ExitCode::from(1);
         }
     };
+
+    if args.action == Action::Help {
+        print_help(&mut io::stdout().lock());
+        return ExitCode::SUCCESS;
+    }
+    if args.action == Action::Version {
+        println!(
+            "url-sanitize {} (catalog {} {})",
+            CRATE_VERSION,
+            catalog().catalog_identity(),
+            catalog().generated_at()
+        );
+        return ExitCode::SUCCESS;
+    }
 
     let sanitizer: Sanitizer = catalog().compile(args.options);
 
@@ -198,37 +265,55 @@ fn run() -> ExitCode {
 
     for url in &args.urls {
         let res = sanitizer.sanitize(url);
-        if emit(
+        match emit(
             &res,
             args.json,
             args.explain,
             &mut stdout_lock,
             &mut stderr_lock,
         ) {
-            any_blocked = true;
+            Ok(blocked) => any_blocked |= blocked,
+            Err(err) => return write_failed(&err, any_blocked),
         }
     }
 
     if use_stdin {
         let stdin = io::stdin();
-        let reader = stdin.lock();
-        for line in reader.lines() {
-            let Ok(line) = line else { break };
+        let mut reader = stdin.lock();
+        let mut buf = Vec::new();
+        loop {
+            buf.clear();
+            match reader.read_until(b'\n', &mut buf) {
+                Ok(0) => break,
+                Ok(_) => {}
+                Err(err) => {
+                    eprintln!("error: reading stdin: {}", err);
+                    return ExitCode::from(1);
+                }
+            }
+            // Invalid UTF-8 becomes U+FFFD, as in the TS CLI, instead of
+            // silently ending the batch.
+            let line = String::from_utf8_lossy(&buf);
             let trimmed = line.trim_end_matches(['\r', '\n']);
             if trimmed.is_empty() {
                 continue;
             }
             let res = sanitizer.sanitize(trimmed);
-            if emit(
+            match emit(
                 &res,
                 args.json,
                 args.explain,
                 &mut stdout_lock,
                 &mut stderr_lock,
             ) {
-                any_blocked = true;
+                Ok(blocked) => any_blocked |= blocked,
+                Err(err) => return write_failed(&err, any_blocked),
             }
         }
+    }
+
+    if let Err(err) = stdout_lock.flush() {
+        return write_failed(&err, any_blocked);
     }
 
     if any_blocked {

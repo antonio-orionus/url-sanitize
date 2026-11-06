@@ -1,5 +1,11 @@
 const ruleSourceValues = ['clearurls', 'adguard', 'brave', 'firefox', 'custom'] as const;
-const ruleKindValues = ['strip-param', 'raw-replace', 'unwrap-redirect', 'block-domain'] as const;
+const ruleKindValues = [
+  'strip-param',
+  'raw-replace',
+  'unwrap-redirect',
+  'block-domain',
+  'keep-param'
+] as const;
 const redirectMatchPartValues = ['url', 'pathname'] as const;
 const redirectTargetEncodingValues = ['percent', 'base64'] as const;
 const redirectPrependSchemeValues = ['http', 'https'] as const;
@@ -115,6 +121,16 @@ export const sanitizerCatalogJsonSchema = {
             properties: {
               ...ruleBaseProperties,
               kind: { const: 'block-domain' }
+            }
+          },
+          {
+            type: 'object',
+            required: ['kind', 'source', 'provider'],
+            additionalProperties: false,
+            properties: {
+              ...ruleBaseProperties,
+              kind: { const: 'keep-param' },
+              paramPattern: { type: 'string' }
             }
           }
         ]

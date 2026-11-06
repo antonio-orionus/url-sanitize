@@ -162,6 +162,117 @@ describe('fetchClearurlsCatalog', () => {
       })
     ).rejects.toThrow(/pinned hash mismatch/);
   });
+
+  it.each([
+    ['undefined', undefined],
+    ['empty', ''],
+    ['blank', '  ']
+  ])('fails closed when pinnedHash is %s, before any request', async (_label, pinnedHash) => {
+    let requests = 0;
+    await expect(
+      fetchClearurlsCatalog({
+        pinnedHash,
+        rulesUrl,
+        hashUrl,
+        fetch: async (url) => {
+          requests++;
+          return textResponse(requestUrl(url) === rulesUrl ? rulesText : rulesHash);
+        }
+      })
+    ).rejects.toThrow(/pinnedHash is set but empty/);
+    expect(requests).toBe(0);
+  });
+
+  it.each([
+    ['rulesUrl', { rulesUrl: 'http://rules.test/data.minify.json', hashUrl }],
+    ['hashUrl', { rulesUrl, hashUrl: 'http://rules.test/rules.minify.hash' }]
+  ])('rejects a non-https %s', async (label, urls) => {
+    await expect(fetchClearurlsCatalog({ ...urls, fetch: fakeFetch({}) })).rejects.toThrow(
+      new RegExp(`${label} must use https`)
+    );
+  });
+
+  it('rejects a redirect to http', async () => {
+    await expect(
+      fetchClearurlsCatalog({
+        rulesUrl,
+        hashUrl,
+        fetch: async (url) => {
+          const body = requestUrl(url) === rulesUrl ? rulesText : rulesHash;
+          return Object.assign(textResponse(body), { url: 'http://evil.test/data.json' });
+        }
+      })
+    ).rejects.toThrow(/redirected to a non-https URL/);
+  });
+
+  it('rejects a streamed body over maxBytes', async () => {
+    const big = JSON.stringify({ providers: {}, pad: 'x'.repeat(4096) });
+    await expect(
+      fetchClearurlsCatalog({
+        rulesUrl,
+        hashUrl,
+        maxBytes: 1024,
+        fetch: async (url) => new Response(requestUrl(url) === rulesUrl ? big : sha256(big))
+      })
+    ).rejects.toThrow(/body exceeds 1024 bytes/);
+  });
+
+  it('rejects a declared Content-Length over maxBytes without reading the body', async () => {
+    await expect(
+      fetchClearurlsCatalog({
+        rulesUrl,
+        hashUrl,
+        maxBytes: 1024,
+        fetch: async () =>
+          new Response(new ReadableStream(), { headers: { 'content-length': '999999' } })
+      })
+    ).rejects.toThrow(/body exceeds 1024 bytes/);
+  });
+
+  it('times out a body that stalls after the headers', async () => {
+    await expect(
+      fetchClearurlsCatalog({
+        rulesUrl,
+        hashUrl,
+        timeoutMs: 50,
+        // Ignores the signal: the body never ends.
+        fetch: async () => new Response(new ReadableStream())
+      })
+    ).rejects.toThrow(/timed out after 50ms/);
+  });
+
+  it.each([
+    [
+      'a string where a list belongs',
+      { p: { urlPattern: '.*', rules: 'utm_source' } },
+      /rules must be a list of strings/
+    ],
+    [
+      'a completeProvider without urlPattern',
+      { p: { completeProvider: true } },
+      /urlPattern must be a non-empty string/
+    ],
+    ['a null provider', { p: null }, /is not an object/],
+    [
+      'a non-boolean flag',
+      { p: { urlPattern: '.*', completeProvider: 'yes' } },
+      /completeProvider must be a boolean/
+    ],
+    [
+      'a non-string exception',
+      { p: { urlPattern: '.*', exceptions: [1] } },
+      /exceptions must be a list of strings/
+    ]
+  ])('rejects %s', async (_label, providers, message) => {
+    const text = JSON.stringify({ providers });
+    await expect(
+      fetchClearurlsCatalog({
+        rulesUrl,
+        hashUrl,
+        fetch: fakeFetch({ [rulesUrl]: text, [hashUrl]: sha256(text) })
+      })
+    ).rejects.toThrow(message);
+  });
 });
 
 function fakeFetch(
