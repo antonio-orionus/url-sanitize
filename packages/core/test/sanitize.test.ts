@@ -156,6 +156,42 @@ describe('compileSanitizer', () => {
     }
   });
 
+  it.each([
+    'javascript:alert(1)',
+    'JaVaScRiPt:alert(1)',
+    'java\tscript:alert(1)',
+    ' javascript:alert(1)',
+    'data:text/html,<script>alert(1)</script>',
+    'vbscript:msgbox(1)',
+    'file:///etc/passwd'
+  ])('does not unwrap a non-http(s) redirect target: %j', (target) => {
+    const sanitize = compileSanitizer(miniCatalog);
+    const result = sanitize(`https://www.google.com/url?q=${encodeURIComponent(target)}`);
+    expect(result.kind).toBe('unchanged');
+  });
+
+  it('does not unwrap a base64 javascript: redirect target', () => {
+    const sanitize = compileSanitizer(miniCatalog);
+    const encoded = btoa('javascript:alert(1)');
+    expect(sanitize(`https://b64.example/?to=${encodeURIComponent(encoded)}`).kind).toBe(
+      'unchanged'
+    );
+  });
+
+  it('does not unwrap a javascript: target when prependScheme is configured', () => {
+    const sanitize = compileSanitizer(miniCatalog);
+    expect(sanitize('https://path.example/out/javascript:alert(1)').kind).toBe('unchanged');
+  });
+
+  it('keeps running later rules after rejecting a redirect target', () => {
+    const sanitize = compileSanitizer(miniCatalog);
+    const result = sanitize('https://www.google.com/url?q=javascript%3Aalert(1)&utm_source=x');
+    expect(result.kind).toBe('cleaned');
+    if (result.kind === 'cleaned') {
+      expect(result.url).toBe('https://www.google.com/url?q=javascript%3Aalert(1)');
+    }
+  });
+
   it('unwraps redirect targets with templates', () => {
     const sanitize = compileSanitizer(miniCatalog);
     const result = sanitize('https://template.example/amp/s/example.com/path/to/article');

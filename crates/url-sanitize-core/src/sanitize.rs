@@ -202,6 +202,11 @@ pub(crate) fn sanitize_with(
                 let Ok(target_url) = Url::parse(&target) else {
                     continue;
                 };
+                // A javascript:, data: or file: target is an attack payload,
+                // not a destination: callers put `url` into links.
+                if !matches!(target_url.scheme(), "http" | "https") {
+                    continue;
+                }
                 return SanitizeResult::Redirected {
                     original,
                     url: target_url.to_string(),

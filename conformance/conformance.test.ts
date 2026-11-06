@@ -6,7 +6,7 @@
  * generated corpus is out of sync with the engine — re-run
  * `pnpm build:conformance` after intentional behavior changes.
  *
- * Also runs the P1–P10 property invariants from `conformance/properties.md`
+ * Also runs the P1–P11 property invariants from `conformance/properties.md`
  * against the corpus.
  */
 import { readFileSync } from 'node:fs';
@@ -144,6 +144,14 @@ describe('properties (corpus-driven)', () => {
       const before = new URL(v.input);
       const after = new URL(r.url);
       expect(after.pathname, `${v.id}: pathname`).toBe(before.pathname);
+    }
+  });
+
+  it('P11: redirect targets are http(s)', () => {
+    for (const v of [...vectors, ...corpus]) {
+      const r = sanitizerFor(v.options)(v.input);
+      if (r.kind !== 'redirected') continue;
+      expect(['http:', 'https:'], `${v.id}: protocol`).toContain(new URL(r.url).protocol);
     }
   });
 

@@ -94,3 +94,12 @@ this is allowed and is observed in the `unchanged` case as well.)
 If an `unwrap-redirect` rule matches but the captured target is empty or fails
 URL parsing, the rule is skipped and iteration continues — it does NOT
 terminate with `redirected`, and it does NOT corrupt `current`.
+
+## P11 — Redirect targets are web URLs
+
+If `sanitize(s, o)` returns `redirected`, the parsed scheme of `result.url` is
+`http` or `https`. A target with any other scheme (`javascript:`, `data:`,
+`vbscript:`, `file:`, …) is skipped as in P10.
+
+Rationale: callers put a `redirected` URL into links and navigation, so a
+`javascript:` target smuggled through a redirect parameter would run script.

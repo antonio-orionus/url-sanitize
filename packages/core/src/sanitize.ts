@@ -260,6 +260,9 @@ export function compileSanitizer(
             if (!target) continue;
             try {
               const targetUrl = new URL(target);
+              // A javascript:, data: or file: target is an attack payload,
+              // not a destination: callers put `url` into links.
+              if (targetUrl.protocol !== 'http:' && targetUrl.protocol !== 'https:') continue;
               return {
                 kind: 'redirected',
                 original,

@@ -36,3 +36,13 @@
 {"id":"brave-amp-path-redirect","note":"Brave Debouncer regex-path with prepend scheme","input":"https://www-example-com.cdn.ampproject.org/c/s/www.example.com/article"}
 {"id":"brave-template-redirect","note":"Brave Debouncer regex-path-template","input":"https://y2u.be/dQw4w9WgXcQ"}
 {"id":"strip-wbraid","note":"Merged catalog strips wbraid","input":"https://example.com/?wbraid=abc&keep=1"}
+{"id":"redirect-rejects-javascript","note":"P11: javascript: redirect target is not unwrapped","input":"https://www.youtube.com/redirect?q=javascript%3Aalert(1)&v=x"}
+{"id":"redirect-rejects-javascript-mixed-case","note":"P11: scheme check is case-insensitive","input":"https://www.google.com/url?sa=t&q=JaVaScRiPt%3Aalert(1)"}
+{"id":"redirect-rejects-javascript-tab","note":"P11: the URL parser drops the tab, so the target is still javascript:","input":"https://www.google.com/url?sa=t&q=java%09script%3Aalert(1)"}
+{"id":"redirect-rejects-javascript-leading-space","note":"P11: the URL parser trims leading spaces","input":"https://www.google.com/url?sa=t&q=%20javascript%3Aalert(1)"}
+{"id":"redirect-rejects-data","note":"P11: data: redirect target is not unwrapped","input":"https://l.facebook.com/l.php?u=data%3Atext%2Fhtml%2C%3Cscript%3Ealert(1)%3C%2Fscript%3E&h=hash"}
+{"id":"redirect-rejects-vbscript","note":"P11: vbscript: redirect target is not unwrapped","input":"https://out.reddit.com/t3_xxx?url=vbscript%3Amsgbox(1)"}
+{"id":"redirect-rejects-file","note":"P11: file: redirect target is not unwrapped","input":"https://steamcommunity.com/linkfilter/?url=file%3A%2F%2F%2Fetc%2Fpasswd"}
+{"id":"redirect-rejects-base64-javascript","note":"P11: base64-encoded javascript: target is not unwrapped","input":"https://x.ouo.today/?cr=amF2YXNjcmlwdDphbGVydCgxKQ=="}
+{"id":"redirect-rejects-prepend-scheme-javascript","note":"P11: an absolute javascript: target is kept as is by prependScheme, then rejected","input":"https://www-example-com.cdn.ampproject.org/c/s/javascript:alert(1)"}
+{"id":"redirect-rejected-then-cleaned","note":"P10 + P11: a rejected target lets later rules run","input":"https://www.google.com/url?sa=t&q=javascript%3Aalert(1)&utm_source=x"}

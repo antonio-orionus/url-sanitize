@@ -119,8 +119,8 @@ Given an input string `S`:
         `targetEncoding: "base64"` is set. If `prependScheme` is set, prepend
         that scheme only when the target is not already a valid absolute URL.
         Try to parse as URL.
-        - If valid URL: return `{ kind: "redirected", original: S, url: parsed.toString(), via }` immediately. (Terminal.)
-        - If invalid or empty: skip and continue iteration.
+        - If valid URL with scheme `http` or `https`: return `{ kind: "redirected", original: S, url: parsed.toString(), via }` immediately. (Terminal.)
+        - If invalid, empty, or any other scheme (`javascript:`, `data:`, `file:`, …): skip and continue iteration.
 
       - **`raw-replace`**: replace all (`g` flag) matches of `rule.pattern` in
         `current` with `rule.replacement`. If the string changed, update
