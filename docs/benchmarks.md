@@ -15,5 +15,6 @@ repo toolchain, ClearURLs catalog hash
 | 819 | 50,000 | 5,587.588 | 8,948 | 0.120 | 0.187 | 1.970 |
 
 These numbers are a release sanity check, not a cross-machine performance
-contract. CI fuzz tests enforce the stronger 1.0 guardrail: no generated input
-may take 50ms or more in a single sanitize call.
+contract. CI fuzz tests enforce the stronger 1.0 guardrail: no random input
+may take 50ms or more in a single sanitize call (hostile inputs have their own
+budgets; see the fuzz section of `roadmap.md`).
