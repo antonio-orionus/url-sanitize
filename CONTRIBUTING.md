@@ -4,31 +4,41 @@
 
 ```sh
 pnpm install
-pnpm sync:clearurls   # populate packages/clearurls/data/
 pnpm build
 pnpm test
+cargo test --workspace
 ```
 
 ## Layout
 
-This is a pnpm + changesets monorepo.
+This is a pnpm workspace plus a Cargo workspace.
 
 ```
 packages/
   core/        @url-sanitize/core         pure algorithm, zero deps
   clearurls/   @url-sanitize/clearurls    ClearURLs catalog adapter + bundled data
+  adguard/  brave/  firefox/              the other upstream sources
+  merged/      @url-sanitize/merged       all four sources in one catalog
   cli/         @url-sanitize/cli          command-line tool
-sources/
-  clearurls/   sync script + test fixtures
+  fetch/       @url-sanitize/fetch        runtime ClearURLs fetch + hash pinning
+crates/        Rust engine and native CLI
+python/        PyPI wrapper around the native CLI
+sources/       upstream sync scripts (pnpm sync:sources)
+conformance/   behavior contract both engines must pass
 docs/          public docs (threat model, license, roadmap)
 ```
+
+Bundled rule data is committed; you don't need to sync before building.
 
 ## Workflow
 
 1. Open an issue first for non-trivial changes.
 2. Branch from `main`.
-3. Run `pnpm changeset` to declare a version bump for any package you change.
-4. Open PR. CI must pass (typecheck + lint + test + build).
+3. Open PR. CI must pass (typecheck + lint + test + build, plus the Rust checks).
+
+Don't bump versions in your PR. Every package, crate and the PyPI wrapper share
+one version, which the maintainer bumps with `scripts/bump-version.mjs` in a
+`release: vX.Y.Z` PR.
 
 ## Adding a rule fixture
 

@@ -25,12 +25,9 @@
     "build:catalog": "tsx scripts/build-catalog.ts",
     "build:conformance": "tsx scripts/build-conformance.ts",
     "benchmark": "tsx scripts/benchmark.ts",
-    "changeset": "changeset",
-    "release": "pnpm build && changeset publish",
     "prepare": "node scripts/prepare-hooks.mjs && vp config --no-agent"
   },
   "devDependencies": {
-    "@changesets/cli": "^3.0.3",
     "ajv": "8.20.0",
     "@types/node": "^26.6.6",
     "@url-sanitize/adguard": "workspace:*",
