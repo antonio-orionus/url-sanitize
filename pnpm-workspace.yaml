@@ -15,6 +15,9 @@ catalog:
   vite-plus: 1.4.0
 overrides:
   vite@*: 'catalog:'
+  # ajv@8.20.0 (dev only, schema tests) resolves fast-uri 3.1.2, which has
+  # ten advisories fixed in 3.1.9. Drop this once ajv's own range picks it up.
+  fast-uri@<3.1.9: 3.1.9
 peerDependencyRules:
   allowAny:
     - vite
