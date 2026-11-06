@@ -42,7 +42,9 @@ jobs:
           relevant=false
           while IFS= read -r path; do
             case "$path" in
-              *.md|docs/*|AGENTS.md|LICENSE|NOTICE) ;;
+              # LICENSE and NOTICE are not docs-only: build:catalog copies them into
+              # the crate, and the ts job checks those copies.
+              *.md|docs/*|AGENTS.md) ;;
               *) relevant=true ;;
             esac
           done < <(git diff --name-only "$base" "$head")
@@ -66,14 +68,13 @@ jobs:
       - name: Verify generated catalog matches checked-in catalog
         run: |
           pnpm build:catalog
-          git diff --exit-code \
-            catalog/adguard.json \
-            catalog/brave.json \
-            catalog/catalog.json \
-            catalog/clearurls.json \
-            catalog/firefox.json \
-            crates/url-sanitize/catalog/catalog.json \
-            || (echo "generated catalog files are stale — run \`pnpm build:catalog\` and commit" && exit 1)
+          # Catalogs plus the license labels and copies derived from them
+          # (scripts/licenses.ts). Untracked output counts as stale too.
+          generated="catalog crates/url-sanitize NOTICE Formula/url-sanitize.rb bucket/url-sanitize.json packages/clearurls packages/adguard packages/brave packages/firefox"
+          if ! git diff --exit-code -- $generated || [ -n "$(git status --porcelain -- $generated)" ]; then
+            echo "generated catalog or license files are stale — run \`pnpm build:catalog\` and commit"
+            exit 1
+          fi
       - name: Verify generated conformance corpus matches checked-in files
         run: |
           pnpm build:conformance

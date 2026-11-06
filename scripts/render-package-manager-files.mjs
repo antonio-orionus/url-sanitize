@@ -1,8 +1,20 @@
 #!/usr/bin/env node
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { loadReleasePlatforms } from './release-platforms.mjs';
+
+// Written by scripts/licenses.ts from the default catalog's data licenses.
+const binaryLicenses = [
+  'MIT',
+  ...JSON.parse(
+    readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), '..', 'catalog', 'licenses.json'),
+      'utf8'
+    )
+  ).dataLicenses
+];
 
 const args = parseArgs(process.argv.slice(2));
 
@@ -45,7 +57,7 @@ class UrlSanitize < Formula
   desc "Remove tracking parameters and unwrap tracking redirects from URLs"
   homepage "https://github.com/antonio-orionus/url-sanitize"
   version "${version}"
-  license "MIT"
+  license all_of: [${binaryLicenses.map((id) => `"${id}"`).join(', ')}]
 
   if OS.mac?
     if Hardware::CPU.arm?
@@ -73,6 +85,8 @@ class UrlSanitize < Formula
 
   def install
     bin.install "url-sanitize"
+    # LICENSE and NOTICE install themselves; the license texts need a hand.
+    prefix.install Dir["LICENSES"]
   end
 
   test do
@@ -100,7 +114,11 @@ function renderScoop(version, assetNames, checksums) {
     version,
     description: 'Remove tracking parameters and unwrap tracking redirects from URLs.',
     homepage: 'https://github.com/antonio-orionus/url-sanitize',
-    license: 'MIT',
+    // Scoop separates licenses that all apply with a comma.
+    license: {
+      identifier: binaryLicenses.join(','),
+      url: 'https://github.com/antonio-orionus/url-sanitize/blob/main/NOTICE'
+    },
     architecture: {
       '64bit': {
         url: `https://github.com/antonio-orionus/url-sanitize/releases/download/v${version}/${assetNames.windowsX64}`,

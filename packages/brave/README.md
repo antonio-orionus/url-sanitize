@@ -33,5 +33,5 @@ import { braveToCatalog } from '@url-sanitize/brave/adapter';
 
 ## License
 
-Adapter code is project code. Bundled Brave Debouncer data is **MPL-2.0**.
+Adapter code is MIT. Bundled Brave Debouncer data is **MPL-2.0**.
 See [NOTICE](NOTICE).

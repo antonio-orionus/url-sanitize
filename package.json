@@ -2,7 +2,7 @@
   "name": "url-sanitize",
   "version": "0.0.0",
   "private": true,
-  "description": "Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs, AdGuard, Brave, and Firefox rules.",
+  "description": "Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs, Brave, and Firefox rules, plus opt-in AdGuard.",
   "type": "module",
   "packageManager": "pnpm@11.5.0",
   "engines": {

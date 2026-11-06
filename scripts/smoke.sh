@@ -50,7 +50,13 @@ mkdir -p "$TMP/npm-app"
 (
   cd "$TMP/npm-app"
   npm init -y >/dev/null
-  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$adguard_tgz" "$brave_tgz" "$firefox_tgz" "$merged_tgz" "$cli_tgz" "$fetch_tgz"
+  # No AdGuard tarball: the default packages must work without the opt-in,
+  # GPL-3.0 source, and must not pull it in.
+  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$brave_tgz" "$firefox_tgz" "$merged_tgz" "$cli_tgz" "$fetch_tgz"
+  if [[ -e node_modules/@url-sanitize/adguard ]]; then
+    echo "a default package depends on @url-sanitize/adguard" >&2
+    exit 1
+  fi
 
   node --input-type=module <<'JS'
 import { createHash } from 'node:crypto';
@@ -101,6 +107,36 @@ JS
   "$ROOT/scripts/smoke-cli.sh" "./node_modules/.bin/url-sanitize" "$cli_version"
   "$ROOT/scripts/smoke-cli-hardening.sh" "./node_modules/.bin/url-sanitize"
   "./node_modules/.bin/url-sanitize" --version > "$TMP/npm-version.txt"
+)
+
+echo "==> Smoke opt-in AdGuard source"
+mkdir -p "$TMP/npm-adguard-app"
+(
+  cd "$TMP/npm-adguard-app"
+  npm init -y >/dev/null
+  npm install --ignore-scripts "$core_tgz" "$clearurls_tgz" "$adguard_tgz" "$brave_tgz" "$firefox_tgz" "$merged_tgz"
+
+  node --input-type=module <<'JS'
+import { adguardCatalog } from '@url-sanitize/adguard';
+import { braveCatalog } from '@url-sanitize/brave';
+import { clearurlsCatalog } from '@url-sanitize/clearurls';
+import { compileSanitizer } from '@url-sanitize/core';
+import { firefoxCatalog } from '@url-sanitize/firefox';
+import { mergeSources, sanitize } from '@url-sanitize/merged';
+
+// tgclid is stripped by AdGuard alone: kept by default, stripped with the opt-in.
+const url = 'https://example.com/?tgclid=abc&keep=1';
+if (sanitize(url).kind !== 'unchanged') {
+  throw new Error('the default catalog stripped an AdGuard-only param');
+}
+const withAdguard = compileSanitizer(
+  mergeSources([clearurlsCatalog, adguardCatalog, braveCatalog, firefoxCatalog])
+);
+const result = withAdguard(url);
+if (result.kind !== 'cleaned' || result.url !== 'https://example.com/?keep=1') {
+  throw new Error(`unexpected opt-in AdGuard result: ${JSON.stringify(result)}`);
+}
+JS
 )
 
 echo "==> Smoke Python wheel wrapper"

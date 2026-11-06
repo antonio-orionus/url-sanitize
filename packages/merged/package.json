@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/merged",
-  "version": "2.1.2",
-  "description": "Merged ClearURLs, AdGuard, Brave, and Firefox catalog for @url-sanitize/core.",
+  "version": "2.2.0",
+  "description": "Merged ClearURLs, Brave, and Firefox catalog for @url-sanitize/core, with optional AdGuard.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -22,7 +22,6 @@
     "dev": "vp pack --watch"
   },
   "dependencies": {
-    "@url-sanitize/adguard": "workspace:*",
     "@url-sanitize/brave": "workspace:*",
     "@url-sanitize/clearurls": "workspace:*",
     "@url-sanitize/core": "workspace:*",
@@ -33,7 +32,6 @@
     "sanitize",
     "tracking",
     "clearurls",
-    "adguard",
     "brave",
     "firefox"
   ],
@@ -45,5 +43,8 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/merged"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "@url-sanitize/adguard": "workspace:*"
+  }
 }

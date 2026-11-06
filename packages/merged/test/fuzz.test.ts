@@ -1,7 +1,8 @@
 /**
- * ReDoS guard for the shipped default catalog. `packages/core/test/fuzz.test.ts`
- * covers ClearURLs alone; this file adds AdGuard, Brave and Firefox. It lives
- * here because `merged` depends on `core`, so `core` can't declare the reverse.
+ * ReDoS guard for every shipped source. `packages/core/test/fuzz.test.ts`
+ * covers ClearURLs alone; this file runs the default catalog plus the opt-in
+ * AdGuard source (ClearURLs, AdGuard, Brave, Firefox). It lives here because
+ * `merged` depends on `core`, so `core` can't declare the reverse.
  *
  * Random URLs never hit the inputs that make a pattern slow (AdGuard's
  * `.*z=.*&var=` needs `z=z=z=…`), so each pattern is also fed URLs built from
@@ -9,10 +10,17 @@
  */
 import { performance } from 'node:perf_hooks';
 
+import { adguardCatalog } from '@url-sanitize/adguard';
+import { braveCatalog } from '@url-sanitize/brave';
+import { clearurlsCatalog } from '@url-sanitize/clearurls';
 import { compileSanitizer, type SanitizerOptions, type SanitizerRule } from '@url-sanitize/core';
+import { firefoxCatalog } from '@url-sanitize/firefox';
 import { describe, expect, it } from 'vite-plus/test';
 
-import { mergedCatalog } from '../src/index.js';
+import { mergeSources } from '../src/index.js';
+
+/** The default catalog plus the opt-in AdGuard source. */
+const allSources = mergeSources([clearurlsCatalog, adguardCatalog, braveCatalog, firefoxCatalog]);
 
 const OPTIONS: SanitizerOptions = {
   domainBlocking: true,
@@ -41,11 +49,11 @@ const MAX_FLOOD_MS = 200;
 const HOSTILE_LENGTH = 8000;
 
 describe('merged catalog fuzz', () => {
-  const sanitize = compileSanitizer(mergedCatalog, OPTIONS);
+  const sanitize = compileSanitizer(allSources, OPTIONS);
 
   it(`sanitizes ${RANDOM_CASES} generated URLs without throws or slow calls`, () => {
     const rng = mulberry32(0x5eed_2026);
-    const vocabulary = catalogVocabulary(mergedCatalog.rules);
+    const vocabulary = catalogVocabulary(allSources.rules);
     const inputs = Array.from({ length: RANDOM_CASES }, (_, index) =>
       randomUrl(rng, index, vocabulary)
     );
@@ -57,7 +65,7 @@ describe('merged catalog fuzz', () => {
   }, 30_000);
 
   it('runs every pattern on URLs built from its own literals', () => {
-    const probes = hostileProbes(mergedCatalog.rules);
+    const probes = hostileProbes(allSources.rules);
     expect(probes.length).toBeGreaterThan(1000);
     let worst: Timing = { ms: 0, label: '' };
     for (const probe of probes) {

@@ -41,5 +41,5 @@ import { firefoxToCatalog } from '@url-sanitize/firefox/adapter';
 
 ## License
 
-Adapter code is project code. Bundled Firefox Query Stripping data is
+Adapter code is MIT. Bundled Firefox Query Stripping data is
 **MPL-2.0**. See [NOTICE](NOTICE).

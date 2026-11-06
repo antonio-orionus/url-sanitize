@@ -33,7 +33,7 @@ If you need network fetching, use `@url-sanitize/fetch`. Keeping `core` I/O-free
 
 ## Will never enforce a single rule source
 
-We bundle ClearURLs because it's the most comprehensive public ruleset. We never make `core` ClearURLs-specific. v2.0 will add AdGuard, Brave, Firefox sources as separate packages. Consumers compose what they need.
+We bundle ClearURLs because it's the most comprehensive public ruleset. We never make `core` ClearURLs-specific. AdGuard, Brave, and Firefox ship as separate source packages (v2.0); the default catalog uses only sources whose data licenses fit the MIT engine, so AdGuard (GPL-3.0) is opt-in (v2.2). Consumers compose what they need.
 
 ## Will never gate features behind a paid tier
 

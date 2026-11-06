@@ -1,4 +1,3 @@
-import { adguardCatalog, adguardMetadata } from '@url-sanitize/adguard';
 import { braveCatalog, braveMetadata } from '@url-sanitize/brave';
 import { clearurlsCatalog, clearurlsMetadata } from '@url-sanitize/clearurls';
 import {
@@ -13,7 +12,10 @@ export interface MergeSourcesOptions {
   dedupe?: boolean;
 }
 
-const defaultCatalogs = [clearurlsCatalog, adguardCatalog, braveCatalog, firefoxCatalog];
+// AdGuard is not a default: its filter data is GPL-3.0, and the default catalog
+// ships inside the MIT CLI and native binary. Pass `adguardCatalog` from
+// `@url-sanitize/adguard` to `mergeSources()` to opt in.
+const defaultCatalogs = [clearurlsCatalog, braveCatalog, firefoxCatalog];
 
 export function mergeSources(
   catalogs: SanitizerCatalog[] = defaultCatalogs,
@@ -49,7 +51,6 @@ export const mergedMetadata = {
   generatedAt: mergedCatalog.generatedAt,
   sources: mergedCatalog.sources,
   sourceMetadata: {
-    adguard: adguardMetadata,
     brave: braveMetadata,
     clearurls: clearurlsMetadata,
     firefox: firefoxMetadata

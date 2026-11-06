@@ -1,6 +1,32 @@
+import { adguardCatalog } from '@url-sanitize/adguard';
+import { braveCatalog } from '@url-sanitize/brave';
+import { clearurlsCatalog } from '@url-sanitize/clearurls';
+import { firefoxCatalog } from '@url-sanitize/firefox';
 import { describe, expect, it } from 'vite-plus/test';
 
-import { mergeSources } from '../src/index.js';
+import { mergedCatalog, mergeSources } from '../src/index.js';
+
+describe('mergedCatalog', () => {
+  it('leaves the GPL-3.0 AdGuard source out of the default', () => {
+    expect(mergedCatalog.sources.map((source) => source.name)).toEqual([
+      'clearurls',
+      'brave',
+      'firefox'
+    ]);
+    expect(mergedCatalog.rules.some((rule) => rule.source === 'adguard')).toBe(false);
+  });
+
+  it('takes AdGuard when it is passed in', () => {
+    const withAdguard = mergeSources([
+      clearurlsCatalog,
+      adguardCatalog,
+      braveCatalog,
+      firefoxCatalog
+    ]);
+    expect(withAdguard.sources.map((source) => source.name)).toContain('adguard');
+    expect(withAdguard.rules.some((rule) => rule.source === 'adguard')).toBe(true);
+  });
+});
 
 describe('mergeSources', () => {
   it('dedupes exact semantic duplicates while preserving source priority', () => {

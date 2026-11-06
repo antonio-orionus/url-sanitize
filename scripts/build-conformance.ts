@@ -18,7 +18,9 @@ import { fileURLToPath } from 'node:url';
 
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
-import { mergedCatalog, mergedMetadata } from '@url-sanitize/merged';
+import { mergedMetadata } from '@url-sanitize/merged';
+
+import { type ConformanceCatalog, catalogFor } from '../conformance/catalogs.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -31,6 +33,7 @@ const manifestOut = resolve(root, 'conformance/manifest.json');
 type SeedVector = {
   id: string;
   input: string;
+  catalog?: ConformanceCatalog;
   options?: SanitizerOptions;
   note?: string;
 };
@@ -67,8 +70,8 @@ function resultToExpected(r: SanitizeResult): Expected {
   }
 }
 
-function sanitizerFor(opts: SanitizerOptions | undefined) {
-  return compileSanitizer(mergedCatalog, opts ?? {});
+function sanitizerFor(opts: SanitizerOptions | undefined, catalog?: ConformanceCatalog) {
+  return compileSanitizer(catalogFor(catalog), opts ?? {});
 }
 
 async function parseSeedVectors(): Promise<SeedVector[]> {
@@ -108,9 +111,10 @@ async function main(): Promise<void> {
   // vectors.jsonl
   const vectorLines: string[] = [];
   for (const v of seedVectors) {
-    const result = sanitizerFor(v.options)(v.input);
+    const result = sanitizerFor(v.options, v.catalog)(v.input);
     const expected = resultToExpected(result);
     const out: Record<string, unknown> = { id: v.id, input: v.input };
+    if (v.catalog) out.catalog = v.catalog;
     if (v.options) out.options = v.options;
     if (v.note) out.note = v.note;
     out.expected = expected;

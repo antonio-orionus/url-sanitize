@@ -1,8 +1,11 @@
-This package merges catalogs from:
+This package merges catalogs from these packages, which it depends on and
+does not copy:
 
 - @url-sanitize/clearurls: ClearURLs-derived data, LGPL-3.0-only
-- @url-sanitize/adguard: AdGuard URL Tracking Protection data, LGPL-3.0-only
 - @url-sanitize/brave: Brave Debouncer data, MPL-2.0
 - @url-sanitize/firefox: Firefox Query Stripping data, MPL-2.0
 
-The merge adapter code is MIT. Bundled upstream data remains under its source license.
+@url-sanitize/adguard (AdGuard URL Tracking data, GPL-3.0-only) is not a
+default source and not a dependency; add it yourself to opt in.
+
+The merge code is MIT. Each catalog's data keeps its source license.

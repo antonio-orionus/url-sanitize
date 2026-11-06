@@ -11,6 +11,9 @@ use std::path::PathBuf;
 use url_sanitize_core::{Catalog, SanitizeResult, SanitizerOptions};
 
 const CATALOG_JSON: &str = include_str!("../../../catalog/catalog.json");
+/// The default plus the opt-in AdGuard source, for vectors with
+/// `"catalog": "all-sources"`. See `conformance/catalogs.ts`.
+const ALL_SOURCES_JSON: &str = include_str!("../../../catalog/all-sources.json");
 
 #[derive(Debug, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
@@ -42,6 +45,8 @@ struct Vector {
     id: String,
     input: String,
     #[serde(default)]
+    catalog: Option<String>,
+    #[serde(default)]
     options: Option<SanitizerOptions>,
     expected: Expected,
 }
@@ -65,6 +70,10 @@ fn load_jsonl(rel: &str) -> Vec<Vector> {
 
 fn catalog() -> Catalog {
     Catalog::from_json(CATALOG_JSON).expect("parse embedded catalog")
+}
+
+fn all_sources_catalog() -> Catalog {
+    Catalog::from_json(ALL_SOURCES_JSON).expect("parse all-sources catalog")
 }
 
 fn check_vector(cat: &Catalog, v: &Vector) -> Result<(), String> {
@@ -158,10 +167,16 @@ fn check_vector(cat: &Catalog, v: &Vector) -> Result<(), String> {
 #[test]
 fn vectors_jsonl_matches_rust_engine() {
     let cat = catalog();
+    let all_sources = all_sources_catalog();
     let vectors = load_jsonl("conformance/vectors.jsonl");
     let mut failures = Vec::new();
     for v in &vectors {
-        if let Err(e) = check_vector(&cat, v) {
+        let cat = match v.catalog.as_deref() {
+            None | Some("default") => &cat,
+            Some("all-sources") => &all_sources,
+            Some(other) => panic!("{}: unknown catalog {:?}", v.id, other),
+        };
+        if let Err(e) = check_vector(cat, v) {
             failures.push(e);
         }
     }

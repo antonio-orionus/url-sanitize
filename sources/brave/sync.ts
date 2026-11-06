@@ -14,11 +14,14 @@ const metadataPath = resolve(dataDir, 'metadata.json');
 
 type ExistingMetadata = {
   hash?: unknown;
+  license?: unknown;
 };
 
+/** The hash of the bundled data, or null when it must be rewritten (absent, or under another license). */
 async function readExistingHash(): Promise<string | null> {
   try {
     const metadata = JSON.parse(await readFile(metadataPath, 'utf8')) as ExistingMetadata;
+    if (metadata.license !== LICENSE) return null;
     return typeof metadata.hash === 'string' ? metadata.hash.toLowerCase() : null;
   } catch (err) {
     if (err instanceof Error && 'code' in err && err.code === 'ENOENT') return null;

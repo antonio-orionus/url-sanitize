@@ -3,7 +3,8 @@
  *
  * The Rust binary `include_str!`s the merged catalog at build time. The TS
  * engine already constructs the same structure in memory; this script freezes
- * it to disk so non-JS implementations don't re-derive it.
+ * it to disk so non-JS implementations don't re-derive it. It also writes the
+ * license labels and copies derived from the catalogs (see licenses.ts).
  */
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -15,6 +16,9 @@ import { braveCatalog } from '@url-sanitize/brave';
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
 import { firefoxCatalog } from '@url-sanitize/firefox';
 import { mergedCatalog } from '@url-sanitize/merged';
+
+import { allSourcesCatalog } from '../conformance/catalogs.js';
+import { writeLicenseArtifacts } from './licenses.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const catalogDir = resolve(here, '..', 'catalog');
@@ -39,10 +43,26 @@ async function main(): Promise<void> {
     console.log(`${name} sha256: ${createHash('sha256').update(body).digest('hex')}`);
   }
 
+  // Conformance fixture for the Rust runner: the default plus opt-in AdGuard.
+  // Not shipped; compact, since nobody reads it and the daily sync rewrites it.
+  const allSourcesPath = resolve(catalogDir, 'all-sources.json');
+  await writeFile(allSourcesPath, `${JSON.stringify(allSourcesCatalog)}\n`);
+  console.log(`wrote ${allSourcesPath} (${allSourcesCatalog.rules.length} rules)`);
+
   const mergedBody = JSON.stringify(mergedCatalog);
   await mkdir(dirname(binCrateCopy), { recursive: true });
   await writeFile(binCrateCopy, `${mergedBody}\n`);
   console.log(`wrote ${binCrateCopy}`);
+
+  await writeLicenseArtifacts({
+    defaultCatalog: mergedCatalog,
+    sourcePackages: {
+      adguard: adguardCatalog,
+      brave: braveCatalog,
+      clearurls: clearurlsCatalog,
+      firefox: firefoxCatalog
+    }
+  });
 }
 
 main().catch((err: unknown) => {

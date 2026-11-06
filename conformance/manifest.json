@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-11-04T12:15:13.775Z",
   "catalog": {
-    "version": "merged(ccc0b05a867d,7046fc94d08c,83f004bb4573,61578ba740b7)",
+    "version": "merged(ccc0b05a867d,83f004bb4573,61578ba740b7)",
     "generatedAt": "2026-11-04T12:15:13.775Z",
     "sources": [
       {
@@ -10,13 +10,6 @@
         "hash": "ccc0b05a867d1ff577db3af8b6ad3f2889d259282a47dd99b3fa3db41a3c4c7d",
         "license": "LGPL-3.0-only",
         "upstream": "https://rules2.clearurls.xyz/data.minify.json"
-      },
-      {
-        "name": "adguard",
-        "version": "7046fc94d08c",
-        "hash": "7046fc94d08c7d429214ac97ad3623450e955c79441a30e55e56d135b79e5cec",
-        "license": "LGPL-3.0-only",
-        "upstream": "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt"
       },
       {
         "name": "brave",
@@ -39,7 +32,7 @@
     "corpus": 46
   },
   "fileHashes": {
-    "vectors.jsonl": "66dcfc86fc8123d62b4d50b38eebed8b99f4daa1300bcc26ec08e557b60d0184",
+    "vectors.jsonl": "cebe3332625a931ac9a2ad4f921ce640eee9e45ba8666ab7e5c63db13bebded8",
     "clearurls-corpus.jsonl": "41519ef112c6c03158d5481229737081e155aa8d2929016e9ef1ea7e0b3fade2"
   }
 }

@@ -1,16 +1,18 @@
 The @url-sanitize/clearurls package ships two layers with different licenses:
 
-1. Source code in src/ (adapter, types, exports) — MIT License
-2. Bundled rule data in data/data.json, derived from the ClearURLs Rules
-   repository (https://github.com/ClearURLs/Rules) — LGPL-3.0-only
+1. Source code (adapter, types, exports) — MIT License
+2. Rule data in data/data.json and its copy compiled into dist/, derived from
+   the ClearURLs Rules repository (https://github.com/ClearURLs/Rules) —
+   LGPL-3.0-only
 
 The bundled data is reproduced from the ClearURLs project. ClearURLs is a
 trademark of its respective authors; this package is not an official ClearURLs
-product. See NOTICE for upstream attribution.
+product. The LGPL-3.0-only text is in LICENSES/LGPL-3.0-only.txt. See NOTICE
+for upstream attribution.
 
-For the LGPL-3.0-only text, see: https://www.gnu.org/licenses/lgpl-3.0.txt
+MIT License (covering the source code)
 
-MIT License (covering src/)
+MIT License
 
 Copyright (c) 2026 Antonio Orionus
 

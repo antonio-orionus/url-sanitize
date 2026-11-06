@@ -5,7 +5,9 @@ import { fileURLToPath } from 'node:url';
 
 const RULES_URL =
   'https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt';
-const LICENSE = 'LGPL-3.0-only';
+// The filter's header names AdGuard Filters' license (GPL-3.0), not the
+// LGPL-3.0 of the FiltersRegistry repo it is fetched from.
+const LICENSE = 'GPL-3.0-only';
 const FETCH_TIMEOUT_MS = 10_000;
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -14,11 +16,14 @@ const metadataPath = resolve(dataDir, 'metadata.json');
 
 type ExistingMetadata = {
   hash?: unknown;
+  license?: unknown;
 };
 
+/** The hash of the bundled data, or null when it must be rewritten (absent, or under another license). */
 async function readExistingHash(): Promise<string | null> {
   try {
     const metadata = JSON.parse(await readFile(metadataPath, 'utf8')) as ExistingMetadata;
+    if (metadata.license !== LICENSE) return null;
     return typeof metadata.hash === 'string' ? metadata.hash.toLowerCase() : null;
   } catch (err) {
     if (err instanceof Error && 'code' in err && err.code === 'ENOENT') return null;

@@ -14,8 +14,9 @@ import { resolve } from 'node:path';
 
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
 import { compileSanitizer } from '@url-sanitize/core';
-import { mergedCatalog } from '@url-sanitize/merged';
 import { describe, expect, it } from 'vite-plus/test';
+
+import { type ConformanceCatalog, catalogFor } from './catalogs.js';
 
 type Expected =
   | { kind: 'unchanged'; url: string }
@@ -31,6 +32,7 @@ type Expected =
 type Vector = {
   id: string;
   input: string;
+  catalog?: ConformanceCatalog;
   options?: SanitizerOptions;
   expected: Expected;
 };
@@ -47,8 +49,8 @@ function readJsonl<T>(path: string): T[] {
     .map((l) => JSON.parse(l) as T);
 }
 
-function sanitizerFor(opts: SanitizerOptions | undefined) {
-  return compileSanitizer(mergedCatalog, opts ?? {});
+function sanitizerFor(opts: SanitizerOptions | undefined, catalog?: ConformanceCatalog) {
+  return compileSanitizer(catalogFor(catalog), opts ?? {});
 }
 
 function urlOf(r: SanitizeResult): string | null {
@@ -90,7 +92,7 @@ function assertMatches(actual: SanitizeResult, expected: Expected, id: string): 
 describe('conformance — vectors.jsonl', () => {
   for (const v of vectors) {
     it(v.id, () => {
-      const result = sanitizerFor(v.options)(v.input);
+      const result = sanitizerFor(v.options, v.catalog)(v.input);
       assertMatches(result, v.expected, v.id);
     });
   }
@@ -99,7 +101,7 @@ describe('conformance — vectors.jsonl', () => {
 describe('conformance — clearurls-corpus.jsonl', () => {
   for (const v of corpus) {
     it(v.id, () => {
-      const result = sanitizerFor(v.options)(v.input);
+      const result = sanitizerFor(v.options, v.catalog)(v.input);
       assertMatches(result, v.expected, v.id);
     });
   }
