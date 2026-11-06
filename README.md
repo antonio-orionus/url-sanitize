@@ -96,7 +96,7 @@ Homebrew supports macOS Apple Silicon/Intel and Linux x64/ARM64. Scoop supports 
 For CI, pin a version instead of using `latest`:
 
 ```sh
-version="v2.0.1"
+version="v2.1.1"
 target="x86_64-unknown-linux-gnu"
 asset="url-sanitize-${target}.tar.gz"
 
@@ -117,7 +117,7 @@ jobs:
       - name: Install url-sanitize
         run: |
           set -euo pipefail
-          version="v2.0.1"
+          version="v2.1.1"
           target="x86_64-unknown-linux-gnu"
           asset="url-sanitize-${target}.tar.gz"
 
@@ -145,7 +145,7 @@ url-sanitize:
   script:
     - |
       set -eu
-      version="v2.0.1"
+      version="v2.1.1"
       target="x86_64-unknown-linux-gnu"
       asset="url-sanitize-${target}.tar.gz"
 
@@ -164,7 +164,7 @@ Dockerfile:
 ```dockerfile
 FROM ubuntu:24.04
 
-ARG URL_SANITIZE_VERSION=v2.0.1
+ARG URL_SANITIZE_VERSION=v2.1.1
 ARG URL_SANITIZE_TARGET=x86_64-unknown-linux-gnu
 
 RUN apt-get update \
@@ -195,7 +195,9 @@ console.log(result);
 //   original: 'https://example.com/article?utm_source=newsletter&id=123',
 //   url: 'https://example.com/article?id=123',
 //   strippedParams: ['utm_source'],
-//   matchedRules: [{ provider: 'globalRules', kind: 'strip-param', pattern: 'utm_.*' }]
+//   matchedRules: [
+//     { source: 'clearurls', provider: 'globalRules', kind: 'strip-param', detail: 'utm_source' }
+//   ]
 // }
 ```
 
@@ -222,7 +224,14 @@ url-sanitize "https://example.com/article?utm_source=newsletter&id=123"
 
 url-sanitize --json "https://www.google.com/url?q=https%3A%2F%2Fexample.org"
 # {"kind":"redirected","original":"...","url":"https://example.org/","via":{...}}
+
+# Input you don't control: `--` ends options, so it can't become a flag.
+url-sanitize -- "$untrusted_url"
 ```
+
+Redirect targets are unwrapped only when they are `http(s)` URLs without
+userinfo, and are sanitized again; `javascript:`, `data:` and similar targets
+are left wrapped.
 
 ## Rust Quick Start
 
@@ -292,11 +301,12 @@ Publishing to Homebrew tap and Scoop bucket repositories requires a `PACKAGING_R
 - **v0.3** — runtime catalog fetching, custom user-defined catalogs, schema validation ✓
 - **v1.0** — stable public API, result types, benchmarks, security policy ✓
 - **v2.0** — multi-source packages: AdGuard, Brave, Firefox, merged catalog ✓
+- **v2.1** — security hardening across engines, CLIs, Python wrapper, runtime fetch and release CI; `keep-param` rules for AdGuard allowlists ✓
 - **Deferred** — GitHub Action, MCP, AUR/Winget/distro packages, native npm packages, WASM, in-process Python bindings
 
 ## Development
 
-Requires Node.js 22.18+ or 24.11+ and pnpm. Rust toolchain required for crate targets (MSRV 1.75).
+Requires Node.js 22.18+ or 24.11+ and pnpm. Rust toolchain required for crate targets (MSRV 1.86).
 
 ```sh
 git clone https://github.com/antonio-orionus/url-sanitize.git
