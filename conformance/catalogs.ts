@@ -22,6 +22,9 @@ export const allSourcesCatalog: SanitizerCatalog = mergeSources([
   firefoxCatalog
 ]);
 
-export function catalogFor(name: ConformanceCatalog | undefined): SanitizerCatalog {
-  return name === 'all-sources' ? allSourcesCatalog : mergedCatalog;
+/** Throws on an unknown name, so a typo in a seed vector fails generation. */
+export function catalogFor(name: string | undefined): SanitizerCatalog {
+  if (name === undefined || name === 'default') return mergedCatalog;
+  if (name === 'all-sources') return allSourcesCatalog;
+  throw new Error(`unknown conformance catalog ${JSON.stringify(name)}`);
 }

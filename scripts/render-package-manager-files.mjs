@@ -1,8 +1,20 @@
 #!/usr/bin/env node
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { loadReleasePlatforms } from './release-platforms.mjs';
+
+// Written by scripts/licenses.ts from the default catalog's data licenses.
+const binaryLicenses = [
+  'MIT',
+  ...JSON.parse(
+    readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), '..', 'catalog', 'licenses.json'),
+      'utf8'
+    )
+  ).dataLicenses
+];
 
 const args = parseArgs(process.argv.slice(2));
 
@@ -45,8 +57,7 @@ class UrlSanitize < Formula
   desc "Remove tracking parameters and unwrap tracking redirects from URLs"
   homepage "https://github.com/antonio-orionus/url-sanitize"
   version "${version}"
-  # The binary embeds LGPL-3.0 (ClearURLs) and MPL-2.0 (Brave, Firefox) rule data.
-  license all_of: ["MIT", "LGPL-3.0-only", "MPL-2.0"]
+  license all_of: [${binaryLicenses.map((id) => `"${id}"`).join(', ')}]
 
   if OS.mac?
     if Hardware::CPU.arm?
@@ -105,7 +116,7 @@ function renderScoop(version, assetNames, checksums) {
     homepage: 'https://github.com/antonio-orionus/url-sanitize',
     // Scoop separates licenses that all apply with a comma.
     license: {
-      identifier: 'MIT,LGPL-3.0-only,MPL-2.0',
+      identifier: binaryLicenses.join(','),
       url: 'https://github.com/antonio-orionus/url-sanitize/blob/main/NOTICE'
     },
     architecture: {

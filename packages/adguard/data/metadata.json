@@ -3,5 +3,5 @@
   "hash": "7046fc94d08c7d429214ac97ad3623450e955c79441a30e55e56d135b79e5cec",
   "fetchedAt": "2026-11-03T12:01:07.660Z",
   "upstream": "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
-  "license": "LGPL-3.0-only"
+  "license": "GPL-3.0-only"
 }

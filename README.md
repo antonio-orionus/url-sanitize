@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fmerged)](https://www.npmjs.com/package/@url-sanitize/merged)
 [![crates.io](https://img.shields.io/crates/v/url-sanitize)](https://crates.io/crates/url-sanitize)
 [![PyPI](https://img.shields.io/pypi/v/url-sanitize?label=PyPI)](https://pypi.org/project/url-sanitize/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Code: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE) [![Rule data: LGPL-3.0 / MPL-2.0](https://img.shields.io/badge/rule%20data-LGPL--3.0%20%2F%20MPL--2.0-orange.svg)](docs/license-model.md)
 
 > Remove tracking parameters and unwrap tracking redirects from URLs using ClearURLs, Brave, and Firefox rules, with AdGuard as an opt-in.
 
