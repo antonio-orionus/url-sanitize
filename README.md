@@ -3,6 +3,7 @@
 [![ci](https://github.com/antonio-orionus/url-sanitize/actions/workflows/ci.yml/badge.svg)](https://github.com/antonio-orionus/url-sanitize/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fmerged)](https://www.npmjs.com/package/@url-sanitize/merged)
 [![crates.io](https://img.shields.io/crates/v/url-sanitize)](https://crates.io/crates/url-sanitize)
+[![PyPI](https://img.shields.io/pypi/v/url-sanitize?label=PyPI)](https://pypi.org/project/url-sanitize/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > Remove tracking parameters and unwrap tracking redirects from URLs using ClearURLs, AdGuard, Brave, and Firefox rules.
@@ -248,20 +249,20 @@ println!("{}", serde_json::to_string(&result)?);
 
 ## Packages
 
-| Package | Description | License |
-| --- | --- | --- |
-| [`@url-sanitize/core`](packages/core) | Pure TypeScript sanitization engine. Zero runtime deps. | MIT |
-| [`@url-sanitize/merged`](packages/merged) | Default merged multi-source catalog. | MIT (code) + upstream data licenses |
-| [`@url-sanitize/clearurls`](packages/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
-| [`@url-sanitize/adguard`](packages/adguard) | AdGuard URL Tracking Protection catalog + adapter. | LGPL-3.0-only |
-| [`@url-sanitize/brave`](packages/brave) | Brave Debouncer catalog + adapter. | MPL-2.0 |
-| [`@url-sanitize/firefox`](packages/firefox) | Firefox Query Stripping catalog + adapter. | MPL-2.0 |
-| [`@url-sanitize/cli`](packages/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
-| [`@url-sanitize/fetch`](packages/fetch) | Runtime ClearURLs catalog fetch with SHA256 and pinned-hash verification. | MIT |
-| [`url-sanitize-core`](crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
-| [`url-sanitize`](crates/url-sanitize) | Native Rust CLI with embedded merged catalog. | MIT |
-| [`url-sanitize`](python) | Python wrapper around the native CLI. | MIT |
-| `@url-sanitize/action` | GitHub Action for URL hygiene in PRs and docs. (Planned — not yet published.) | MIT |
+| Package | Registry | Description | License |
+| --- | --- | --- | --- |
+| [`@url-sanitize/core`](packages/core) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fcore?label=npm)](https://www.npmjs.com/package/@url-sanitize/core) | Pure TypeScript sanitization engine. Zero runtime deps. | MIT |
+| [`@url-sanitize/merged`](packages/merged) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fmerged?label=npm)](https://www.npmjs.com/package/@url-sanitize/merged) | Default merged multi-source catalog. | MIT (code) + upstream data licenses |
+| [`@url-sanitize/clearurls`](packages/clearurls) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fclearurls?label=npm)](https://www.npmjs.com/package/@url-sanitize/clearurls) | ClearURLs-compatible catalog + adapter. | MIT (code) + LGPL-3.0-only (data) |
+| [`@url-sanitize/adguard`](packages/adguard) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fadguard?label=npm)](https://www.npmjs.com/package/@url-sanitize/adguard) | AdGuard URL Tracking Protection catalog + adapter. | LGPL-3.0-only |
+| [`@url-sanitize/brave`](packages/brave) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fbrave?label=npm)](https://www.npmjs.com/package/@url-sanitize/brave) | Brave Debouncer catalog + adapter. | MPL-2.0 |
+| [`@url-sanitize/firefox`](packages/firefox) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffirefox?label=npm)](https://www.npmjs.com/package/@url-sanitize/firefox) | Firefox Query Stripping catalog + adapter. | MPL-2.0 |
+| [`@url-sanitize/cli`](packages/cli) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Fcli?label=npm)](https://www.npmjs.com/package/@url-sanitize/cli) | npm CLI for removing tracking parameters and redirect wrappers. | MIT |
+| [`@url-sanitize/fetch`](packages/fetch) | [![npm](https://img.shields.io/npm/v/%40url-sanitize%2Ffetch?label=npm)](https://www.npmjs.com/package/@url-sanitize/fetch) | Runtime ClearURLs catalog fetch with SHA256 and pinned-hash verification. | MIT |
+| [`url-sanitize-core`](crates/url-sanitize-core) | [![crates.io](https://img.shields.io/crates/v/url-sanitize-core?label=crates.io)](https://crates.io/crates/url-sanitize-core) | Pure-Rust implementation. | MIT |
+| [`url-sanitize`](crates/url-sanitize) | [![crates.io](https://img.shields.io/crates/v/url-sanitize?label=crates.io)](https://crates.io/crates/url-sanitize) | Native Rust CLI with embedded merged catalog. | MIT |
+| [`url-sanitize`](python) | [![PyPI](https://img.shields.io/pypi/v/url-sanitize?label=PyPI)](https://pypi.org/project/url-sanitize/) | Python wrapper around the native CLI. | MIT |
+| `@url-sanitize/action` | — | GitHub Action for URL hygiene in PRs and docs. (Planned — not yet published.) | MIT |
 
 ## Compared to Existing Options
 
