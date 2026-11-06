@@ -317,22 +317,16 @@ ClearURLs has `completeProvider: true` (refuse to load URL entirely). Browser-ex
 
 ### Fuzz testing — differentiator nobody else has
 
-ClearURLs ruleset = ~200 provider regexes from random contributors. ReDoS risk is real (catastrophic backtracking in user-supplied URLs can hang a server).
+The shipped catalog is about 3,700 regexes from four upstream lists. ReDoS risk is real (catastrophic backtracking in user-supplied URLs can hang a server).
 
-Day-1 CI step in `packages/core/test/fuzz.test.ts` (v0.1 stretch, v1.0 mandatory):
+Two CI tests, both seeded and deterministic:
 
-- 10k random URLs → compiled sanitizer
-- Assert no execution > 50ms
-- Assert no thrown exceptions outside expected catches
+- `packages/core/test/fuzz.test.ts`: 10k random URLs against ClearURLs alone; no throw, no call at 50 ms or more.
+- `packages/merged/test/fuzz.test.ts`: the merged catalog, which ships as the default. 2k random URLs on catalog hosts and param names (50 ms budget); every distinct pattern, run alone on 8 KB URLs that repeat its own literals (`.*z=.*&var=` gets `z=z=z=…`; 250 ms budget); and 8 KB URLs that are all params (2 s budget). About 2.5 s in all.
 
-Catches catastrophic-backtracking regexes upstream ships before they reach consumers. No existing fork does this.
+Random URLs never hit the inputs that make a pattern slow: AdGuard's `.*z=.*&var=` shipped cubic until v2.1, unnoticed by the v1.0 random test. v2.1 added the 8192-character URL cap, defused leading `.*` in match-only patterns, and a regression test in `packages/core/test/hardening.test.ts`. The literal-built inputs fail on that pattern undefended (about 38 s for one call) and pass with the defense.
 
-It is not enough on its own: random URLs never hit the inputs that make a pattern
-slow, and AdGuard's `.*z=.*&var=` shipped cubic until v2.1. v2.1 added the
-8192-character URL cap, defused leading `.*` in match-only patterns, and a
-regression test that feeds that pattern a long hostile URL. The fuzz test still
-compiles only the ClearURLs catalog (about 820 rules), not the merged catalog's
-roughly 2,900 AdGuard, Brave, and Firefox rules.
+What the merged test found on 2026-11-06 (Apple Silicon, Node 24): no pattern worse than quadratic. The slowest are ClearURLs redirect patterns that keep a leading `.*` for their capture group (instagram `.*u=([^&]*)`, rutracker `.*url=([^&]*)`, site2 `.*?\?.*=(.*)`), 25–40 ms on an 8 KB URL. The larger cost is linear: every strip-param rule tests every param, so an 8 KB URL of 2,000–4,000 params takes about 160 ms in the TS engine and about 150 ms in the Rust release binary. The Rust engine uses `regex-lite`, whose matching is O(pattern × input) by construction, so it has no ReDoS test of its own.
 
 ### Non-goals (won't ship, ever)
 
