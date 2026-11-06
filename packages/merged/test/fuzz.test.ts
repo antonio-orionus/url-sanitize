@@ -31,10 +31,11 @@ const MAX_RANDOM_MS = 50;
 const MAX_PROBE_MS = 250;
 
 /**
- * The whole catalog on an 8 KB URL. Every strip-param rule tests every param,
- * so 4000 params cost about 160 ms; a super-linear regression costs far more.
+ * The whole catalog on an 8 KB URL. Every strip-param rule tests every param
+ * (split and decoded once per URL), so 4000 params cost about 15 ms warm and
+ * 40 ms on the first call; a super-linear regression costs far more.
  */
-const MAX_FLOOD_MS = 2000;
+const MAX_FLOOD_MS = 200;
 
 /** Under the engine's 8192-character cap, so the rules actually run. */
 const HOSTILE_LENGTH = 8000;
