@@ -41,7 +41,7 @@ jobs:
         run: scripts/verify-release-attestations.sh "$VERSION"
 
   homebrew-smoke:
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       HOMEBREW_TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO || 'antonio-orionus/homebrew-url-sanitize' }}
       VERSION: ${{ github.event.release.tag_name || inputs.version }}
