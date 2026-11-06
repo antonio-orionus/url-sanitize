@@ -58,11 +58,22 @@ interface CompiledBlockDomain {
   exceptions: RegExp[];
 }
 
+interface CompiledKeepParam {
+  kind: 'keep-param';
+  source: CompiledStripParam['source'];
+  provider: string;
+  urlPattern: RegExp | null;
+  /** null keeps every param. */
+  paramPattern: RegExp | null;
+  exceptions: RegExp[];
+}
+
 type CompiledRule =
   | CompiledStripParam
   | CompiledRawReplace
   | CompiledUnwrapRedirect
-  | CompiledBlockDomain;
+  | CompiledBlockDomain
+  | CompiledKeepParam;
 
 function safeRegex(pattern: string, flags = ''): RegExp | null {
   try {
@@ -168,6 +179,23 @@ function compileRule(rule: SanitizerRule, cache: RegexCache): CompiledRule | nul
         exceptions
       };
     }
+    case 'keep-param': {
+      const paramPattern = rule.paramPattern ? safeRegex(`^(?:${rule.paramPattern})$`, 'i') : null;
+      if (rule.paramPattern && !paramPattern) return null;
+      const urlPattern = rule.urlPattern ? testRegex(rule.urlPattern, 'i') : null;
+      if (rule.urlPattern && !urlPattern) return null;
+      return {
+        kind: 'keep-param',
+        source: rule.source,
+        provider: rule.provider,
+        urlPattern,
+        paramPattern,
+        exceptions
+      };
+    }
+    default:
+      // A rule kind from a newer catalog: skip it rather than fail.
+      return null;
   }
 }
 
@@ -281,9 +309,12 @@ export function compileSanitizer(
 
   const cache: RegexCache = new Map();
   const compiled: CompiledRule[] = [];
+  // keep-param rules aren't iterated in order: they guard every strip-param.
+  const keeps: CompiledKeepParam[] = [];
   for (const rule of catalog.rules) {
     const c = compileRule(rule, cache);
-    if (c) compiled.push(c);
+    if (c?.kind === 'keep-param') keeps.push(c);
+    else if (c) compiled.push(c);
   }
 
   function sanitizeAt(input: string, depth: number): SanitizeResult {
@@ -302,10 +333,12 @@ export function compileSanitizer(
 
     let view = matchView(current);
     let exceptionHits = new Map<RegExp, boolean>();
+    let keptPatterns: (RegExp | null)[] | null = null;
     const setCurrent = (next: string): void => {
       current = next;
       view = matchView(next);
       exceptionHits = new Map();
+      keptPatterns = null;
     };
     const appliesTo = (rule: CompiledRule): boolean => {
       if (rule.urlPattern && !rule.urlPattern.test(view)) return false;
@@ -319,11 +352,19 @@ export function compileSanitizer(
       }
       return true;
     };
+    /** Whether a keep-param rule that applies to the current URL protects this decoded name. */
+    const isKept = (name: string): boolean => {
+      if (keeps.length === 0) return false;
+      keptPatterns ??= keeps.filter(appliesTo).map((keep) => keep.paramPattern);
+      return keptPatterns.some((re) => re === null || re.test(name));
+    };
 
     for (const rule of compiled) {
       if (!appliesTo(rule)) continue;
 
       switch (rule.kind) {
+        case 'keep-param':
+          continue; // collected into `keeps` at compile time
         case 'block-domain': {
           if (!domainBlocking) continue;
           return {
@@ -402,8 +443,18 @@ export function compileSanitizer(
           } catch {
             continue;
           }
-          const search = stripFromQueryString(urlObj.search, rule.paramPattern, rule.valuePattern);
-          const hash = stripFromQueryString(urlObj.hash, rule.paramPattern, rule.valuePattern);
+          const search = stripFromQueryString(
+            urlObj.search,
+            rule.paramPattern,
+            rule.valuePattern,
+            isKept
+          );
+          const hash = stripFromQueryString(
+            urlObj.hash,
+            rule.paramPattern,
+            rule.valuePattern,
+            isKept
+          );
           const removed = [...search.removed, ...hash.removed];
           if (removed.length === 0) continue;
           // Assign only the part that changed: assigning an empty search or
@@ -439,7 +490,8 @@ export function compileSanitizer(
 function stripFromQueryString(
   searchOrHash: string,
   paramPattern: RegExp,
-  valuePattern: RegExp | null
+  valuePattern: RegExp | null,
+  isKept: (decodedName: string) => boolean
 ): { result: string; removed: string[] } {
   if (!searchOrHash) return { result: searchOrHash, removed: [] };
   const prefix = searchOrHash.charAt(0);
@@ -453,7 +505,12 @@ function stripFromQueryString(
     const name = eqIdx === -1 ? pair : pair.slice(0, eqIdx);
     const value = eqIdx === -1 ? '' : pair.slice(eqIdx + 1);
     // Names match decoded, so `utm%5Fsource` can't slip past `utm_source`.
-    if (paramPattern.test(percentDecode(name)) && (!valuePattern || valuePattern.test(value))) {
+    const decoded = percentDecode(name);
+    if (
+      paramPattern.test(decoded) &&
+      (!valuePattern || valuePattern.test(value)) &&
+      !isKept(decoded)
+    ) {
       removed.push(name);
     } else {
       kept.push(pair);

@@ -109,6 +109,24 @@ fn same_origin(current: &str, next: &str) -> bool {
         && a.port() == b.port()
 }
 
+/// The keep-param patterns that apply to `view`; a `None` entry keeps every
+/// param.
+fn kept_patterns<'a>(keeps: &[&'a CompiledRule], view: &str) -> Vec<Option<&'a regex_lite::Regex>> {
+    keeps
+        .iter()
+        .filter(|rule| applies_to(rule, view))
+        .filter_map(|rule| match &rule.body {
+            CompiledBody::KeepParam { param_pattern } => Some(param_pattern.as_ref()),
+            _ => None,
+        })
+        .collect()
+}
+
+fn is_kept(kept: &[Option<&regex_lite::Regex>], decoded_name: &str) -> bool {
+    kept.iter()
+        .any(|re| re.map_or(true, |re| re.is_match(decoded_name)))
+}
+
 /// Strip params matching `pattern` from a raw query/fragment body (no leading
 /// `?`/`#`). Returns (kept body, removed names). Pair format preserved verbatim
 /// for kept entries.
@@ -116,6 +134,7 @@ fn strip_param_pairs(
     body: &str,
     pattern: &regex_lite::Regex,
     value_pattern: Option<&regex_lite::Regex>,
+    keep: &[Option<&regex_lite::Regex>],
 ) -> (String, Vec<String>) {
     let mut kept: Vec<&str> = Vec::new();
     let mut removed: Vec<String> = Vec::new();
@@ -125,7 +144,10 @@ fn strip_param_pairs(
             None => (pair, ""),
         };
         // Names match decoded, so `utm%5Fsource` can't slip past `utm_source`.
-        if pattern.is_match(&safe_decode(name)) && value_pattern.map_or(true, |p| p.is_match(value))
+        let decoded = safe_decode(name);
+        if pattern.is_match(&decoded)
+            && value_pattern.map_or(true, |p| p.is_match(value))
+            && !is_kept(keep, &decoded)
         {
             removed.push(name.to_string());
         } else {
@@ -164,6 +186,12 @@ fn sanitize_at(
         return SanitizeResult::Unchanged { url: original };
     }
     let mut view = match_view(&current);
+    // keep-param rules aren't iterated in order: they guard every strip-param.
+    let keeps: Vec<&CompiledRule> = rules
+        .iter()
+        .filter(|rule| matches!(rule.body, CompiledBody::KeepParam { .. }))
+        .collect();
+    let mut kept_cache: Option<Vec<Option<&regex_lite::Regex>>> = None;
     let mut stripped_params: Vec<String> = Vec::new();
     let mut matched_rules: Vec<MatchedRule> = Vec::new();
 
@@ -172,6 +200,7 @@ fn sanitize_at(
             continue;
         }
         match &rule.body {
+            CompiledBody::KeepParam { .. } => continue,
             CompiledBody::BlockDomain => {
                 if !options.domain_blocking {
                     continue;
@@ -286,6 +315,7 @@ fn sanitize_at(
                 }
                 current = next.into_owned();
                 view = match_view(&current);
+                kept_cache = None;
                 matched_rules.push(MatchedRule {
                     source: rule.source,
                     provider: rule.provider.clone(),
@@ -305,17 +335,18 @@ fn sanitize_at(
                     continue;
                 };
 
+                let kept = kept_cache.get_or_insert_with(|| kept_patterns(&keeps, &view));
                 let mut all_removed: Vec<String> = Vec::new();
 
                 // Query
                 if let Some(q) = url_obj.query() {
-                    let (kept, removed) =
-                        strip_param_pairs(q, param_pattern, value_pattern.as_ref());
+                    let (rest, removed) =
+                        strip_param_pairs(q, param_pattern, value_pattern.as_ref(), kept);
                     if !removed.is_empty() {
-                        if kept.is_empty() {
+                        if rest.is_empty() {
                             url_obj.set_query(None);
                         } else {
-                            url_obj.set_query(Some(&kept));
+                            url_obj.set_query(Some(&rest));
                         }
                         all_removed.extend(removed);
                     }
@@ -323,13 +354,13 @@ fn sanitize_at(
 
                 // Fragment-as-query
                 if let Some(f) = url_obj.fragment() {
-                    let (kept, removed) =
-                        strip_param_pairs(f, param_pattern, value_pattern.as_ref());
+                    let (rest, removed) =
+                        strip_param_pairs(f, param_pattern, value_pattern.as_ref(), kept);
                     if !removed.is_empty() {
-                        if kept.is_empty() {
+                        if rest.is_empty() {
                             url_obj.set_fragment(None);
                         } else {
-                            url_obj.set_fragment(Some(&kept));
+                            url_obj.set_fragment(Some(&rest));
                         }
                         all_removed.extend(removed);
                     }
@@ -340,6 +371,7 @@ fn sanitize_at(
                 }
                 current = url_obj.to_string();
                 view = match_view(&current);
+                kept_cache = None;
                 let detail = all_removed.join(",");
                 stripped_params.extend(all_removed);
                 matched_rules.push(MatchedRule {

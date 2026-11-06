@@ -114,7 +114,15 @@ Given an input string `S`:
       - For all kinds: if any `rule.exceptions` regex matches the match view,
         skip.
 
-   b. **Dispatch by kind:**
+   b. **Dispatch by kind** (a rule whose `kind` the engine doesn't know, from
+      a newer catalog, is skipped at compile time):
+
+      - **`keep-param`**: never runs in order. Where its applicability filter
+        passes, it protects params from every `strip-param` rule, wherever
+        either sits in the catalog: a param whose percent-decoded name matches
+        `paramPattern` (anchored, case-insensitive: `^(?:<pattern>)$`) is
+        kept, and without `paramPattern` every param is kept. Sources use it
+        for allowlists, such as AdGuard's `@@...$removeparam` lines.
 
       - **`block-domain`**: if `domainBlocking` is false, skip. Otherwise return
         `{ kind: "blocked", original: S, via }` immediately. (Terminal.)
@@ -147,8 +155,9 @@ Given an input string `S`:
         `stripReferralMarketing`, skip. Re-parse `current` as URL. Walk both
         the query string (`?...`) and the fragment-as-query (`#...`), splitting
         on `&`. For each `name[=value]` pair: if `paramPattern` matches the
-        percent-decoded name (anchored, case-insensitive: `^(?:<pattern>)$`)
-        and `valuePattern` is absent or matches the raw value, drop the pair
+        percent-decoded name (anchored, case-insensitive: `^(?:<pattern>)$`),
+        `valuePattern` is absent or matches the raw value, and no applicable
+        `keep-param` rule protects the name, drop the pair
         and append the raw name to `strippedParams`. Reassemble only the part
         that lost a pair, so a bare `?` or `#` elsewhere survives. If
         anything was removed, update `current` and record a `matchedRules`

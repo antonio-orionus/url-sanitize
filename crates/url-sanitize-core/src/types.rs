@@ -17,6 +17,7 @@ pub enum RuleKind {
     RawReplace,
     UnwrapRedirect,
     BlockDomain,
+    KeepParam,
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize)]
@@ -105,6 +106,22 @@ pub enum SanitizerRule {
         #[serde(default)]
         exceptions: Vec<String>,
     },
+    /// Protects params from every `strip-param` rule, wherever it sits in
+    /// the catalog. Without `paramPattern`, every param is kept.
+    KeepParam {
+        source: RuleSource,
+        provider: String,
+        #[serde(default, rename = "urlPattern")]
+        url_pattern: Option<String>,
+        #[serde(default, rename = "paramPattern")]
+        param_pattern: Option<String>,
+        #[serde(default)]
+        exceptions: Vec<String>,
+    },
+    /// A kind from a newer catalog. Skipped, so an older engine still loads
+    /// the rest of the catalog.
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, Default, Copy, Deserialize)]

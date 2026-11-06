@@ -89,19 +89,62 @@ describe('braveToCatalog', () => {
     );
   });
 
-  it('throws on unsupported actions', () => {
-    expect(() =>
+  // The daily sync runs unattended: an unknown upstream shape must skip its
+  // rule, not fail every update.
+  it('skips rules with unsupported actions', () => {
+    const catalog = braveToCatalog(
+      [
+        {
+          include: ['*://unknown.example/*'],
+          exclude: [],
+          action: 'future-action',
+          param: 'target'
+        },
+        { include: ['*://go.example/*'], exclude: [], action: 'redirect', param: 'url' }
+      ],
+      metadata
+    );
+    expect(catalog.rules.map((rule) => rule.urlPattern)).toEqual([
+      '^https?:\\/\\/go\\.example/.*$'
+    ]);
+  });
+
+  it('skips an unsupported include pattern and keeps the rest of the rule', () => {
+    const catalog = braveToCatalog(
+      [
+        {
+          include: ['<all_urls>', '*://go.example/*', '*://go*.example/*'],
+          exclude: [],
+          action: 'redirect',
+          param: 'url'
+        }
+      ],
+      metadata
+    );
+    expect(catalog.rules).toHaveLength(1);
+  });
+
+  it('drops the whole rule when an exclude pattern is unsupported', () => {
+    const catalog = braveToCatalog(
+      [
+        { include: ['*://go.example/*'], exclude: ['<all_urls>'], action: 'redirect', param: 'url' }
+      ],
+      metadata
+    );
+    expect(catalog.rules).toHaveLength(0);
+  });
+
+  it('keeps a host wildcard inside the host', () => {
+    const sanitize = compileSanitizer(
       braveToCatalog(
-        [
-          {
-            include: ['*://unknown.example/*'],
-            exclude: [],
-            action: 'future-action',
-            param: 'target'
-          }
-        ],
+        [{ include: ['*://*.ouo.today/*'], exclude: [], action: 'redirect', param: 'url' }],
         metadata
       )
-    ).toThrow(/Unsupported Brave debounce action/);
+    );
+    const target = encodeURIComponent('https://dest.example/');
+    expect(sanitize(`https://x.ouo.today/?url=${target}`).kind).toBe('redirected');
+    expect(sanitize(`https://ouo.today/?url=${target}`).kind).toBe('redirected');
+    // `*.ouo.today` used to become `.*\.ouo\.today`, which matched in the path.
+    expect(sanitize(`https://evil.example/x.ouo.today/?url=${target}`).kind).toBe('unchanged');
   });
 });

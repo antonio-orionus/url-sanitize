@@ -45,6 +45,10 @@ pub(crate) enum CompiledBody {
         target_template: Option<String>,
     },
     BlockDomain,
+    KeepParam {
+        /// None keeps every param.
+        param_pattern: Option<Regex>,
+    },
 }
 
 pub struct Sanitizer {
@@ -171,6 +175,31 @@ fn compile_one(r: &SanitizerRule) -> Option<CompiledRule> {
                 body: CompiledBody::BlockDomain,
             })
         }
+        SanitizerRule::KeepParam {
+            source,
+            provider,
+            url_pattern,
+            param_pattern,
+            exceptions,
+        } => {
+            let pp = match param_pattern.as_deref() {
+                Some(p) => Some(try_re_ci(&format!("^(?:{})$", p))?),
+                None => None,
+            };
+            let urlp = match url_pattern.as_deref() {
+                Some(p) => Some(try_re_ci(p)?),
+                None => None,
+            };
+            Some(CompiledRule {
+                source: *source,
+                provider: provider.clone(),
+                kind: RuleKind::KeepParam,
+                url_pattern: urlp,
+                exceptions: compile_exceptions(exceptions)?,
+                body: CompiledBody::KeepParam { param_pattern: pp },
+            })
+        }
+        SanitizerRule::Unknown => None,
     }
 }
 
