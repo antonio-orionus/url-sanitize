@@ -2,13 +2,12 @@
 
 ## Supported Versions
 
-Security fixes are released for the latest published minor line. Before 1.0,
-that means the latest `0.x` release only. After 1.0.0, supported versions are:
+Security fixes are released for the latest published minor line:
 
 | Version | Supported |
 | --- | --- |
-| `1.x` | Yes |
-| `< 1.0` | No |
+| `2.x` | Yes |
+| `< 2.0` | No |
 
 ## Reporting A Vulnerability
 
