@@ -15,6 +15,10 @@
       "type": "string",
       "description": "Human comment explaining what the vector exercises."
     },
+    "catalog": {
+      "enum": ["default", "all-sources"],
+      "description": "Catalog to run against. Omitted: default, the shipped merged catalog. all-sources adds the opt-in AdGuard source."
+    },
     "options": {
       "type": "object",
       "additionalProperties": false,

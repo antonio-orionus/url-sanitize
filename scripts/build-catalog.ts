@@ -16,6 +16,8 @@ import { clearurlsCatalog } from '@url-sanitize/clearurls';
 import { firefoxCatalog } from '@url-sanitize/firefox';
 import { mergedCatalog } from '@url-sanitize/merged';
 
+import { allSourcesCatalog } from '../conformance/catalogs.js';
+
 const here = dirname(fileURLToPath(import.meta.url));
 const catalogDir = resolve(here, '..', 'catalog');
 const binCrateCopy = resolve(here, '..', 'crates', 'url-sanitize', 'catalog', 'catalog.json');
@@ -24,6 +26,8 @@ async function main(): Promise<void> {
   await mkdir(catalogDir, { recursive: true });
   const catalogs = {
     'adguard.json': adguardCatalog,
+    // Conformance only: the default plus opt-in AdGuard. Not shipped.
+    'all-sources.json': allSourcesCatalog,
     'brave.json': braveCatalog,
     'catalog.json': mergedCatalog,
     'clearurls.json': clearurlsCatalog,

@@ -107,9 +107,6 @@ importers:
 
   packages/merged:
     dependencies:
-      '@url-sanitize/adguard':
-        specifier: workspace:*
-        version: link:../adguard
       '@url-sanitize/brave':
         specifier: workspace:*
         version: link:../brave
@@ -122,6 +119,10 @@ importers:
       '@url-sanitize/firefox':
         specifier: workspace:*
         version: link:../firefox
+    devDependencies:
+      '@url-sanitize/adguard':
+        specifier: workspace:*
+        version: link:../adguard
 
 packages:
 

@@ -68,6 +68,7 @@ jobs:
           pnpm build:catalog
           git diff --exit-code \
             catalog/adguard.json \
+            catalog/all-sources.json \
             catalog/brave.json \
             catalog/catalog.json \
             catalog/clearurls.json \
