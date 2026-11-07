@@ -2,7 +2,13 @@
 import { once } from 'node:events';
 import { createRequire } from 'node:module';
 
-import { compileSanitizer, type SanitizeResult, type SanitizerOptions } from '@url-sanitize/core';
+import {
+  compileSanitizer,
+  type SanitizeResult,
+  type Sanitizer,
+  type SanitizerOptions,
+  sanitizeText
+} from '@url-sanitize/core';
 import { mergedCatalog, mergedMetadata } from '@url-sanitize/merged';
 
 const args = process.argv.slice(2);
@@ -30,6 +36,7 @@ interface Args {
   action: 'run' | 'help' | 'version';
   json: boolean;
   explain: boolean;
+  text: boolean;
   options: SanitizerOptions;
   urls: string[];
   readStdin: boolean;
@@ -59,6 +66,10 @@ async function runTypeScriptCli(rawArgs: string[]): Promise<void> {
   }
 
   const sanitize = compileSanitizer(mergedCatalog, parsed.options);
+  if (parsed.text) {
+    await runText(parsed, sanitize);
+    return;
+  }
   let anyBlocked = false;
 
   for (const url of parsed.urls) {
@@ -83,9 +94,45 @@ async function runTypeScriptCli(rawArgs: string[]): Promise<void> {
   process.exitCode = anyBlocked ? 2 : 0;
 }
 
+/**
+ * `--text`: copy each argument, then stdin, to stdout with every URL in it
+ * cleaned. Unlike URL mode, lines are copied as is: blank lines, `\r` and
+ * control characters included.
+ */
+async function runText(parsed: Args, sanitize: Sanitizer): Promise<void> {
+  if (parsed.urls.length === 0 && !parsed.readStdin && process.stdin.isTTY) {
+    printHelp(process.stderr);
+    process.exitCode = 1;
+    return;
+  }
+  let anyBlocked = false;
+  for (const arg of parsed.urls) {
+    anyBlocked = emitText(`${arg}\n`, sanitize, parsed.json, parsed.explain) || anyBlocked;
+  }
+  if (parsed.readStdin || parsed.urls.length === 0) {
+    for await (const line of stdinRawLines()) {
+      anyBlocked = emitText(line, sanitize, parsed.json, parsed.explain) || anyBlocked;
+      if (process.stdout.writableNeedDrain) await once(process.stdout, 'drain');
+    }
+  }
+  process.exitCode = anyBlocked ? 2 : 0;
+}
+
+/** Writes one piece of text with its URLs cleaned, or with `--json` one result per URL; returns whether one was blocked. */
+function emitText(input: string, sanitize: Sanitizer, json: boolean, explain: boolean): boolean {
+  const result = sanitizeText(input, sanitize);
+  if (!json) process.stdout.write(result.text);
+  let anyBlocked = false;
+  for (const url of result.urls) {
+    anyBlocked = (json ? emit(url, true, false) : report(url, explain)) || anyBlocked;
+  }
+  return anyBlocked;
+}
+
 function parseArgs(rawArgs: string[]): Args | string {
   let json = false;
   let explain = false;
+  let text = false;
   let stripReferral = false;
   let keepReferralExplicit = false;
   let unwrapRedirects: boolean | undefined;
@@ -118,6 +165,9 @@ function parseArgs(rawArgs: string[]): Args | string {
         break;
       case '--explain':
         explain = true;
+        break;
+      case '--text':
+        text = true;
         break;
       case '--strip-referral':
         stripReferral = true;
@@ -161,6 +211,7 @@ function parseArgs(rawArgs: string[]): Args | string {
     action,
     json,
     explain,
+    text,
     options,
     readStdin,
     urls
@@ -184,12 +235,16 @@ function emit(result: SanitizeResult, json: boolean, explain: boolean): boolean 
     return result.kind === 'blocked';
   }
 
+  if (result.kind !== 'blocked') process.stdout.write(`${printable(result.url)}\n`);
+  return report(result, explain);
+}
+
+/** Writes a result's stderr line: the match with `--explain`, and every block. Returns whether it was blocked. */
+function report(result: SanitizeResult, explain: boolean): boolean {
   switch (result.kind) {
     case 'unchanged':
-      process.stdout.write(`${printable(result.url)}\n`);
       return false;
     case 'cleaned':
-      process.stdout.write(`${printable(result.url)}\n`);
       if (explain) {
         const providers = result.matchedRules.map((rule) => rule.provider).join(',');
         process.stderr.write(
@@ -198,7 +253,6 @@ function emit(result: SanitizeResult, json: boolean, explain: boolean): boolean 
       }
       return false;
     case 'redirected':
-      process.stdout.write(`${printable(result.url)}\n`);
       if (explain) {
         process.stderr.write(
           `# redirected: ${printable(result.original)} -> ${printable(result.url)} [${printable(result.via.provider)}]\n`
@@ -237,6 +291,28 @@ async function* stdinLines(): AsyncGenerator<string> {
   if (pending.length > 0) yield pending.replace(/\r+$/, '');
 }
 
+/**
+ * Stream stdin as lines that keep their `\n` and `\r`, for `--text`. Invalid
+ * UTF-8 becomes U+FFFD, as in the Rust CLI.
+ */
+async function* stdinRawLines(): AsyncGenerator<string> {
+  const decoder = new TextDecoder('utf-8', { ignoreBOM: true });
+  let pending = '';
+  for await (const chunk of process.stdin as AsyncIterable<Uint8Array>) {
+    pending += decoder.decode(chunk, { stream: true });
+    let start = 0;
+    let nl = pending.indexOf('\n', start);
+    while (nl !== -1) {
+      yield pending.slice(start, nl + 1);
+      start = nl + 1;
+      nl = pending.indexOf('\n', start);
+    }
+    pending = pending.slice(start);
+  }
+  pending += decoder.decode();
+  if (pending.length > 0) yield pending;
+}
+
 function packageVersion(): string {
   const require = createRequire(import.meta.url);
   const pkg = require('../package.json') as { version?: string };
@@ -263,10 +339,13 @@ function printHelp(stream: NodeJS.WritableStream): void {
       '    url-sanitize [OPTIONS] -          read URLs from stdin (one per line)',
       '    url-sanitize [OPTIONS] < file     same',
       '    url-sanitize [OPTIONS] -- [URL]... treat every later argument as a URL',
+      '    url-sanitize --text [OPTIONS] < file   clean every URL inside text',
       '',
       'OPTIONS:',
       '    --json                  Emit one JSON SanitizeResult per input line',
       '    --explain               Default mode, plus a matched-rule line on stderr',
+      '    --text                  Clean the URLs inside text (stdin or each argument);',
+      '                            copy the rest as is. With --json: one result per URL',
       '    --strip-referral        Strip affiliate / referral marketing params',
       '    --keep-referral         Explicitly keep referral params (default)',
       '    --unwrap-redirects      Unwrap redirector URLs (default)',

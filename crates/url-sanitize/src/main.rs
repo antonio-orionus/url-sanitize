@@ -26,6 +26,7 @@ struct Args {
     action: Action,
     json: bool,
     explain: bool,
+    text: bool,
     options: SanitizerOptions,
     urls: Vec<String>,
     read_stdin: bool,
@@ -43,10 +44,13 @@ USAGE:
     url-sanitize [OPTIONS] -          read URLs from stdin (one per line)
     url-sanitize [OPTIONS] < file     same
     url-sanitize [OPTIONS] -- [URL]... treat every later argument as a URL
+    url-sanitize --text [OPTIONS] < file   clean every URL inside text
 
 OPTIONS:
     --json                  Emit one JSON SanitizeResult per input line
     --explain               Default mode, plus a `# matched: ...` line on stderr
+    --text                  Clean the URLs inside text (stdin or each argument);
+                            copy the rest as is. With --json: one result per URL
     --strip-referral        Strip affiliate / referral marketing params
     --keep-referral         Explicitly keep referral params (default)
     --unwrap-redirects      Unwrap redirector URLs (default)
@@ -70,6 +74,7 @@ Full spec: https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.m
 fn parse_args(raw: Vec<String>) -> Result<Args, String> {
     let mut json = false;
     let mut explain = false;
+    let mut text = false;
     let mut strip_referral = false;
     let mut keep_referral_explicit = false;
     let mut unwrap_redirects: Option<bool> = None;
@@ -96,6 +101,7 @@ fn parse_args(raw: Vec<String>) -> Result<Args, String> {
             }
             "--json" => json = true,
             "--explain" => explain = true,
+            "--text" => text = true,
             "--strip-referral" => strip_referral = true,
             "--keep-referral" => keep_referral_explicit = true,
             "--unwrap-redirects" => unwrap_redirects = Some(true),
@@ -117,6 +123,7 @@ fn parse_args(raw: Vec<String>) -> Result<Args, String> {
         action,
         json,
         explain,
+        text,
         options: SanitizerOptions {
             strip_referral_marketing: strip_referral,
             unwrap_redirects,
@@ -162,17 +169,25 @@ fn emit(
         return Ok(matches!(res, SanitizeResult::Blocked { .. }));
     }
     match res {
-        SanitizeResult::Unchanged { url } => {
-            writeln!(stdout, "{}", printable(url))?;
-            Ok(false)
-        }
+        SanitizeResult::Unchanged { url }
+        | SanitizeResult::Cleaned { url, .. }
+        | SanitizeResult::Redirected { url, .. } => writeln!(stdout, "{}", printable(url))?,
+        SanitizeResult::Blocked { .. } => {}
+    }
+    report(res, explain, stderr)
+}
+
+/// Writes a result's stderr line: the match with `--explain`, and every
+/// block. Returns whether it was blocked.
+fn report(res: &SanitizeResult, explain: bool, stderr: &mut dyn Write) -> io::Result<bool> {
+    match res {
+        SanitizeResult::Unchanged { .. } => Ok(false),
         SanitizeResult::Cleaned {
             url,
             original,
             matched_rules,
             ..
         } => {
-            writeln!(stdout, "{}", printable(url))?;
             if explain {
                 let providers: Vec<_> = matched_rules.iter().map(|m| m.provider.as_str()).collect();
                 writeln!(
@@ -186,7 +201,6 @@ fn emit(
             Ok(false)
         }
         SanitizeResult::Redirected { url, original, via } => {
-            writeln!(stdout, "{}", printable(url))?;
             if explain {
                 writeln!(
                     stderr,
@@ -208,6 +222,30 @@ fn emit(
             Ok(true)
         }
     }
+}
+
+/// `--text`: writes one piece of text with its URLs cleaned, or with
+/// `--json` one result per URL. Returns whether a URL was blocked.
+fn emit_text(
+    input: &str,
+    sanitizer: &Sanitizer,
+    args: &Args,
+    stdout: &mut dyn Write,
+    stderr: &mut dyn Write,
+) -> io::Result<bool> {
+    let result = sanitizer.sanitize_text(input);
+    if !args.json {
+        stdout.write_all(result.text.as_bytes())?;
+    }
+    let mut any_blocked = false;
+    for url in &result.urls {
+        any_blocked |= if args.json {
+            emit(url, true, false, stdout, stderr)?
+        } else {
+            report(url, args.explain, stderr)?
+        };
+    }
+    Ok(any_blocked)
 }
 
 /// A reader that closes early (`| head -1`) ends the run quietly with the
@@ -263,6 +301,16 @@ fn run() -> ExitCode {
         return ExitCode::from(1);
     }
 
+    if args.text {
+        return run_text(
+            &args,
+            &sanitizer,
+            use_stdin,
+            &mut stdout_lock,
+            &mut stderr_lock,
+        );
+    }
+
     for url in &args.urls {
         let res = sanitizer.sanitize(url);
         match emit(
@@ -316,6 +364,54 @@ fn run() -> ExitCode {
         return write_failed(&err, any_blocked);
     }
 
+    if any_blocked {
+        ExitCode::from(2)
+    } else {
+        ExitCode::SUCCESS
+    }
+}
+
+/// `--text`: copies each argument, then stdin, to stdout with every URL in it
+/// cleaned. Unlike URL mode, lines are copied as is: blank lines, `\r` and
+/// control characters included.
+fn run_text(
+    args: &Args,
+    sanitizer: &Sanitizer,
+    use_stdin: bool,
+    stdout: &mut dyn Write,
+    stderr: &mut dyn Write,
+) -> ExitCode {
+    let mut any_blocked = false;
+    for arg in &args.urls {
+        match emit_text(&format!("{}\n", arg), sanitizer, args, stdout, stderr) {
+            Ok(blocked) => any_blocked |= blocked,
+            Err(err) => return write_failed(&err, any_blocked),
+        }
+    }
+    if use_stdin {
+        let mut reader = io::stdin().lock();
+        let mut buf = Vec::new();
+        loop {
+            buf.clear();
+            match reader.read_until(b'\n', &mut buf) {
+                Ok(0) => break,
+                Ok(_) => {}
+                Err(err) => {
+                    eprintln!("error: reading stdin: {}", err);
+                    return ExitCode::from(1);
+                }
+            }
+            // Invalid UTF-8 becomes U+FFFD, as in the TS CLI.
+            let line = String::from_utf8_lossy(&buf);
+            match emit_text(&line, sanitizer, args, stdout, stderr) {
+                Ok(blocked) => any_blocked |= blocked,
+                Err(err) => return write_failed(&err, any_blocked),
+            }
+        }
+    }
+    if let Err(err) = stdout.flush() {
+        return write_failed(&err, any_blocked);
+    }
     if any_blocked {
         ExitCode::from(2)
     } else {

@@ -237,6 +237,7 @@ interactive output by default.
 url-sanitize [OPTIONS] [URL]...
 url-sanitize [OPTIONS] -          # read URLs from stdin (one per line)
 url-sanitize [OPTIONS] < urls.txt # same
+url-sanitize --text [OPTIONS] [TEXT]...   # clean the URLs inside text (§6.5)
 ```
 
 If no URLs are passed positionally and stdin is a TTY, print help and exit 1.
@@ -253,6 +254,7 @@ If no URLs are passed positionally and stdin is a pipe/file, read from stdin.
 | `--unwrap-redirects`  | on      | Set `unwrapRedirects: true` |
 | `--no-unwrap-redirects` | off   | Set `unwrapRedirects: false` |
 | `--block-domains`     | off     | Set `domainBlocking: true` |
+| `--text`              | off     | Treat each argument and stdin as text and clean the URLs inside it (§6.5) |
 | `--version`           |         | Print `url-sanitize <version> (catalog <hash> <generatedAt>)` and exit 0 |
 | `-h`, `--help`        |         | Print usage and exit 0 |
 
@@ -288,7 +290,40 @@ Newlines are LF (`\n`) on all platforms.
 Note: `unchanged`, `cleaned`, and `redirected` all exit 0. The CLI does NOT
 treat "URL was modified" as a non-zero condition — agents pipe URLs through it.
 
-### 6.5 Determinism guarantees
+### 6.5 Text mode and URLs in text
+
+With `--text`, each positional argument (followed by `\n`) and then stdin
+(when `-` is passed or no argument is) is treated as text. Stdin is read line
+by line, so a URL never spans lines. The CLI writes the text to stdout with
+every URL found replaced by its cleaned or redirected `url`. Everything else,
+blank lines, `\r` and control characters included, is copied as is; invalid
+UTF-8 becomes U+FFFD. Blocked URLs stay in the text and get the usual
+`blocked:` stderr line and exit code 2. `--explain` adds its stderr lines for
+each URL. With `--json`, the text is not written: stdout gets one
+`SanitizeResult` per URL found, unchanged ones included.
+
+URLs are found in text as follows. The rules are normative, and
+`conformance/text-vectors.jsonl` pins them for both engines.
+
+1. A URL starts at an ASCII-case-insensitive `http://` or `https://` that
+   does not follow an ASCII letter or digit (`xhttps://` is not a URL).
+2. It extends up to the first terminator: U+0000–U+0020, U+007F–U+00A0,
+   `"`, `<`, `>`, `` ` ``, U+1680, U+2000–U+206F (Unicode spaces, smart
+   quotes, dashes, ellipsis, bidi controls), U+3000–U+303F (CJK punctuation),
+   U+FEFF and U+FF00–U+FFEF (fullwidth and halfwidth forms).
+3. Then its end is trimmed, repeatedly, of one of `.,:;!?'*_~`, or of a `)`,
+   `]` or `}` that occurs more often in the URL (after the scheme) than its
+   opening bracket.
+4. If nothing is left after the scheme, there is no URL; scanning goes on
+   after the scheme. Otherwise scanning resumes after the URL, so a URL
+   inside another one's query is not found again.
+
+Each URL found is sanitized with the same options as in URL mode. Only
+`http(s)` URLs with a scheme are found: `www.example.com` and `ftp://` are
+not. HTML entities are not decoded, so `&amp;` in HTML source stays part of
+the query.
+
+### 6.6 Determinism guarantees
 
 - Output for a given (input, catalog hash, options) tuple is byte-for-byte
   identical across runs and platforms.
@@ -303,7 +338,7 @@ treat "URL was modified" as a non-zero condition — agents pipe URLs through it
 ### 7.1 TypeScript
 
 ```ts
-import { compileSanitizer } from '@url-sanitize/core';
+import { compileSanitizer, sanitizeText } from '@url-sanitize/core';
 import { mergedCatalog, sanitize } from '@url-sanitize/merged';
 
 // pre-compiled default
@@ -312,6 +347,10 @@ sanitize('https://example.com/?utm_source=x');
 // custom options
 const custom = compileSanitizer(mergedCatalog, { stripReferralMarketing: true });
 custom('...');
+
+// every URL inside text (§6.5)
+sanitizeText('see https://example.com/?utm_source=x.', sanitize);
+// { text: 'see https://example.com/.', urls: [ { kind: 'cleaned', ... } ] }
 ```
 
 ### 7.2 Rust
@@ -323,6 +362,8 @@ let json = std::fs::read_to_string("catalog/catalog.json")?;
 let catalog = Catalog::from_json(&json)?;
 let sanitizer = catalog.compile(SanitizerOptions::default());
 let result = sanitizer.sanitize("https://example.com/?utm_source=x");
+let text = sanitizer.sanitize_text("see https://example.com/?utm_source=x.");
+assert_eq!(text.text, "see https://example.com/.");
 ```
 
 The Rust `SanitizeResult` mirrors the TS discriminated union as an enum and

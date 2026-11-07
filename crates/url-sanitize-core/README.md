@@ -16,6 +16,10 @@ let catalog = Catalog::from_json(&json)?;
 let sanitizer = catalog.compile(SanitizerOptions::default());
 let result = sanitizer.sanitize("https://example.com/?utm_source=x");
 println!("{}", serde_json::to_string(&result)?);
+
+// Every URL inside text, the rest kept as is.
+let text = sanitizer.sanitize_text("see https://example.com/?utm_source=x.");
+assert_eq!(text.text, "see https://example.com/.");
 ```
 
 Conformance with the TypeScript engine is verified by the shared corpus in

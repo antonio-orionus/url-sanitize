@@ -53,6 +53,14 @@ if ($StdinOutput -ne $ExpectedUrl) {
   throw "unexpected stdin output: $StdinOutput"
 }
 
+# Releases before --text (2.3.0 and older) skip this, for post-release reruns.
+if (((& $Command --help) -join "`n").Contains('--text')) {
+  $TextOutput = ("see $TestUrl." | & $Command --text) -join "`n"
+  if ($TextOutput -ne "see $ExpectedUrl.") {
+    throw "unexpected --text output: $TextOutput"
+  }
+}
+
 $CatalogLabel = $ActualCatalogHash
 if ($ActualCatalogDate) {
   $CatalogLabel = "$CatalogLabel $ActualCatalogDate"

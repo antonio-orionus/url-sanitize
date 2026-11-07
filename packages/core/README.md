@@ -11,7 +11,7 @@ npm install @url-sanitize/core @url-sanitize/merged
 ## Usage
 
 ```ts
-import { compileSanitizer } from '@url-sanitize/core';
+import { compileSanitizer, sanitizeText } from '@url-sanitize/core';
 import { mergedCatalog } from '@url-sanitize/merged';
 
 const sanitize = compileSanitizer(mergedCatalog, {
@@ -21,6 +21,10 @@ const sanitize = compileSanitizer(mergedCatalog, {
 });
 
 const result = sanitize('https://example.com/?utm_source=x&id=123');
+
+// Every URL inside text, the rest kept as is.
+sanitizeText('see https://example.com/?utm_source=x.', sanitize).text;
+// 'see https://example.com/.'
 ```
 
 ## Result shape

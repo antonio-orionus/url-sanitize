@@ -207,3 +207,66 @@ fn clearurls_corpus_jsonl_matches_rust_engine() {
         );
     }
 }
+
+/// A hand-written `text-vectors.jsonl` entry: the URLs found in `input`, and
+/// the text after cleaning. Same contract as the TS-side test.
+#[derive(Debug, Deserialize)]
+struct TextVector {
+    id: String,
+    input: String,
+    #[serde(default)]
+    options: Option<SanitizerOptions>,
+    expected: TextExpected,
+}
+
+#[derive(Debug, Deserialize)]
+struct TextExpected {
+    text: String,
+    found: Vec<String>,
+}
+
+#[test]
+fn text_vectors_jsonl_matches_rust_engine() {
+    let cat = catalog();
+    let path = workspace_root().join("conformance/text-vectors.jsonl");
+    let text = fs::read_to_string(&path).expect("read text-vectors.jsonl");
+    let mut failures = Vec::new();
+    for (i, line) in text.lines().filter(|l| !l.trim().is_empty()).enumerate() {
+        let v: TextVector = serde_json::from_str(line)
+            .unwrap_or_else(|e| panic!("text-vectors.jsonl:{}: {}", i + 1, e));
+        let sanitizer = cat.compile(v.options.unwrap_or_default());
+        let result = sanitizer.sanitize_text(&v.input);
+        let found: Vec<&str> = result
+            .urls
+            .iter()
+            .map(|r| match r {
+                SanitizeResult::Unchanged { url } => url.as_str(),
+                SanitizeResult::Cleaned { original, .. }
+                | SanitizeResult::Redirected { original, .. }
+                | SanitizeResult::Blocked { original, .. } => original.as_str(),
+            })
+            .collect();
+        if result.text != v.expected.text {
+            failures.push(format!(
+                "{}: text\n  got: {:?}\n  exp: {:?}",
+                v.id, result.text, v.expected.text
+            ));
+        }
+        if found != v.expected.found {
+            failures.push(format!(
+                "{}: found\n  got: {:?}\n  exp: {:?}",
+                v.id, found, v.expected.found
+            ));
+        }
+        if sanitizer.sanitize_text(&result.text).text != result.text {
+            failures.push(format!("{}: not idempotent", v.id));
+        }
+    }
+    if !failures.is_empty() {
+        panic!(
+            "{} text vector failures:\n{}",
+            failures.len(),
+            failures.join("\n\n")
+        );
+    }
+}

@@ -13,7 +13,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import type { SanitizeResult, SanitizerOptions } from '@url-sanitize/core';
-import { compileSanitizer } from '@url-sanitize/core';
+import { compileSanitizer, sanitizeText } from '@url-sanitize/core';
 import { describe, expect, it } from 'vite-plus/test';
 
 import { type ConformanceCatalog, catalogFor } from './catalogs.js';
@@ -40,6 +40,15 @@ type Vector = {
 const here = resolve(import.meta.dirname);
 const vectors = readJsonl<Vector>(resolve(here, 'vectors.jsonl'));
 const corpus = readJsonl<Vector>(resolve(here, 'clearurls-corpus.jsonl'));
+const textVectors = readJsonl<TextVector>(resolve(here, 'text-vectors.jsonl'));
+
+/** A hand-written `text-vectors.jsonl` entry: the URLs found in `input`, and the text after cleaning. */
+type TextVector = {
+  id: string;
+  input: string;
+  options?: SanitizerOptions;
+  expected: { text: string; found: string[] };
+};
 
 function readJsonl<T>(path: string): T[] {
   const text = readFileSync(path, 'utf8');
@@ -106,6 +115,22 @@ describe('conformance — clearurls-corpus.jsonl', () => {
     });
   }
 });
+
+describe('conformance — text-vectors.jsonl', () => {
+  for (const v of textVectors) {
+    it(v.id, () => {
+      const sanitize = sanitizerFor(v.options);
+      const result = sanitizeText(v.input, sanitize);
+      expect(result.text, `${v.id}: text`).toBe(v.expected.text);
+      expect(result.urls.map(inputOf), `${v.id}: found`).toEqual(v.expected.found);
+      expect(sanitizeText(result.text, sanitize).text, `${v.id}: idempotent`).toBe(result.text);
+    });
+  }
+});
+
+function inputOf(r: SanitizeResult): string {
+  return r.kind === 'unchanged' ? r.url : r.original;
+}
 
 describe('properties (corpus-driven)', () => {
   const sanitize = sanitizerFor(undefined);
