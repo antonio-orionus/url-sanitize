@@ -7,9 +7,10 @@
  * Random URLs never hit the inputs that make a pattern slow (AdGuard's
  * `.*z=.*&var=` needs `z=z=z=…`), so each pattern is also fed URLs built from
  * its own literals.
+ *
+ * Budgets are per call and in CPU time (`packages/core/test/cpu-time.ts`), so
+ * a busy machine doesn't fail them and a slow pattern still does.
  */
-import { performance } from 'node:perf_hooks';
-
 import { adguardCatalog } from '@url-sanitize/adguard';
 import { braveCatalog } from '@url-sanitize/brave';
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
@@ -17,6 +18,7 @@ import { compileSanitizer, type SanitizerOptions, type SanitizerRule } from '@ur
 import { firefoxCatalog } from '@url-sanitize/firefox';
 import { describe, expect, it } from 'vite-plus/test';
 
+import { cpuNow } from '../../core/test/cpu-time.js';
 import { mergeSources } from '../src/index.js';
 
 /** The default catalog plus the opt-in AdGuard source. */
@@ -111,14 +113,14 @@ function slowestCall(
   let worst: Timing = { ms: 0, label: '' };
   for (const [index, input] of inputs.entries()) {
     const describeInput = `${label} input ${index}: ${input.slice(0, 120)}… (${input.length} chars)`;
-    const started = performance.now();
+    const started = cpuNow();
     try {
       run(input);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(`${describeInput}: ${message}`);
     }
-    const ms = performance.now() - started;
+    const ms = cpuNow() - started;
     if (ms > worst.ms) worst = { ms, label: describeInput };
     if (ms >= budget) break;
   }

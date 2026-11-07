@@ -1,11 +1,11 @@
-import { performance } from 'node:perf_hooks';
-
 import { clearurlsCatalog } from '@url-sanitize/clearurls';
 import { describe, expect, it } from 'vite-plus/test';
 
 import { compileSanitizer } from '../src/index.js';
+import { cpuNow } from './cpu-time.js';
 
 const CASES = 10_000;
+/** Per call, in CPU time (see cpu-time.ts), so a busy machine doesn't fail it. */
 const MAX_SANITIZE_MS = 50;
 
 describe('fuzz — deterministic ReDoS guard', () => {
@@ -28,13 +28,13 @@ describe('fuzz — deterministic ReDoS guard', () => {
 
     for (let index = 0; index < CASES; index += 1) {
       const input = randomUrl(rng, index);
-      const started = performance.now();
+      const started = cpuNow();
       try {
         sanitize(input);
       } catch (error) {
         thrown = { error, index, input };
       }
-      const elapsed = performance.now() - started;
+      const elapsed = cpuNow() - started;
       if (elapsed > maxMs) {
         maxMs = elapsed;
         slowestInput = `fuzz input ${index}: ${input}`;

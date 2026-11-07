@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vite-plus/test';
 
 import type { SanitizerCatalog } from '../src/index.js';
 import { compileSanitizer, sanitizeText } from '../src/index.js';
+import { cpuNow } from './cpu-time.js';
 
 const catalog: SanitizerCatalog = {
   version: 'test',
@@ -32,16 +33,16 @@ describe('sanitizeText', () => {
 
   it('stays linear on a long run of unmatched closing brackets', () => {
     const text = `https://example.com/?utm_source=x${')'.repeat(200_000)}`;
-    const started = performance.now();
+    const started = cpuNow();
     const result = sanitizeText(text, sanitize);
-    expect(performance.now() - started).toBeLessThan(500);
+    expect(cpuNow() - started).toBeLessThan(500);
     expect(result.text).toBe(`https://example.com/${')'.repeat(200_000)}`);
   });
 
   it('stays linear on many bare schemes', () => {
     const text = 'https:// x.https://.... '.repeat(50_000);
-    const started = performance.now();
+    const started = cpuNow();
     expect(sanitizeText(text, sanitize).urls).toHaveLength(0);
-    expect(performance.now() - started).toBeLessThan(500);
+    expect(cpuNow() - started).toBeLessThan(500);
   });
 });

@@ -384,7 +384,7 @@ ClearURLs has `completeProvider: true` (refuse to load URL entirely). Browser-ex
 
 The four upstream lists hold about 3,700 regexes; the default catalog uses about 1,450 of them. ReDoS risk is real (catastrophic backtracking in user-supplied URLs can hang a server).
 
-Two CI tests, both seeded and deterministic:
+Two CI tests, both seeded and deterministic. Their budgets are per call and in CPU time, not wall-clock time: a loaded machine deschedules the test process, which failed wall-clock budgets in the pre-push hook, while a slow pattern burns CPU either way.
 
 - `packages/core/test/fuzz.test.ts`: 10k random URLs against ClearURLs alone; no throw, no call at 50 ms or more.
 - `packages/merged/test/fuzz.test.ts`: all four sources, the default catalog plus opt-in AdGuard. 2k random URLs on catalog hosts and param names (50 ms budget); every distinct pattern, run alone on 8 KB URLs that repeat its own literals (`.*z=.*&var=` gets `z=z=z=…`; 250 ms budget); and 8 KB URLs that are all params (200 ms budget). About 2.5 s in all.
