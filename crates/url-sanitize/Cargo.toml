@@ -1,6 +1,6 @@
 [package]
 name = "url-sanitize"
-description = "Native CLI to remove tracking parameters and unwrap tracking redirects. ClearURLs, Brave and Firefox rules baked in."
+description = "Native CLI to remove tracking parameters (utm_*, fbclid, gclid) and unwrap tracking redirects from URLs and text. ClearURLs, Brave and Firefox rules baked in."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -10,7 +10,7 @@ authors.workspace = true
 repository.workspace = true
 homepage.workspace = true
 readme = "README.md"
-keywords = ["url", "sanitize", "clearurls", "tracking", "privacy"]
+keywords = ["url", "clearurls", "tracking", "privacy", "utm"]
 categories = ["command-line-utilities"]
 
 [[bin]]

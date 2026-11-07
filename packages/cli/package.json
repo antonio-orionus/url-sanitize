@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/cli",
   "version": "2.4.0",
-  "description": "Command-line tool to remove tracking parameters and unwrap tracking redirects from URLs.",
+  "description": "Command-line tool to remove tracking parameters (utm_*, fbclid, gclid…) and unwrap tracking redirects from URLs and whole text. ClearURLs, Brave and Firefox rules built in.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -23,7 +23,17 @@
     "url",
     "sanitize",
     "tracking",
-    "clearurls"
+    "clearurls",
+    "utm",
+    "fbclid",
+    "gclid",
+    "remove-tracking",
+    "tracking-parameters",
+    "url-cleaner",
+    "clean-url",
+    "link-cleaner",
+    "privacy",
+    "command-line"
   ],
   "publishConfig": {
     "access": "public"
@@ -32,5 +42,6 @@
     "type": "git",
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/cli"
-  }
+  },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/"
 }

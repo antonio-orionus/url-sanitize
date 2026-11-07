@@ -9,11 +9,44 @@
       content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <meta name="referrer" content="no-referrer" />
-    <title>url-sanitize playground</title>
+    <title>Remove tracking from links (utm, fbclid, gclid) · url-sanitize</title>
     <meta
       name="description"
-      content="Paste a link or a whole message: url-sanitize removes tracking parameters and unwraps tracking redirects, in your browser."
+      content="Paste a link or a whole message and get it back without tracking parameters (utm_source, fbclid, gclid, si, igsh…) or redirect wrappers. Free, open source, runs in your browser."
     />
+    <link rel="canonical" href="https://antonio-orionus.github.io/url-sanitize/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="url-sanitize" />
+    <meta property="og:title" content="Remove tracking from links · url-sanitize" />
+    <meta
+      property="og:description"
+      content="Paste a link or a whole message: utm_*, fbclid, gclid and redirect wrappers come out, and you see which rule removed each one. Runs in your browser."
+    />
+    <meta property="og:url" content="https://antonio-orionus.github.io/url-sanitize/" />
+    <meta property="og:image" content="https://antonio-orionus.github.io/url-sanitize/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Remove tracking from links: example.com/article?utm_source=news&amp;id=42&amp;fbclid=IwAR0x becomes example.com/article?id=42"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#116149" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "url-sanitize",
+        "url": "https://antonio-orionus.github.io/url-sanitize/",
+        "description": "Removes tracking parameters and unwraps tracking redirects from URLs, using ClearURLs, Brave and Firefox rules.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "codeRepository": "https://github.com/antonio-orionus/url-sanitize",
+        "license": "https://opensource.org/licenses/MIT"
+      }
+    </script>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23116149'/%3E%3Cpath d='M9 17l4.5 4.5L23 11' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
@@ -24,7 +57,7 @@
   <body>
     <main class="page">
       <header class="intro">
-        <h1>url-sanitize</h1>
+        <h1>Remove tracking from links</h1>
         <p class="lede">
           Paste a link or a whole message. Tracking parameters and redirect wrappers come out;
           everything else stays as it was.
@@ -62,6 +95,44 @@
         <pre id="output" class="output" aria-live="polite"></pre>
         <p id="summary" class="summary"></p>
         <ol id="urls" class="urls"></ol>
+      </section>
+
+      <section class="about" aria-labelledby="removes-label">
+        <h2 id="removes-label">What it removes</h2>
+        <p>
+          Links you copy carry extra parameters that tell the site, and often an ad network, where
+          you came from and who shared the link. They do nothing for the page itself. url-sanitize
+          removes them with the rules maintained by ClearURLs, Brave and Firefox, about 1,450 in
+          all:
+        </p>
+        <ul class="examples">
+          <li>
+            <strong>Campaign tags</strong> on any site: <code>utm_source</code>,
+            <code>utm_medium</code>, <code>utm_campaign</code> and the rest of <code>utm_*</code>.
+          </li>
+          <li>
+            <strong>Ad click IDs</strong>: Facebook's <code>fbclid</code>, Google's
+            <code>gclid</code>, <code>gbraid</code> and <code>wbraid</code>, Microsoft's
+            <code>msclkid</code>, Mailchimp's <code>mc_eid</code>, HubSpot's <code>_hsenc</code>.
+          </li>
+          <li>
+            <strong>Share IDs</strong> that tie a link to the person who shared it: YouTube and
+            Spotify <code>si</code>, Instagram <code>igsh</code>, X <code>s</code> and
+            <code>t</code>, TikTok <code>_t</code>, Reddit <code>share_id</code>.
+          </li>
+          <li>
+            <strong>Shop tracking</strong>: Amazon's <code>/ref=…</code> path and
+            <code>pd_rd_*</code>, eBay's <code>_trksid</code>, AliExpress's <code>spm</code>.
+          </li>
+          <li>
+            <strong>Redirect wrappers</strong>: Google, Facebook and YouTube links that bounce
+            through a tracking page are replaced by the page they point to.
+          </li>
+        </ul>
+        <p>
+          Affiliate tags such as Amazon's <code>tag</code> stay unless you tick the option above,
+          since removing them takes money from whoever shared the link.
+        </p>
       </section>
 
       <section class="elsewhere">

@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/merged",
   "version": "2.4.0",
-  "description": "Merged ClearURLs, Brave, and Firefox catalog for @url-sanitize/core, with optional AdGuard.",
+  "description": "Remove tracking parameters (utm_*, fbclid, gclid, si…) and unwrap tracking redirects from URLs and text, with the ClearURLs, Brave and Firefox rules in one catalog.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -33,7 +33,17 @@
     "tracking",
     "clearurls",
     "brave",
-    "firefox"
+    "firefox",
+    "utm",
+    "fbclid",
+    "gclid",
+    "remove-tracking",
+    "tracking-parameters",
+    "url-cleaner",
+    "clean-url",
+    "link-cleaner",
+    "privacy",
+    "redirect"
   ],
   "publishConfig": {
     "access": "public"
@@ -43,6 +53,7 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/merged"
   },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/",
   "sideEffects": false,
   "devDependencies": {
     "@url-sanitize/adguard": "workspace:*"

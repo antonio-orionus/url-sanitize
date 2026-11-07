@@ -1,7 +1,7 @@
 {
   "name": "@url-sanitize/core",
   "version": "2.4.0",
-  "description": "Pure TypeScript library for removing tracking parameters and unwrapping tracking redirects.",
+  "description": "Pure TypeScript engine that removes tracking parameters (utm_*, fbclid, gclid…) and unwraps tracking redirects from URLs and text. Zero dependencies; bring a rule catalog.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -25,7 +25,16 @@
     "sanitize",
     "tracking",
     "clearurls",
-    "privacy"
+    "privacy",
+    "utm",
+    "fbclid",
+    "gclid",
+    "remove-tracking",
+    "tracking-parameters",
+    "url-cleaner",
+    "clean-url",
+    "query-string",
+    "redirect"
   ],
   "publishConfig": {
     "access": "public"
@@ -35,5 +44,6 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/core"
   },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/",
   "sideEffects": false
 }
