@@ -1,5 +1,6 @@
 packages:
   - 'packages/*'
+  - 'site'
 minimumReleaseAge: 4320
 minimumReleaseAgeStrict: true
 minimumReleaseAgeIgnoreMissingTime: false

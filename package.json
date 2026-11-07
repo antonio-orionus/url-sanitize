@@ -24,6 +24,7 @@
     "sync:sources": "pnpm sync:clearurls && pnpm sync:adguard && pnpm sync:brave && pnpm sync:firefox",
     "build:catalog": "tsx scripts/build-catalog.ts",
     "build:conformance": "tsx scripts/build-conformance.ts",
+    "build:site": "pnpm build && pnpm --filter @url-sanitize/site run build",
     "benchmark": "tsx scripts/benchmark.ts",
     "prepare": "node scripts/prepare-hooks.mjs && vp config --no-agent"
   },

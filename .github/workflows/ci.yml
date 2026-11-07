@@ -83,6 +83,8 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm lint
+      - name: Build the playground (deployed by pages.yml)
+        run: pnpm --filter @url-sanitize/site run build
 
   rust:
     name: Rust engine + conformance

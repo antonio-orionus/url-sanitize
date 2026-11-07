@@ -10,6 +10,8 @@
 
 **Looking for ClearURLs behavior as a library or CLI?** `url-sanitize` removes tracking noise like `utm_*`, `fbclid`, and redirect wrappers from a merged, daily-synced catalog of three upstream rule sources, plus an opt-in fourth.
 
+**[Try it in your browser](https://antonio-orionus.github.io/url-sanitize/)**: paste a link or a whole message and see what comes out and which rule removed it. Nothing leaves the page.
+
 Available from npm, crates.io, native release binaries, Python, CI environments, workers, browsers, edge runtimes, Node.js, Bun, and Deno.
 
 - **One behavior contract across languages.** TypeScript and Rust implementations are checked against the same JSONL conformance corpus.

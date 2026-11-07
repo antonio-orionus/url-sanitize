@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Everything runs in the page: no request leaves it, which this policy enforces. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>url-sanitize playground</title>
+    <meta
+      name="description"
+      content="Paste a link or a whole message: url-sanitize removes tracking parameters and unwraps tracking redirects, in your browser."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23116149'/%3E%3Cpath d='M9 17l4.5 4.5L23 11' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+    <script type="module" src="./src/main.ts"></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="intro">
+        <h1>url-sanitize</h1>
+        <p class="lede">
+          Paste a link or a whole message. Tracking parameters and redirect wrappers come out;
+          everything else stays as it was.
+        </p>
+        <p class="private">Runs in your browser. Nothing you paste leaves this page.</p>
+      </header>
+
+      <section class="panel" aria-labelledby="input-label">
+        <div class="panel-head">
+          <label id="input-label" for="input">Your text</label>
+          <button type="button" id="example" class="link-button">Try an example</button>
+        </div>
+        <textarea
+          id="input"
+          rows="6"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="https://example.com/article?utm_source=newsletter&amp;fbclid=IwAR0…"
+        ></textarea>
+        <fieldset class="options">
+          <legend class="visually-hidden">Options</legend>
+          <label><input type="checkbox" id="opt-unwrap" checked /> Unwrap redirects</label>
+          <label
+            ><input type="checkbox" id="opt-referral" /> Strip affiliate and referral params</label
+          >
+          <label><input type="checkbox" id="opt-block" /> Flag ad and tracking domains</label>
+        </fieldset>
+      </section>
+
+      <section class="panel" aria-labelledby="output-label">
+        <div class="panel-head">
+          <h2 id="output-label">Clean text</h2>
+          <button type="button" id="copy" class="button" disabled>Copy</button>
+        </div>
+        <pre id="output" class="output" aria-live="polite"></pre>
+        <p id="summary" class="summary"></p>
+        <ol id="urls" class="urls"></ol>
+      </section>
+
+      <section class="elsewhere">
+        <h2>Use it elsewhere</h2>
+        <pre class="snippet"><code>pbpaste | npx @url-sanitize/cli --text | pbcopy</code></pre>
+        <p>
+          The same rules ship as an npm library, a Rust crate, a native CLI and a Python package.
+          See the
+          <a href="https://github.com/antonio-orionus/url-sanitize#readme">README</a> for every
+          install path.
+        </p>
+      </section>
+
+      <footer class="footer">
+        <p id="catalog"></p>
+        <p>
+          Code: MIT. Rule data: ClearURLs (LGPL-3.0), Brave and Firefox (MPL-2.0); see
+          <a href="https://github.com/antonio-orionus/url-sanitize/blob/main/NOTICE">NOTICE</a>
+          and the
+          <a href="https://github.com/antonio-orionus/url-sanitize">source</a>.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>
