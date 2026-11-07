@@ -1,0 +1,6 @@
+<!-- Source of site/public/icon.png (128x128), the square project icon for listings.
+     Rendered at 128x128 with headless Chrome and a transparent background, like og.png (see site/og/card.html). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#116149"/>
+  <path d="M9 17l4.5 4.5L23 11" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
