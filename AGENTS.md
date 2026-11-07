@@ -22,8 +22,13 @@ ClearURLs-compatible URL tracking cleanup toolkit. Removes tracking parameters a
 packages/
   core/        @url-sanitize/core        pure algorithm, zero deps, MIT
   clearurls/   @url-sanitize/clearurls   ClearURLs catalog + pre-compiled sanitize(), LGPL-3.0 data
+  adguard/     @url-sanitize/adguard     AdGuard catalog, GPL-3.0 data, opt-in
+  brave/       @url-sanitize/brave       Brave catalog, MPL-2.0 data
+  firefox/     @url-sanitize/firefox     Firefox catalog, MPL-2.0 data
+  merged/      @url-sanitize/merged      default catalog (ClearURLs + Brave + Firefox), MIT
   cli/         @url-sanitize/cli         pure TypeScript npm CLI, MIT
   fetch/       @url-sanitize/fetch       runtime ClearURLs fetch + hash pinning, MIT
+site/          playground on GitHub Pages (private, never published)
 crates/
   url-sanitize-core/                    Rust implementation
   url-sanitize/                         native CLI with embedded catalog
