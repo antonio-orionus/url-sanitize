@@ -1,0 +1,86 @@
+# url-sanitize
+
+> Removes tracking parameters (utm_*, fbclid, gclid, si, igsh and others) and unwraps tracking redirects from URLs, and from every link in a block of text. A deterministic CLI and libraries for JavaScript/TypeScript, Rust and Python, built on the ClearURLs, Brave and Firefox rule lists. It makes no network requests and has no telemetry.
+
+Key facts:
+
+- Default rules: ClearURLs (LGPL-3.0), Brave's Debouncer, query-filter and clean-URLs lists (MPL-2.0), and Firefox Query Stripping (MPL-2.0). About 1,450 rules, synced from upstream daily and released automatically.
+- AdGuard's URL Tracking filter is GPL-3.0, so it is not in the default rules or the CLI. It is an opt-in npm package, `@url-sanitize/adguard`.
+- Affiliate and referral parameters (Amazon's `tag`, `ref` and similar) are kept unless you ask to strip them (`--strip-referral`, `stripReferralMarketing: true`).
+- A redirect is unwrapped only when its target is an http(s) URL without userinfo, and the target is cleaned too.
+- Every result says what happened: `unchanged`, `cleaned` (with the params stripped and the rules that matched), `redirected` (with the rule), or `blocked` (only with domain blocking turned on).
+- The TypeScript and Rust engines pass the same conformance corpus, so they give the same result for the same input.
+- Licenses: code MIT; the native binary, which embeds the rules, MIT AND LGPL-3.0-only AND MPL-2.0.
+
+## Install
+
+```sh
+npx @url-sanitize/cli "https://example.com/?utm_source=x"   # no install, needs Node.js
+npm install -g @url-sanitize/cli                             # TypeScript CLI
+brew install antonio-orionus/url-sanitize/url-sanitize       # macOS, Linux
+scoop bucket add url-sanitize https://github.com/antonio-orionus/scoop-url-sanitize
+scoop install url-sanitize                                   # Windows
+cargo install url-sanitize                                   # native CLI from source
+npm install @url-sanitize/merged                             # TypeScript library, default rules
+cargo add url-sanitize-core                                  # Rust library
+pip install url-sanitize                                     # Python wrapper; needs the native CLI on PATH
+```
+
+Native binaries for Linux x64/ARM64, macOS Apple Silicon/Intel and Windows x64 are on GitHub Releases, with shell and PowerShell installers that verify SHA256SUMS.
+
+## CLI
+
+```sh
+url-sanitize "https://example.com/article?utm_source=newsletter&id=123"
+# https://example.com/article?id=123
+
+url-sanitize --json "https://www.google.com/url?q=https%3A%2F%2Fexample.org"
+# {"kind":"redirected","original":"...","url":"https://example.org/","via":{...}}
+
+url-sanitize - < urls.txt                       # one URL per line
+url-sanitize --text < notes.md > clean.md       # every URL inside text; the rest is copied as is
+url-sanitize -- "$untrusted"                     # `--` ends options
+```
+
+Flags: `--json`, `--explain`, `--text`, `--strip-referral`, `--no-unwrap-redirects`, `--block-domains`, `--version`. Exit codes: 0 done, 1 usage error, 2 a URL was blocked (only with `--block-domains`).
+
+## Libraries
+
+```ts
+import { sanitizeText } from '@url-sanitize/core';
+import { sanitize } from '@url-sanitize/merged';
+
+sanitize('https://example.com/?utm_source=x');
+// { kind: 'cleaned', url: 'https://example.com/', strippedParams: ['utm_source'], ... }
+sanitizeText('Read [this](https://example.com/?fbclid=1).', sanitize).text;
+// 'Read [this](https://example.com/).'
+```
+
+```rust
+// url-sanitize-core takes the rules as catalog JSON, such as the repo's catalog/catalog.json.
+use url_sanitize_core::{Catalog, SanitizerOptions};
+
+let catalog = Catalog::from_json(&std::fs::read_to_string("catalog.json")?)?;
+let sanitizer = catalog.compile(SanitizerOptions::default());
+let result = sanitizer.sanitize("https://example.com/?utm_source=x");
+let text = sanitizer.sanitize_text("see https://example.com/?utm_source=x.");
+```
+
+```py
+from url_sanitize import sanitize
+sanitize("https://example.com/?utm_source=x")["url"]  # calls the native CLI
+```
+
+## Docs
+
+- [README](https://raw.githubusercontent.com/antonio-orionus/url-sanitize/main/README.md): install paths, quick starts and package list
+- [Spec](https://raw.githubusercontent.com/antonio-orionus/url-sanitize/main/docs/spec.md): result schema, algorithm, CLI contract and how URLs are found in text
+- [ClearURLs compatibility](https://raw.githubusercontent.com/antonio-orionus/url-sanitize/main/docs/clearurls-compat.md): moving from the ClearURLs add-on or other ClearURLs ports
+- [License model](https://raw.githubusercontent.com/antonio-orionus/url-sanitize/main/docs/license-model.md): which artifact ships which data, under which license
+
+## Optional
+
+- [Playground](https://antonio-orionus.github.io/url-sanitize/): try it in the browser
+- [Roadmap](https://raw.githubusercontent.com/antonio-orionus/url-sanitize/main/docs/roadmap.md): shipped milestones and the reasons behind them
+- [Non-goals](https://raw.githubusercontent.com/antonio-orionus/url-sanitize/main/docs/non-goals.md): no browser extension, HTTP interception, DNS blocking or telemetry
+- [Source](https://github.com/antonio-orionus/url-sanitize)
