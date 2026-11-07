@@ -20,7 +20,7 @@ it ships; v2.3 added Brave's query filter and clean-URLs lists to the default;
 v2.4 cleans every URL inside text and adds a browser playground.
 
 There is no active milestone. New work is demand-driven and starts from the
-deferred list at the bottom of this document.
+deferred list below.
 
 ## Strategic bet
 
@@ -28,7 +28,7 @@ deferred list at the bottom of this document.
 
 The adoption rule is blunt: meet people in their package manager, but run the same native core wherever possible.
 
-1. **Everywhere install** — crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, and CI/container environments should land on one native binary; npm stays pure TypeScript until native npm packages are worth the extra registry overhead. AUR, Winget, and distro packages stay demand-driven.
+1. **Everywhere install** — crates.io, PyPI, GitHub Release binaries, Homebrew, Scoop, and CI/container environments should land on one native binary; npm stays pure TypeScript until native npm packages are worth the extra registry overhead. Winget was submitted on 2026-11-07 (microsoft/winget-pkgs#473950); AUR and distro packages stay demand-driven.
 2. **Agent-native output** — structured JSON, deterministic output, and explainable matches make this usable by agents without scraping terminal text.
 3. **Correctness + explainability** — never break a URL silently; report which param, redirect provider, or block rule fired.
 4. **Fresh rules with permissive engine licensing** — daily-synced ClearURLs-compatible data, MIT engine, no AGPL lock-in.
@@ -46,18 +46,17 @@ url-sanitize/
 │   ├── catalog.json             # merged catalog, with provenance
 │   └── clearurls.json  adguard.json  brave.json  firefox.json   # per-source catalogs
 ├── conformance/                 # behavior contract every implementation must pass
-│   ├── vectors.jsonl
+│   ├── vectors.jsonl  text-vectors.jsonl
 │   ├── clearurls-corpus.jsonl
 │   └── properties.md
 ├── crates/                      # Rust workspace
 │   ├── url-sanitize-core/       # canonical native engine
-│   ├── url-sanitize/            # native CLI
-│   ├── url-sanitize-wasm/       # optional future WASM path
-│   └── url-sanitize-py/         # optional future in-process Python bindings
+│   └── url-sanitize/            # native CLI
 ├── packages/                    # TypeScript/JavaScript packages
 │   ├── core/  clearurls/  cli/  fetch/
-│   ├── adguard/  brave/  firefox/  merged/
+│   └── adguard/  brave/  firefox/  merged/
 ├── python/                      # PyPI wrapper around native CLI
+├── site/                        # browser playground (GitHub Pages)
 └── sources/                     # upstream sync scripts
 ```
 
@@ -67,9 +66,9 @@ files.
 
 Engine decisions:
 
-- The Rust `url-sanitize-core` crate is the canonical native core for the Rust CLI, PyPI package, Homebrew/Scoop packages, GitHub Release binaries, and CI/container wrappers. Future AUR/Winget/distro packages should use the same native core if demand justifies them.
+- The Rust `url-sanitize-core` crate is the canonical native core for the Rust CLI, PyPI package, Homebrew/Scoop packages, GitHub Release binaries, and CI/container wrappers. Winget and any future package should use the same native core.
 - The pure TypeScript engine remains first-class. JS users should not be forced into WASM or native binaries for ordinary library use.
-- The conformance corpus is the law. TypeScript, Rust, Python wrappers, WASM, and native launchers must agree on behavior or CI fails.
+- The conformance corpus is the law. TypeScript, Rust, the Python wrapper, and native launchers must agree on behavior or CI fails.
 - Language packages are adoption channels, not excuses to fork behavior. Prefer packaging or invoking the native binary over maintaining another sanitizer implementation.
 
 ## Guardrails
@@ -80,72 +79,31 @@ Engine decisions:
 - **No registry squatting.** Reserve names only when the milestone actually publishes them.
 - **Demand sets priority.** Defer new wrappers and package-manager surfaces until they beat the current CLI/library path on real usefulness.
 
-## v0.1 — ClearURLs-compatible core + Rust CLI
+## v0.1 to v1.0 — Foundations
 
-**Ships:**
+The README lists what each surface does today; these are the milestones in
+short, with the reasons that still apply.
 
-- `@url-sanitize/core` — pure algorithm, factory pattern `compileSanitizer(catalog, options)`, discriminated-union result type, zero deps
-- `@url-sanitize/clearurls` — ClearURLs catalog adapter + bundled snapshot + SHA256 verified during sync
-- `@url-sanitize/cli` — minimal: positional URL args, `--json`, `--strip-referral`, `--help`
-- `url-sanitize-core` — Rust engine crate matching the TypeScript behavior contract
-- `url-sanitize` — native Rust CLI with embedded ClearURLs-compatible catalog
-- Shared conformance corpus for TypeScript and Rust
-- Daily sync workflow → opens PR on rule changes. Today `sync-clearurls.yml` syncs all four sources, bumps the version with `scripts/bump-version.mjs` and opens a `release:` PR; Changesets is no longer part of the release path.
-- Vitest suite plus the shared conformance corpus in `conformance/`
-- CI workflow — typecheck, lint, test, build, generated-corpus freshness, Rust conformance, binary size check
-- License model docs + threat model + non-goals + ClearURLs compatibility migration guide
-
-**Deferred from day 1 (intentionally):**
-
-- `@url-sanitize/fetch` — runtime hot-refresh. Adds network surface; ship only after API stable.
-- `@url-sanitize/action` — downstream adoption channel, not internal sync or core value. Deferred until users ask for PR/docs hygiene automation.
-- Profiles (`safe`/`standard`/`aggressive`) — locks API too early. Start with explicit option flags, add profile shorthand once real-world combinations emerge.
-
-## v0.2 — Distribution reach
-
-**Ships:**
-
-- Broader GitHub Release binary coverage where CI can build and smoke-test the target. v0.1.4 ships Linux x64/ARM64, macOS Apple Silicon/Intel, and Windows x64 archives.
-- Release automation refinements for archives, shell installer, PowerShell installer, and Homebrew/Scoop-ready assets. v0.1.4 proved GitHub Release assets, installer smokes, automated Homebrew/Scoop metadata publication, and public endpoint smoke.
-- npm CLI remains pure TypeScript in v0.2 to avoid many platform package names and trusted-publisher setup. Native npm optional packages stay deferred until there is clear demand.
-- Homebrew and Scoop packages shipped and are release-verified.
-
-**Implemented:**
-
-- Package-manager smoke coverage: CI validates Homebrew formula syntax, installs and exercises the checked-in Homebrew formula on macOS, installs and exercises the checked-in Scoop manifest on Windows, release dry-runs Homebrew/Scoop metadata generation, public release smoke verifies npm, crates.io, PyPI, GitHub Release assets, Homebrew formula metadata, and Scoop manifest metadata, then installs and exercises the published Homebrew/Scoop packages.
-- README install sections cover direct installers, pinned direct binary download, npm/npx, cargo, PyPI wrapper requirements, Homebrew, Scoop, GitHub Actions, GitLab CI, Dockerfile, and package-manager CI snippets.
-- Wrapper smoke parity: reusable smoke helpers exercise `--version`, catalog hash format, `--json`, stdin, and default output for native binaries, installers, Homebrew, Scoop, the npm CLI, and the Python wrapper.
-
-**Deferred:**
-
-- AUR packaging.
-- Winget packaging.
-
-**Why before more features:**
-
-`url-sanitize` is a small utility. Adoption comes from being available exactly where a user already is. More rule sources help later; first, the binary needs doors into every common environment.
-
-## v0.3 — Runtime catalogs + custom rules
-
-**Ships:**
-
-- `@url-sanitize/fetch` — fetch + SHA256-verify upstream catalog at runtime. Supports `pinnedHash` option for SaaS / paranoid deployments where consumer hardcodes a known-good hash and refuses any other.
-- User-defined catalogs via plain TypeScript `SanitizerCatalog` literals and `defineCatalog()`.
-- JSON Schema exports for validating user-supplied catalogs, options, and results.
-- Custom catalog composition through plain data plus `mergeCatalogs(...)`
-- `mergeCatalogs(...)` utility with deterministic input-order preservation and no hidden dedupe.
-
-## v1.0 — Stable release
-
-**Ships:**
-
-- Stable public API on `@url-sanitize/core` (semver-stable result types, options object, exported types)
-- Documented threat model + license boundaries
-- Published benchmark numbers
-- `SECURITY.md` with responsible-disclosure policy
-- Fuzz-testing in CI — 10k random URLs/run against the ClearURLs catalog, fails if any sanitize call exceeds 50ms (random URLs missed a real ReDoS; see v2.1)
-- GitHub artifact-attestation-backed native releases.
-- Every package ecosystem wrapper proves it invokes the same version/hash of the Rust binary or passes the same conformance smoke subset.
+- **v0.1, ClearURLs-compatible core and Rust CLI.** `@url-sanitize/core`,
+  `@url-sanitize/clearurls`, `@url-sanitize/cli`, the `url-sanitize-core` crate
+  and the native CLI, held together by one conformance corpus, plus the daily
+  rule sync. `@url-sanitize/fetch` waited for v0.3: it adds network surface, so
+  it shipped only once the API was stable.
+- **v0.2, distribution reach.** Release binaries for Linux x64/ARM64, macOS
+  Apple Silicon/Intel and Windows x64, shell and PowerShell installers,
+  Homebrew and Scoop, and smoke tests that install and run every one of them
+  (npm, PyPI, crates.io, release assets, Homebrew, Scoop). Why before more
+  features: a small utility is adopted where users already are, so the binary
+  needed doors into every common environment before more rule sources.
+- **v0.3, runtime catalogs and custom rules.** `@url-sanitize/fetch` fetches
+  and SHA256-verifies the ClearURLs catalog at runtime, with `pinnedHash` for
+  deployments that accept only a known-good hash. Custom catalogs through
+  `defineCatalog()`, exported JSON Schemas, and `mergeCatalogs(...)`, which
+  keeps input order and dedupes nothing behind the caller's back.
+- **v1.0, stable release.** A semver-stable API on `@url-sanitize/core`, the
+  threat model and license boundaries, benchmarks, `SECURITY.md`, the fuzz test
+  (see the fuzz section below), artifact attestations on native releases, and
+  every wrapper proving it runs the same binary version and catalog hash.
 
 ## v2.0 — Multi-source expansion
 
@@ -250,17 +208,12 @@ demand or maintenance leverage is concrete.
 
 - `@url-sanitize/merged` conflict resolution and configurable source priority beyond catalog order.
 - Not adopted: DuckDuckGo's `tracking-parameters` list (`duckduckgo/privacy-configuration`, Apache-2.0). Checked 2026-11-07: the default catalog already strips all 25 of its exact param names, and its 12 exception domains would cover only its own rules, so adding it changes no result. Its breakage exceptions would matter only if one source's exceptions could override other sources' rules (see conflict resolution above).
-- Ask AdGuard whether the URL Tracking filter may be used under LGPL-3.0 or a permissive license; if so, it can return to the default.
+- AdGuard relicensing: asked on 2026-11-07 whether the URL Tracking filter may be used under LGPL-3.0 or a permissive license (AdguardTeam/AdguardFilters#246532), no answer yet. If yes, it can return to the default.
 - Other lists with `$removeparam`-style rules are copyleft and can only be opt-in like AdGuard: uBlock Origin filters (GPL-3.0), EasyList/EasyPrivacy (GPL-3.0 or CC BY-SA 3.0). DandelionSprout's Legitimate URL Shortener uses a custom license and copies AdGuard's GPL rules.
 - About 390 AdGuard strip rules (`example.*` hosts, `||host/dir/` paths) have never matched. The adapter can now build correct patterns for them, but reviving them unreviewed changes opt-in users' results: `||amazon.*^$removeparam=tag` would strip Amazon affiliate tags that are kept unless `stripReferralMarketing` is on.
 - `@url-sanitize/action` — scans Markdown / docs / PR diffs for tracking-laden URLs, with possible `comment`, `check`, and `fix` modes. This is for downstream repos; this repo already has internal ClearURLs catalog sync automation.
-- `@url-sanitize/mcp` — exposes `sanitize_url` with pinned, explainable, structured output for agent workflows.
-- AUR packaging.
-- Winget packaging.
-- Distro packages.
-- Native npm optional packages.
-- `url-sanitize-wasm`.
-- In-process Python bindings.
+- Profiles (`safe`/`standard`/`aggressive`): they would lock the API before real option combinations are known, so options stay explicit flags.
+- Considered, with no plan and no one asking: an MCP server (`--json` already gives agents structured output), `url-sanitize-wasm` and in-process Python bindings (the TypeScript engine and the native CLI already cover those runtimes), AUR and distro packages. Native npm optional packages are left out on purpose; [`AGENTS.md`](../AGENTS.md) says why.
 
 ---
 
@@ -294,14 +247,10 @@ Three reasons, ranked by weight:
 
 ### License model — MIT code, upstream data licenses
 
-- `@url-sanitize/core` — **MIT** (clean-room TS algorithm port against the public ClearURLs rule spec)
-- `@url-sanitize/clearurls` — **MIT AND LGPL-3.0-only** (bundled `data.json` derived from ClearURLs Rules repo)
-- `@url-sanitize/adguard` — **MIT AND GPL-3.0-only** (bundled AdGuard filter data; opt-in since v2.2)
-- `@url-sanitize/brave` and `@url-sanitize/firefox` — **MIT AND MPL-2.0** (bundled Brave and Mozilla data)
-- `@url-sanitize/merged`, `@url-sanitize/cli` and `@url-sanitize/fetch` — **MIT** (merged depends on the source packages and copies no data)
-- `url-sanitize` crate and native binary — **MIT AND LGPL-3.0-only AND MPL-2.0** (embeds the default catalog)
-
-[`docs/license-model.md`](license-model.md) is the authoritative table.
+The engine is MIT; each package that bundles rule data adds that data's license
+(LGPL-3.0 for ClearURLs, MPL-2.0 for Brave and Firefox, GPL-3.0 for the opt-in
+AdGuard package). [`docs/license-model.md`](license-model.md) is the
+authoritative table.
 
 Why the split unlocks adoption:
 
@@ -312,27 +261,13 @@ Why the split unlocks adoption:
 
 ### Threat model — hash, not signature
 
-ClearURLs ships SHA256 hex at `rules.minify.hash`. **No minisign / no GPG / no cosign.** Confirmed by 404 on `https://rules2.clearurls.xyz/data.minify.json.minisig`.
-
-What this gives us:
-
-- HTTPS + GitHub Pages TLS — transport integrity
-- SHA256 file from same origin — consistency check (rules ↔ hash match)
-- No provenance proof — compromised upstream origin = compromised everything
-
-What we add:
-
-- Sync workflow verifies hash before writing files; mismatch = abort + retry
-- Cache-control issue: hash file has `max-age=600` (10min). Hash can be stale vs JSON. Sync script + workflow retry on mismatch instead of failing immediately.
-- v0.3: `@url-sanitize/fetch` exposes `pinnedHash?: string` for consumer-side hash pinning (refuse any rules whose hash differs from the pinned value). Since v2.1, a `pinnedHash` set to `undefined` or `''` throws instead of silently disabling the pin.
-
-Stricter integrity (e.g. signing) would need upstream ClearURLs maintainers to opt in. Not our project's gap to fix.
-
-The v2.0 sources publish no hash at all. The AdGuard, Brave, and Firefox sync
-scripts fetch over TLS (raw.githubusercontent.com and Mozilla Remote Settings)
-and compute their own SHA256 only to detect changes, so their integrity rests
-on TLS and on review of the daily sync PR. `@url-sanitize/fetch` fetches only
-the ClearURLs catalog.
+ClearURLs publishes a SHA256 next to its rules but no signature, so the sync
+can prove the rules match the hash, not who wrote them; a compromised upstream
+origin serves a matching pair. `@url-sanitize/fetch` adds consumer-side
+`pinnedHash`. The v2.0 sources publish no hash at all, so their integrity rests
+on TLS and on review of the daily sync PR. Stricter integrity (signing) would
+need the upstream maintainers to opt in. [`docs/threat-model.md`](threat-model.md)
+has the details.
 
 ### Why factory pattern over module singleton
 
@@ -399,33 +334,19 @@ See [docs/non-goals.md](non-goals.md). Stops scope-creep PRs cold.
 
 ---
 
-## Compared-to existing options (for the README's positioning)
+## Compared to existing options
 
-| Option | Stance |
-| --- | --- |
-| ClearURLs browser extension | End-user product, not a library. We're orthogonal. |
-| ClearURLs Rules repo | We consume their feed. Upstream of us. |
-| `@quik-fe/clear-urls` | AGPL-3.0-only. Adoption-blocker for SaaS. We solve license. |
-| `@brandonkal/url-purify` | Static fork, no sync. We solve freshness. |
-| `@mkljczk/url-purify` | Static fork, no sync. Same gap. |
-| Hand-rolled regexes per project | Stale within months. We solve maintenance. |
-| Brave Debouncer + query-string filter | Browser-native lists. Adapted as `@url-sanitize/brave`: the Debouncer in v2.0, the query filter and clean-URLs lists in v2.3. |
-| AdGuard URL Tracking filter | Filter-list format, not API. Adapted as `@url-sanitize/adguard` (v2.0); opt-in since v2.2 because its data is GPL-3.0. |
-| Firefox query stripping | Browser-native list. Adapted as `@url-sanitize/firefox` (v2.0). |
-| Unalix Python / Nim | Archived. Confirms TS gap. |
+The README's [comparison table](../README.md#compared-to-existing-options)
+covers the main alternatives. Two more, for the record:
+`@brandonkal/url-purify` and `@mkljczk/url-purify` are static forks with no rule
+sync, and Unalix (Python/Nim) is archived. Brave, AdGuard and Firefox are rule
+sources here, not competitors (see v2.0).
 
-## v0.1 launch history
+## Announcements
 
-1. README ready — clear value prop, install + quick start, comparison table
-2. v0.1.0 published to npm — `@url-sanitize/core`, `@url-sanitize/clearurls`, `@url-sanitize/cli`
-3. v0.1.2 aligned npm, crates.io, PyPI, and GitHub Release assets on one version
-4. v0.1.3 added verified Homebrew and Scoop publication on top of the automated release pipeline
-5. v0.1.4 added Intel macOS native archives, centralized release matrix dry-runs, auto-tag dispatch hardening, and public release smoke inside the release workflow
-6. Arroxy dropped its vendored `src/shared/clearurls/` for `@url-sanitize/core` and `@url-sanitize/clearurls` on 2026-05-26; it still pins 2.0.2, which predates the v2.1 hardening
-7. Announcement channels, none used as of 2026-11-06 (no Show HN post, nothing filed with the ClearURLs maintainers):
-   - r/typescript
-   - HN Show
-   - lobste.rs
-   - fediverse (Mastodon dev community)
-   - ClearURLs maintainers (ask for blessing + link from their docs)
-8. Issue templates `broken-url.yml` and `rule-source-request.yml` absorb feedback; the planned `false-positive.yml` was never added
+None of the launch channels has been used as of 2026-11-07: no Show HN, r/typescript,
+lobste.rs or fediverse post, and nothing filed with the ClearURLs maintainers (to ask
+for their blessing and a link from their docs). Since new work waits for demand, a
+missing announcement also means missing demand signal. The project is listed through
+pull requests to winget, awesome-cli-apps-in-a-csv and awesome-privacy, all opened on
+2026-11-07.
