@@ -1,0 +1,11 @@
+# Link the C runtime into Windows binaries. Without this the exe imports
+# VCRUNTIME140.dll and fails to start on a Windows without the Visual C++
+# redistributable, which the zip, the PowerShell installer and the Scoop
+# manifest don't install. Applies to builds from this checkout, CI and
+# releases included; `cargo install url-sanitize` builds with the user's own
+# MSVC toolchain, which brings the runtime.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

@@ -18,6 +18,7 @@ on:
       - 'bucket/url-sanitize.json'
       - 'package.json'
       - 'packages/*/package.json'
+      - '.cargo/config.toml'
       - 'Cargo.toml'
       - 'pyproject.toml'
 
@@ -92,6 +93,17 @@ jobs:
       - name: Build native binary
         run: cargo build --release -p url-sanitize --target "${{ matrix.target }}"
         shell: bash
+      - name: Check the Windows binary needs no VC++ runtime
+        if: endsWith(matrix.target, '-windows-msvc')
+        shell: bash
+        run: |
+          # .cargo/config.toml links the C runtime statically. An exe that
+          # imports VCRUNTIME140.dll won't start on a Windows without the
+          # Visual C++ redistributable.
+          if grep -a -q -i 'vcruntime140\.dll' "target/${{ matrix.target }}/release/${{ matrix.binary }}"; then
+            echo "${{ matrix.binary }} imports the VC++ runtime" >&2
+            exit 1
+          fi
       - name: Stage binary
         run: |
           set -euo pipefail
