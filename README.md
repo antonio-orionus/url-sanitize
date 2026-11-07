@@ -20,7 +20,7 @@ Available from npm, crates.io, native release binaries, Python, CI environments,
 - **Explainable results.** Stripped params, redirect provider, or block rule are included — no opaque string replacement.
 - **Multi-source without GPL lock-in.** Engine and CLI code are MIT; the default catalog uses only LGPL-3.0 and MPL-2.0 rule data, and the GPL-3.0 AdGuard source is opt-in.
 - **Automation-friendly.** The Rust CLI is deterministic, prompt-free, supports `--json`, and embeds a pinned catalog.
-- **Fresh rules.** GitHub Actions syncs ClearURLs, AdGuard, Brave, and Firefox catalogs daily; releases publish npm packages, crates, Python wheels, and native binaries automatically.
+- **Fresh rules.** GitHub Actions syncs the default rules (ClearURLs, Brave, Firefox) daily, and the opt-in AdGuard rules too; releases publish npm packages, crates, Python wheels, and native binaries automatically.
 
 ## Contents
 
