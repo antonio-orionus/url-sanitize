@@ -9,6 +9,7 @@ import { describe, expect, it } from 'vite-plus/test';
 
 import type { SanitizerCatalog, SanitizerOptions } from '../src/index.js';
 import { compileSanitizer } from '../src/index.js';
+import { cpuNow } from './cpu-time.js';
 
 interface Case {
   id: string;
@@ -56,9 +57,9 @@ describe('regex cost', () => {
       ]
     });
     const input = `https://a.example/?${'z='.repeat(4000)}`;
-    const start = performance.now();
+    const start = cpuNow();
     expect(sanitize(input).kind).toBe('unchanged');
     // Before the leading `.*` was dropped this took about 30 s.
-    expect(performance.now() - start).toBeLessThan(2000);
+    expect(cpuNow() - start).toBeLessThan(2000);
   });
 });
