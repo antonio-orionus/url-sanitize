@@ -225,7 +225,7 @@ These are intentionally below the shipped milestones. Revisit only when user
 demand or maintenance leverage is concrete.
 
 - `@url-sanitize/merged` conflict resolution and configurable source priority beyond catalog order.
-- DuckDuckGo's `tracking-parameters` list (`duckduckgo/privacy-configuration`, Apache-2.0). Small (about 25 global params) but with a curated exceptions list from breakage reports; fits the default.
+- Not adopted: DuckDuckGo's `tracking-parameters` list (`duckduckgo/privacy-configuration`, Apache-2.0). Checked 2026-11-07: the default catalog already strips all 25 of its exact param names, and its 12 exception domains would cover only its own rules, so adding it changes no result. Its breakage exceptions would matter only if one source's exceptions could override other sources' rules (see conflict resolution above).
 - Ask AdGuard whether the URL Tracking filter may be used under LGPL-3.0 or a permissive license; if so, it can return to the default.
 - Other lists with `$removeparam`-style rules are copyleft and can only be opt-in like AdGuard: uBlock Origin filters (GPL-3.0), EasyList/EasyPrivacy (GPL-3.0 or CC BY-SA 3.0). DandelionSprout's Legitimate URL Shortener uses a custom license and copies AdGuard's GPL rules.
 - About 390 AdGuard strip rules (`example.*` hosts, `||host/dir/` paths) have never matched. The adapter can now build correct patterns for them, but reviving them unreviewed changes opt-in users' results: `||amazon.*^$removeparam=tag` would strip Amazon affiliate tags that are kept unless `stripReferralMarketing` is on.
