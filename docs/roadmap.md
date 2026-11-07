@@ -347,6 +347,8 @@ sources here, not competitors (see v2.0).
 None of the launch channels has been used as of 2026-11-07: no Show HN, r/typescript,
 lobste.rs or fediverse post, and nothing filed with the ClearURLs maintainers (to ask
 for their blessing and a link from their docs). Since new work waits for demand, a
-missing announcement also means missing demand signal. The project is listed through
-pull requests to winget, awesome-cli-apps-in-a-csv and awesome-privacy, all opened on
-2026-11-07.
+missing announcement also means missing demand signal. Listing pull requests opened on
+2026-11-07: winget (microsoft/winget-pkgs#473950) and awesome-cli-apps-in-a-csv
+(toolleeo/awesome-cli-apps-in-a-csv#613) await review. awesome-privacy declined it the
+same day (Lissy93/awesome-privacy#890): that list is for end users, and it already has
+ClearURLs.
