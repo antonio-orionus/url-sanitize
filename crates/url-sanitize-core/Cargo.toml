@@ -1,6 +1,6 @@
 [package]
 name = "url-sanitize-core"
-description = "Pure-Rust library for removing tracking parameters and unwrapping tracking redirects."
+description = "Pure-Rust library for removing tracking parameters (utm_*, fbclid, gclid) and unwrapping tracking redirects from URLs and text."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,7 +9,7 @@ authors.workspace = true
 repository.workspace = true
 homepage.workspace = true
 readme = "README.md"
-keywords = ["url", "sanitize", "clearurls", "tracking", "privacy"]
+keywords = ["url", "clearurls", "tracking", "privacy", "utm"]
 categories = ["web-programming", "command-line-utilities"]
 
 [dependencies]

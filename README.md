@@ -10,6 +10,8 @@
 
 **Looking for ClearURLs behavior as a library or CLI?** `url-sanitize` removes tracking noise like `utm_*`, `fbclid`, and redirect wrappers from a merged, daily-synced catalog of three upstream rule sources, plus an opt-in fourth.
 
+It strips campaign tags (`utm_source`, `utm_medium`, `utm_campaign`), ad click IDs (`fbclid`, `gclid`, `msclkid`, `mc_eid`), share IDs (YouTube and Spotify `si`, Instagram `igsh`, TikTok `_t`), and shop tracking (Amazon `ref=`, eBay `_trksid`), and unwraps Google, Facebook and YouTube redirect links, in single URLs or whole blocks of text.
+
 **[Try it in your browser](https://antonio-orionus.github.io/url-sanitize/)**: paste a link or a whole message and see what comes out and which rule removed it. Nothing leaves the page.
 
 Available from npm, crates.io, native release binaries, Python, CI environments, workers, browsers, edge runtimes, Node.js, Bun, and Deno.

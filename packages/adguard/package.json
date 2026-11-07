@@ -43,7 +43,9 @@
     "url",
     "tracking",
     "privacy",
-    "clearurls"
+    "clearurls",
+    "tracking-parameters",
+    "url-cleaner"
   ],
   "publishConfig": {
     "access": "public"
@@ -53,5 +55,6 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/adguard"
   },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/",
   "sideEffects": false
 }

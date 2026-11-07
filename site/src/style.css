@@ -344,3 +344,32 @@ input:focus-visible {
     gap: 0;
   }
 }
+
+.about {
+  margin: 32px 0 0;
+}
+
+.about h2 {
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
+.about p {
+  margin: 0 0 10px;
+}
+
+.examples {
+  margin: 0 0 10px;
+  padding-left: 1.2rem;
+}
+
+.examples li {
+  margin-bottom: 6px;
+}
+
+.about code {
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--code-bg);
+  font: 0.88em var(--mono);
+}

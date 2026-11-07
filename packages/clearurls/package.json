@@ -44,7 +44,11 @@
     "clearurls-typescript",
     "url",
     "tracking",
-    "privacy"
+    "privacy",
+    "utm",
+    "fbclid",
+    "tracking-parameters",
+    "url-cleaner"
   ],
   "publishConfig": {
     "access": "public"
@@ -54,5 +58,6 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/clearurls"
   },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/",
   "sideEffects": false
 }

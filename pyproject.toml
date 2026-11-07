@@ -5,12 +5,12 @@ build-backend = "hatchling.build"
 [project]
 name = "url-sanitize"
 version = "2.4.0"
-description = "Remove tracking parameters and unwrap tracking redirects from URLs with ClearURLs-compatible rules."
+description = "Remove tracking parameters (utm_*, fbclid, gclid) and unwrap tracking redirects from URLs and text with ClearURLs-compatible rules."
 readme = "python/README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "Antonio Orionus", email = "OrionusAI@proton.me" }]
-keywords = ["url", "tracking", "privacy", "clearurls", "cli"]
+keywords = ["url", "tracking", "privacy", "clearurls", "cli", "utm", "fbclid", "gclid", "remove-tracking", "url-cleaner"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
@@ -23,7 +23,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/antonio-orionus/url-sanitize"
+Homepage = "https://antonio-orionus.github.io/url-sanitize/"
 Repository = "https://github.com/antonio-orionus/url-sanitize"
 Issues = "https://github.com/antonio-orionus/url-sanitize/issues"
 

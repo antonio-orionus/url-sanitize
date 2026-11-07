@@ -29,7 +29,8 @@
     "url",
     "tracking",
     "privacy",
-    "fetch"
+    "fetch",
+    "tracking-parameters"
   ],
   "publishConfig": {
     "access": "public"
@@ -39,5 +40,6 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/fetch"
   },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/",
   "sideEffects": false
 }

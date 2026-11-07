@@ -45,7 +45,9 @@
     "tracking",
     "privacy",
     "query-filter",
-    "clean-urls"
+    "clean-urls",
+    "tracking-parameters",
+    "url-cleaner"
   ],
   "publishConfig": {
     "access": "public"
@@ -55,5 +57,6 @@
     "url": "https://github.com/antonio-orionus/url-sanitize.git",
     "directory": "packages/brave"
   },
+  "homepage": "https://antonio-orionus.github.io/url-sanitize/",
   "sideEffects": false
 }
