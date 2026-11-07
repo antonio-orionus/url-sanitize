@@ -10,6 +10,8 @@
 
 **Looking for ClearURLs behavior as a library or CLI?** `url-sanitize` removes tracking noise like `utm_*`, `fbclid`, and redirect wrappers from a merged, daily-synced catalog of three upstream rule sources, plus an opt-in fourth.
 
+**[Try it in your browser](https://antonio-orionus.github.io/url-sanitize/)**: paste a link or a whole message and see what comes out and which rule removed it. Nothing leaves the page.
+
 Available from npm, crates.io, native release binaries, Python, CI environments, workers, browsers, edge runtimes, Node.js, Bun, and Deno.
 
 - **One behavior contract across languages.** TypeScript and Rust implementations are checked against the same JSONL conformance corpus.
@@ -212,6 +214,16 @@ import { mergedCatalog } from '@url-sanitize/merged';
 const sanitize = compileSanitizer(mergedCatalog, { stripReferralMarketing: true });
 ```
 
+**URLs inside text:**
+
+```ts
+import { sanitizeText } from '@url-sanitize/core';
+import { sanitize } from '@url-sanitize/merged';
+
+sanitizeText('Read [this](https://example.com/a?utm_source=x).', sanitize).text;
+// 'Read [this](https://example.com/a).'
+```
+
 **ClearURLs-only behavior:**
 
 ```ts
@@ -229,7 +241,15 @@ url-sanitize --json "https://www.google.com/url?q=https%3A%2F%2Fexample.org"
 
 # Input you don't control: `--` ends options, so it can't become a flag.
 url-sanitize -- "$untrusted_url"
+
+# Clean every URL inside text; everything else is copied as is.
+pbpaste | url-sanitize --text | pbcopy
+url-sanitize --text < notes.md > notes.clean.md
 ```
+
+`--text` finds `http://` and `https://` URLs in prose, Markdown and code:
+trailing punctuation, smart quotes and a Markdown link's closing `)` stay out
+of the URL. With `--json`, it prints one result per URL found instead.
 
 Redirect targets are unwrapped only when they are `http(s)` URLs without
 userinfo, and are sanitized again; `javascript:`, `data:` and similar targets

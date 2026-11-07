@@ -25,6 +25,11 @@ url-sanitize --json "https://example.com/?utm_source=x"
 
 printf '%s\n' "https://example.com/?utm_source=x" | url-sanitize -
 # https://example.com/
+
+url-sanitize --text "Read [this](https://example.com/?utm_source=x)."
+# Read [this](https://example.com/).
+
+pbpaste | url-sanitize --text | pbcopy   # every URL in the clipboard
 ```
 
 The npm CLI is pure TypeScript so it installs without native package setup. For

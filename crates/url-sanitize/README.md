@@ -13,6 +13,8 @@ echo 'https://www.amazon.com/dp/B0/ref=foo' | url-sanitize -
 
 url-sanitize --json 'https://www.google.com/url?q=https%3A%2F%2Fexample.org'
 # {"kind":"redirected","original":"...","url":"https://example.org/","via":{"source":"clearurls","provider":"google","kind":"unwrap-redirect"}}
+
+url-sanitize --text < notes.md > notes.clean.md   # every URL inside text
 ```
 
 See [the spec](https://github.com/antonio-orionus/url-sanitize/blob/main/docs/spec.md)

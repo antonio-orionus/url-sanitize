@@ -8,8 +8,10 @@ mod catalog;
 mod compile;
 mod literal;
 mod sanitize;
+mod text;
 mod types;
 
 pub use catalog::{Catalog, CatalogParseError};
 pub use compile::{CompileError, Sanitizer};
+pub use text::TextSanitizeResult;
 pub use types::{MatchedRule, RuleSource, SanitizeResult, SanitizerOptions, SanitizerRule};

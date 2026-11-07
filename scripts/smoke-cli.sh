@@ -59,6 +59,15 @@ if [[ "$stdin_output" != "$expected_url" ]]; then
   exit 1
 fi
 
+# Releases before --text (2.3.0 and older) skip this, for post-release reruns.
+if "$bin" --help | grep -q -- '--text'; then
+  text_output="$(printf 'see %s.\n' "$test_url" | "$bin" --text)"
+  if [[ "$text_output" != "see $expected_url." ]]; then
+    echo "unexpected --text output: $text_output" >&2
+    exit 1
+  fi
+fi
+
 catalog_label="$actual_catalog_hash"
 if [[ -n "$actual_catalog_date" ]]; then
   catalog_label="$catalog_label $actual_catalog_date"

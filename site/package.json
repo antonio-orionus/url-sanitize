@@ -1,0 +1,16 @@
+{
+  "name": "@url-sanitize/site",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The url-sanitize playground, published to GitHub Pages.",
+  "type": "module",
+  "scripts": {
+    "build": "vp build",
+    "dev": "vp dev",
+    "preview": "vp preview"
+  },
+  "dependencies": {
+    "@url-sanitize/core": "workspace:*",
+    "@url-sanitize/merged": "workspace:*"
+  }
+}

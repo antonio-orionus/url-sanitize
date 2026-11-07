@@ -8,7 +8,7 @@ For current install commands, package surfaces, release channels, and automation
 status, use the [README](../README.md). This document keeps the milestone plan
 and rationale so there is one public discovery surface and one planning record.
 
-v0.1 through v2.3 are complete. v0.2 proved the package-manager path across
+v0.1 through v2.4 are complete. v0.2 proved the package-manager path across
 Homebrew and Scoop with CI/container install examples and install-and-exercise
 smoke; v0.3 added runtime ClearURLs fetching, schema-backed custom catalogs,
 and deterministic catalog composition; v1.0 stabilized the public API,
@@ -16,7 +16,8 @@ benchmarks, security policy, and release contract; v2.0 added the AdGuard,
 Brave, and Firefox sources and the merged catalog; v2.1 hardened every surface
 against hostile URLs and rule data; v2.2 moved the GPL-3.0 AdGuard source out
 of the default catalog and made every artifact declare the licenses of the data
-it ships; v2.3 added Brave's query filter and clean-URLs lists to the default.
+it ships; v2.3 added Brave's query filter and clean-URLs lists to the default;
+v2.4 cleans every URL inside text and adds a browser playground.
 
 There is no active milestone. New work is demand-driven and starts from the
 deferred list at the bottom of this document.
@@ -218,6 +219,29 @@ the MIT engine exists to avoid. See [`docs/license-model.md`](license-model.md).
 
 **Why:** the GPL-3.0 AdGuard source left the default in v2.2; these lists fit
 the default's licensing and win back much of that coverage.
+
+## v2.4 — URLs inside text, and a playground
+
+**Shipped** as 2.4.0.
+
+- Both CLIs take `--text`: each argument and stdin are copied to stdout with
+  every `http(s)` URL in them cleaned, so `pbpaste | url-sanitize --text |
+  pbcopy` cleans a whole message. With `--json`, one result per URL found.
+- `sanitizeText(text, sanitize)` in `@url-sanitize/core` and
+  `Sanitizer::sanitize_text` in `url-sanitize-core` do the same for library
+  users.
+- URL detection is normative (spec §6.5) and pinned for both engines by
+  `conformance/text-vectors.jsonl`. Smart quotes, ellipsis and CJK punctuation
+  end a URL: kept inside it, a trailing `”` would land in a stripped param's
+  value and vanish from the text.
+- A playground at <https://antonio-orionus.github.io/url-sanitize/> runs the
+  default catalog in the browser: the clean text, and for every link the
+  params stripped and the rule that matched. `pages.yml` redeploys it from
+  `main`, the daily rule sync included.
+
+**Why:** most tracking links reach people inside messages, notes and Markdown,
+not one per line. Text mode is also what the deferred GitHub Action and MCP
+server would build on.
 
 ## Deferred surfaces
 

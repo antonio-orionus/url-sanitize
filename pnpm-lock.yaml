@@ -121,6 +121,15 @@ importers:
         specifier: workspace:*
         version: link:../adguard
 
+  site:
+    dependencies:
+      '@url-sanitize/core':
+        specifier: workspace:*
+        version: link:../packages/core
+      '@url-sanitize/merged':
+        specifier: workspace:*
+        version: link:../packages/merged
+
 packages:
 
   '@babel/code-frame@7.29.7':
