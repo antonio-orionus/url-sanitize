@@ -1,0 +1,101 @@
+<!doctype html>
+<!--
+  Source of site/public/og.png, the playground's share image (1200×630).
+  Regenerate with a throwaway Chrome profile:
+    chrome --headless --user-data-dir="$(mktemp -d)" --hide-scrollbars \
+      --window-size=1200,630 --screenshot=site/public/og.png site/og/card.html
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        box-sizing: border-box;
+        padding: 64px 72px;
+        background: #0f3d2f;
+        color: #ffffff;
+        font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 30px;
+        font-weight: 600;
+        color: #bfe6d6;
+      }
+      .mark {
+        width: 44px;
+        height: 44px;
+      }
+      h1 {
+        margin: 36px 0 34px;
+        font-size: 76px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
+      .url {
+        font:
+          29px/1.35 ui-monospace,
+          'SF Mono',
+          Menlo,
+          monospace;
+        padding: 18px 24px;
+        border-radius: 14px;
+        white-space: nowrap;
+      }
+      .before {
+        background: rgba(255, 255, 255, 0.08);
+        color: #d6e9e1;
+      }
+      .before s {
+        color: #ff9f86;
+        text-decoration-thickness: 3px;
+      }
+      .after {
+        margin-top: 14px;
+        background: #e2f1eb;
+        color: #0f3d2f;
+        font-weight: 600;
+      }
+      .foot {
+        margin-top: auto;
+        font-size: 26px;
+        color: #bfe6d6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#3fb68b" />
+        <path
+          d="M9 17l4.5 4.5L23 11"
+          fill="none"
+          stroke="#0f3d2f"
+          stroke-width="3.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      url-sanitize
+    </div>
+    <h1>Remove tracking<br />from links</h1>
+    <div class="url before">
+      example.com/article?<s>utm_source=news</s>&amp;id=42&amp;<s>fbclid=IwAR0x</s>
+    </div>
+    <div class="url after">example.com/article?id=42</div>
+    <div class="foot">
+      Free and open source · runs in your browser · ClearURLs, Brave and Firefox rules
+    </div>
+  </body>
+</html>
