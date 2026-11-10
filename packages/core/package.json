@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/core",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Pure TypeScript engine that removes tracking parameters (utm_*, fbclid, gclid…) and unwraps tracking redirects from URLs and text. Zero dependencies; bring a rule catalog.",
   "license": "MIT",
   "type": "module",

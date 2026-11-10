@@ -1,7 +1,7 @@
 {
-  "version": "e7337077043c",
-  "hash": "e7337077043c6b6c0991671791ef7b346a8a9d95785e9c65922782761f63ae05",
-  "fetchedAt": "2026-11-06T20:23:51.176Z",
+  "version": "084f2c0de787",
+  "hash": "084f2c0de787ece8efb8c0dbbabb7926eea5b09bf846db2a069777ad72389c49",
+  "fetchedAt": "2026-11-10T12:44:56.477Z",
   "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json",
   "upstreams": [
     "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json",
