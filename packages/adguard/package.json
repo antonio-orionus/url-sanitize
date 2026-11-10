@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/adguard",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "AdGuard URL Tracking Protection catalog adapter for @url-sanitize/core.",
   "license": "MIT AND GPL-3.0-only",
   "type": "module",

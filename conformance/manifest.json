@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-06T20:23:51.176Z",
+  "generatedAt": "2026-11-10T12:44:56.477Z",
   "catalog": {
-    "version": "merged(ccc0b05a867d,e7337077043c,61578ba740b7)",
-    "generatedAt": "2026-11-06T20:23:51.176Z",
+    "version": "merged(ccc0b05a867d,084f2c0de787,61578ba740b7)",
+    "generatedAt": "2026-11-10T12:44:56.477Z",
     "sources": [
       {
         "name": "clearurls",
@@ -13,8 +13,8 @@
       },
       {
         "name": "brave",
-        "version": "e7337077043c",
-        "hash": "e7337077043c6b6c0991671791ef7b346a8a9d95785e9c65922782761f63ae05",
+        "version": "084f2c0de787",
+        "hash": "084f2c0de787ece8efb8c0dbbabb7926eea5b09bf846db2a069777ad72389c49",
         "license": "MPL-2.0",
         "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json"
       },

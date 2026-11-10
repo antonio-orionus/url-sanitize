@@ -121,7 +121,7 @@ jobs:
 
   smoke:
     name: Package smoke tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # setup-python provides Python 3.9 on this image.
     needs: changes
     if: needs.changes.outputs.relevant == 'true'
     steps:
