@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/merged",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Remove tracking parameters (utm_*, fbclid, gclid, si…) and unwrap tracking redirects from URLs and text, with the ClearURLs, Brave and Firefox rules in one catalog.",
   "license": "MIT",
   "type": "module",

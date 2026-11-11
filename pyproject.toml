@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "url-sanitize"
-version = "2.4.2"
+version = "2.4.3"
 description = "Remove tracking parameters (utm_*, fbclid, gclid) and unwrap tracking redirects from URLs and text with ClearURLs-compatible rules."
 readme = "python/README.md"
 requires-python = ">=3.9"
