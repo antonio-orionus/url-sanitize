@@ -1,6 +1,6 @@
 {
   "name": "@url-sanitize/firefox",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "Firefox Query Stripping catalog adapter for @url-sanitize/core.",
   "license": "MIT AND MPL-2.0",
   "type": "module",
