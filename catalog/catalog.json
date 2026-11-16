@@ -1,6 +1,6 @@
 {
-  "version": "merged(ccc0b05a867d,084f2c0de787,61578ba740b7)",
-  "generatedAt": "2026-11-10T12:44:56.477Z",
+  "version": "merged(ccc0b05a867d,3557b4bcc03b,61578ba740b7)",
+  "generatedAt": "2026-11-16T12:53:09.101Z",
   "sources": [
     {
       "name": "clearurls",
@@ -11,8 +11,8 @@
     },
     {
       "name": "brave",
-      "version": "084f2c0de787",
-      "hash": "084f2c0de787ece8efb8c0dbbabb7926eea5b09bf846db2a069777ad72389c49",
+      "version": "3557b4bcc03b",
+      "hash": "3557b4bcc03bc2f2f00d78c01565c8f5e7dd3227605ecddf7004fe75d0782427",
       "license": "MPL-2.0",
       "upstream": "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/debounce.json"
     },
@@ -14851,7 +14851,7 @@
       "source": "brave",
       "provider": "brave-clean-urls-16-0",
       "urlPattern": "^https?:\\/\\/www\\.instagram\\.com/.*$",
-      "paramPattern": "ig_rid|igsh|igshid|stkn"
+      "paramPattern": "cplk|dlrf|exln|ig_rid|igsh|igshid|igsi|mdxt|obrf|psln|rpxt|srtk|stkn|vrfl|xtok"
     },
     {
       "kind": "strip-param",
