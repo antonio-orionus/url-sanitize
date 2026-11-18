@@ -1,7 +1,7 @@
 {
-  "version": "0ee3573444d5",
-  "hash": "0ee3573444d516a3102fff97d80e7d6674de441b4f2818d3053043e5b9da1d95",
-  "fetchedAt": "2026-11-16T12:53:07.607Z",
+  "version": "5e3abdc1d5e0",
+  "hash": "5e3abdc1d5e0e602243ec576c48809de9d2db4c76657e18cece2bce01812e210",
+  "fetchedAt": "2026-11-18T13:10:18.726Z",
   "upstream": "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
   "license": "GPL-3.0-only"
 }
