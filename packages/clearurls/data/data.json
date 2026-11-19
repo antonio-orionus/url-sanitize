@@ -408,7 +408,7 @@
       ]
     },
     "reddit": {
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "rules": [
         "%24deep_link",
         "\\$deep_link",
