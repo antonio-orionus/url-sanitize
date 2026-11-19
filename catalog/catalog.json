@@ -1,11 +1,11 @@
 {
-  "version": "merged(ccc0b05a867d,3557b4bcc03b,61578ba740b7)",
-  "generatedAt": "2026-11-16T12:53:09.101Z",
+  "version": "merged(3da8352efd7e,3557b4bcc03b,61578ba740b7)",
+  "generatedAt": "2026-11-19T13:26:31.388Z",
   "sources": [
     {
       "name": "clearurls",
-      "version": "ccc0b05a867d",
-      "hash": "ccc0b05a867d1ff577db3af8b6ad3f2889d259282a47dd99b3fa3db41a3c4c7d",
+      "version": "3da8352efd7e",
+      "hash": "3da8352efd7e7acf07b365cb3d3631745d231e698e4e0063e07232989e3fbee3",
       "license": "LGPL-3.0-only",
       "upstream": "https://rules2.clearurls.xyz/data.minify.json"
     },
@@ -5252,7 +5252,7 @@
       "kind": "unwrap-redirect",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "pattern": "^https?:\\/\\/out\\.reddit\\.com\\/.*?url=([^&]*)",
       "captureGroup": 1,
       "exceptions": []
@@ -5261,7 +5261,7 @@
       "kind": "unwrap-redirect",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "pattern": "^https?:\\/\\/click\\.redditmail\\.com\\/.*?url=([^&]*)",
       "captureGroup": 1,
       "exceptions": []
@@ -5270,7 +5270,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "%24deep_link",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5279,7 +5279,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "\\$deep_link",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5288,7 +5288,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "correlation_id",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5297,7 +5297,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "ref_campaign",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5306,7 +5306,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "ref_source",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5315,7 +5315,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "%243p",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5324,7 +5324,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "rdt",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5333,7 +5333,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "\\$3p",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5342,7 +5342,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "%24original_url",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5351,7 +5351,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "\\$original_url",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5360,7 +5360,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "_branch_match_id",
       "exceptions": [],
       "isReferralMarketing": false
@@ -5369,7 +5369,7 @@
       "kind": "strip-param",
       "source": "clearurls",
       "provider": "reddit",
-      "urlPattern": "^https?:\\/\\/(?:[a-z0-9-]+\\.)*?reddit.com",
+      "urlPattern": "^https?:\\/\\/(?:(?:[a-z0-9-]+\\.)*?reddit.com|click\\.redditmail\\.com\\/.*?url=)",
       "paramPattern": "share_id",
       "exceptions": [],
       "isReferralMarketing": false
